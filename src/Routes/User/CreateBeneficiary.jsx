@@ -172,7 +172,7 @@ function CreateBeneficiary() {
         return {
           userId: UserData?.data?.user?.userId,
           userBeneficiary: {
-            country: {
+            beneficiaryCountry: {
               id: countryDetails?.id,
             },
             beneficiaryName: data?.data?.account_name,
@@ -254,7 +254,7 @@ function CreateBeneficiary() {
   const [createBene, setCreateBene] = useState({
     userId: "",
     userBeneficiary: {
-      country: {
+      beneficiaryCountry: {
         id: countryDetails?.id,
       },
       beneficiaryName: nameEnq?.data?.account_name,
