@@ -122,8 +122,8 @@ const Settings = () => {
                 style={{ display: "none" }}
               />
             </div>
-            <p className="proname">Korede Sulaimon</p>
-            <p className="copyreg">
+            <p className="proname">{Userdata?.data?.user?.firstName}</p>
+            {/*    <p className="copyreg">
               {" "}
               <span>bit.ly/agentkorede</span>
               <img
@@ -131,7 +131,7 @@ const Settings = () => {
                 alt=""
                 onClick={() => navigator.clipboard.writeText("Copy")}
               />
-            </p>
+            </p> */}
           </div>
           <p className="title">Profile Settings</p>
           <Box alignItems="flex-start" flexDirection="column">

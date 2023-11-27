@@ -16,6 +16,7 @@ import copy from "../../assets/copy.svg";
 import Box from "../../reuseables/Box";
 import { useNavigate } from "react-router-dom";
 import Agentlayout from "../../reuseables/AgentLayout";
+import toast from "react-hot-toast";
 
 const AgentSettings = () => {
   const settingsMap = [
@@ -123,14 +124,26 @@ const AgentSettings = () => {
                 style={{ display: "none" }}
               />
             </div>
-            <p className="proname">Korede Sulaimon</p>
+            <p className="proname">{Userdata?.data?.user?.firstName}</p>
             <p className="copyreg">
               {" "}
-              <span>bit.ly/agentkorede</span>
+              <a
+                href={`${window.location.origin}/signup?aid=${Userdata?.data?.user?.userId}`}
+              >
+                <span>Your Link</span>
+              </a>
               <img
                 src={copy}
                 alt=""
-                onClick={() => navigator.clipboard.writeText("Copy")}
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/signup?aid=${Userdata?.data?.user?.userId}`
+                  );
+                  toast.success("Agent Link Copied!");
+                }}
               />
             </p>
           </div>
