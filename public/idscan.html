@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <title>Money Transfer Solutions | ID Scan</title>
+    <script type="text/javascript" src="./customize.js"></script>
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <style>
+      .button-cancel-container {
+        display: none !important;
+      }
+
+      [wsdk-container] .camera-choices {
+        display: none !important;
+      }
+
+      [wsdk-container] .camera-viewfinder,
+      [wsdk-container],
+      [wsdk-container] .cropper {
+        display: block;
+        width: 100% !important;
+        min-height: 60vh !important;
+        object-fit: cover !important;
+      }
+
+      .hidediv {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+          0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+      }
+
+      .progressbar {
+        counter-reset: step;
+      }
+
+      .progressbar li {
+        list-style: none;
+        display: inline-block;
+        width: 30.33%;
+        position: relative;
+        text-align: center;
+        cursor: pointer;
+        padding-top: 5px;
+      }
+
+      .progressbar li:before {
+        content: counter(step);
+        counter-increment: step;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        border: 1px solid #ddd;
+        border-radius: 100%;
+        display: block;
+        text-align: center;
+        margin: 0 auto 5px auto;
+        background-color: #fff;
+      }
+
+      .progressbar li:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background-color: #ddd;
+        top: 15px;
+        left: -50%;
+        z-index: -1;
+      }
+
+      .progressbar li:first-child:after {
+        content: none;
+      }
+
+      .progressbar li.active {
+        color: green;
+      }
+
+      .progressbar li.active:before {
+        border-color: green;
+      }
+
+      .progressbar li.active + li:after {
+        background-color: green;
+      }
+
+      .preview-info-container {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <div class="card-body p-1">
+        <h4 class="card-title text-center" style="display: none">
+          <img src="assets/img/logo.png" style="height: 50px" />
+          <hr />
+        </h4>
+        <div
+          id="root"
+          class="container p-1"
+          style="
+            max-width: 640px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+          "
+        ></div>
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      src="./idscan-jcs.568d540fc5f079cd4201.js"
+      charset="UTF-8"
+    ></script>
+    <script>
+      var tokenValue1 = "",
+        id = 0;
+      var defaultinput = "";
+      var inputoption = "";
+      //tokenValue1="8BPGMWFb2vBiBam0fkZ9eeQDWYlkisZCprQ85NQuHHV0gvcr2mM8yF1a7gr6PkLC0ZBw-0hsQYjhAtzKOxyUL423Vc-wu4dG_tp8WCQ7d-oNgAAAoeImt0H3mD9mKNnHEULPm_vt4O4mpdne_wbePFdPsFeKYVD4uILdaT0Jqs2CbQMWCvTTZqZKTgrmO1tnmJa7PQk9RxiIevlehBY60Qz7HHZETCl6gLfgYyw6X_99UaLwmetumv9MnXz9BYaIJvVtQMr62MOXOXSCqdwq5KoP4dEJg-JMRnIiMgiahB9oq5W89KW4PJAStv-IzNNBhbv_yEKpuRU9W67hN2ahBTp4JeZJlm_mOMIGy_dgY4ivNET3XFMI2hwiZOD5EdG8YNspFOl8YY4T7zNgRiWHm-6Uq9dQY-8VKFcdatTOCrGmcoUeBsNrHxvtV3m9pKKaKw3_LC7wgl5TcYSeqZjQCEc3YObWcwHfAiI2kwQl0JcaRt_cNVS3wbjKgvzdm8mfL8r11RbNfdivKHsiGOzJKljQvHhEQzFJU6PvXIxfeM4uRUxB82HJzcknqEPB1hySTGatMEhrw3lX483Z_SoGIA";
+      //id=1;
+      try {
+        //if(sessionStorage.getItem("querystr") == null || sessionStorage.getItem("querystr") ==""){canceljourney();}
+        if (sessionStorage.getItem("querystryes") == 0) {
+          canceljourney();
+          sessionStorage.removeItem("querystryes");
+        } else {
+          var queryString = new Array();
+          if (queryString.length == 0) {
+            if (window.location.search.split("?").length > 1) {
+              var params = window.location.search.split("?")[1].split("&");
+              for (var i = 0; i < params.length; i++) {
+                var key = params[i].split("=")[0];
+                var value = decodeURIComponent(params[i].split("=")[1]);
+                queryString[key] = value;
+              }
+              if (queryString["key"] != "" && queryString["key"] != null) {
+                tokenValue1 = queryString["key"];
+              }
+              if (queryString["id"] != "" && queryString["id"] != null) {
+                id = queryString["id"];
+              }
+              if (
+                queryString["defaultinput"] != "" &&
+                queryString["defaultinput"] != null
+              ) {
+                defaultinput = queryString["defaultinput"];
+              }
+              try {
+                if (
+                  queryString["camoption"] != "" &&
+                  queryString["camoption"] != null
+                ) {
+                  inputoption = queryString["camoption"];
+                }
+              } catch (e) {}
+            }
+            if (defaultinput == null || defaultinput == "") {
+              defaultinput = "CAMERA";
+            }
+            if (
+              inputoption != null &&
+              inputoption != "" &&
+              inputoption != " " &&
+              inputoption != undefined
+            ) {
+              defaultinput = inputoption;
+            }
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+      function canceljourney() {
+        sessionStorage.removeItem("querystr");
+        localStorage.removeItem("journeyToken");
+        sessionStorage.setItem("querystryes", "0");
+        window.location =
+          window.location.origin + "?status=Cancelled&Id=" + id + "";
+      }
+      // Prevent safari loading from cache when back button is clicked
+      window.onpageshow = function (event) {
+        if (event.persisted) {
+          window.location.reload();
+        }
+      };
+      setTimeout(function () {
+        //$(".camera-options--container").click();//$(".action-container").dblclick();
+        //$("body").dblclick();$(".camera-viewfinder--overlay--transparent").click();
+      }, 2000);
+      //to show  liveness modal
+      var i = 0;
+      function show_modal() {
+        if (i == 0) {
+          setTimeout(function () {
+            $("#myModal").modal("show");
+            i = 1;
+          }, 2000);
+        }
+        if (i == 1) {
+          $("#view__uplosad").prop("onclick", null);
+        }
+      }
+      new window.GBG.Idscan.JourneyContainer({
+        backendUrl: "https://prod.idscan.cloud", //"https://poc.idscan.cloud:443",////"http://localhost",//backendUrl: "http://localhost:80",
+        container: "#root",
+        defaultInputProvider: defaultinput, //CAMERA //comment it for auto capture
+        tripleScanGuidancePage: true,
+
+        fileUploadOnCameraCaptureJourneys: true,
+        previewPages: {
+          documentStep: {
+            smartCapture: true, //false,
+            manualCapture: true, //false
+          },
+          facematchStep: {
+            manualCapture: false,
+          },
+          poaStep: {
+            manualCapture: false,
+          },
+          passiveLivenessStep: {
+            manualCapture: true, //false
+          },
+          covidStep: {
+            manualCapture: false,
+            fileUpload: false, //true
+          },
+        },
+        manualCapture: {
+          enabled: true,
+          timeout: 15,
+        },
+        assetsDirectory: "assets",
+        journeyDefinitionId: "a4094752-0fd8-4c5e-8bc4-79641f3cc043", //"fbe808cd-c6b3-4936-bee8-b5298497f09e",//
+        token: localStorage.getItem("journeyToken"),
+        // onJourneyEvent: onJourneyEventCallBack,
+        // templates: templateDictionary,
+        // dictionary: translationDictionary,
+        // additionalData: additionalDataDictionary,
+        additionalData: [
+          {
+            Name: "Customer_ID",
+            Value: `${
+              JSON.parse(localStorage?.getItem("userDetails"))?.data?.user
+                ?.userId
+            }`,
+          },
+        ],
+        smartCapture: {
+          workerScriptUrl: "./ides-micro.1b47351320a48dc3d9f9.js",
+          asmScriptUrl: "./idesmicro_asm.js",
+          timeout: 5000,
+          autoStart: false,
+          timeLogsEnabled: false, //for smartcapture timnig logs
+        },
+
+        isVerboseLogEnabled: false, //for general app timing logs
+        hideLogo: true,
+        hideAutoCaptureHints: false,
+      }).initialize();
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

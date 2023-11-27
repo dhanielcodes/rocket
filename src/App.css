@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+  > ::-webkit-scrollbar{
+    display: none !important ;
+  }
+}
+
+
+* > .arco-input-inner-wrapper .arco-input-group{
+  
+  outline: none !important;
+}
+.arco-input-inner-wrapper .arco-input-inner-wrapper-focus .arco-input-inner-wrapper-default{
+  outline: none !important;
+}
+
+* > input {
+  outline: none !important;
+}
+
+p{
+  font-size: 12px;
+}
+
+span{
+  font-size: 12px;
+}
+
+
+h1,h2,h3{
+  color: #101828;
+}
+
+a{
+  text-decoration: none;
+}
+/* .arco-input{
+  display: none;
+} */
+
+
+
+*::placeholder{
+  color: #A1A9B8;
+}
+/* .logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */

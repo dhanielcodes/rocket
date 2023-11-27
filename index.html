@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./src/images/logo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Transfer Rocket</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script crossorigin type="module" src="/src/main.jsx"></script>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-_l9nxSDNe8aCG5iBVYjREj-R1DFyg2I&libraries=places"></script>
+  <script type="text/javascript" src="/public/customize.js"></script>
+  <script type="text/javascript" src="/public/idscan-jcs.568d540fc5f079cd4201.js" charset="UTF-8"></script>
+  <script>
+    // Prevent safari loading from cache when back button is clicked
+    window.onpageshow = function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+    new window.GBG.Idscan.JourneyContainer({
+      backendUrl: "https://poc.idscan.cloud:443",
+      tripleScanGuidancePage: true,
+
+      fileUploadOnCameraCaptureJourneys: true,
+      previewPages: {
+        documentStep: {
+          smartCapture: false,
+          manualCapture: false,
+        },
+        facematchStep: {
+          manualCapture: false,
+        },
+        poaStep: {
+          manualCapture: false,
+        },
+        passiveLivenessStep: {
+          manualCapture: false,
+        },
+        covidStep: {
+          manualCapture: false,
+          fileUpload: true,
+        },
+      },
+      manualCapture: {
+        enabled: true,
+        timeout: 15,
+      },
+      assetsDirectory: "assets",
+      // token:tokenValue,
+      // onJourneyEvent: onJourneyEventCallBack,
+      // templates: templateDictionary,
+      // dictionary: translationDictionary,
+      // additionalData: additionalDataDictionary,
+      smartCapture: {
+        workerScriptUrl: "./ides-micro.1b47351320a48dc3d9f9.js",
+        asmScriptUrl: "./idesmicro_asm.js",
+        timeout: 5000,
+        autoStart: false,
+        timeLogsEnabled: false, //for smartcapture timnig logs
+      },
+      isVerboseLogEnabled: false, //for general app timing logs
+      hideLogo: true,
+      hideAutoCaptureHints: false,
+    }).initialize();
+  </script>
+</body>
+
+</html>
