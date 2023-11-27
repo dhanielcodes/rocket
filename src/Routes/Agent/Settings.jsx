@@ -142,7 +142,7 @@ const AgentSettings = () => {
                   navigator.clipboard.writeText(
                     `${window.location.origin}/signup?aid=${Userdata?.data?.user?.userId}`
                   );
-                  toast.success("Agent Link Copied!");
+                  toast.success("Your Agent Link Copied!");
                 }}
               />
             </p>
