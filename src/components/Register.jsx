@@ -11,7 +11,7 @@ import Btn from "../reuseables/Btn";
 import { Switch, Timeline, Typography } from "@arco-design/web-react";
 import { DatePicker } from "@arco-design/web-react";
 import { Select } from "@arco-design/web-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   countries,
   cities,
@@ -339,6 +339,8 @@ function Register() {
   };
   const newAddress = address;
 
+  const [params] = useSearchParams();
+
   const handleStepThree = async () => {
     if (
       user?.postcode &&
@@ -367,6 +369,7 @@ function Register() {
           professionId: user?.professionId,
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
+          agentId: params.get("aid") ? Number(params.get("aid")) : 0,
           country: {
             id: user?.countryId,
           },

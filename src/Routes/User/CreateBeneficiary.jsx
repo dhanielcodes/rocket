@@ -421,7 +421,7 @@ function CreateBeneficiary() {
                   />
                   {info && (
                     <ReusableModal isOpen={show} onClose={() => setShow(false)}>
-                      <Msg>{info?.message}</Msg>
+                      <Msg type={true}>{info?.message}</Msg>
                     </ReusableModal>
                   )}
                   {accNum && accNum.length > 1 ? (
