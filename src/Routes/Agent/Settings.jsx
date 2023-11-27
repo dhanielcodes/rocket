@@ -117,34 +117,49 @@ const AgentSettings = () => {
         <InnerBox>
           <div className="user-info">
             <div className="pro-photo" onClick={handleUploadImage}>
-              <img src={Userdata?.data?.user?.idImageURL} alt="" />
+              <img
+                src={Userdata?.data?.user?.idImageURL}
+                style={{
+                  width: "100px",
+                  height: "300px",
+                }}
+                alt=""
+              />
               <input
                 type="file"
                 className="uploader"
                 style={{ display: "none" }}
               />
             </div>
-            <p className="proname">{Userdata?.data?.user?.firstName}</p>
-            <p className="copyreg">
-              {" "}
-              <a
-                href={`${window.location.origin}/signup?aid=${Userdata?.data?.user?.userId}`}
-              >
-                <span>Your Link</span>
-              </a>
-              <img
-                src={copy}
-                alt=""
+            <p
+              className="proname"
+              style={{
+                fontSize: "18px",
+              }}
+            >
+              {Userdata?.data?.user?.firstName}
+            </p>
+            <p
+              className="copyreg"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `https://apidoc.transferrocket.co.uk/agentcustomersignup/${Userdata?.data?.user?.userId}`
+                );
+                toast.success("Your Agent Link Copied!");
+              }}
+            >
+              <span
                 style={{
-                  cursor: "pointer",
+                  fontSize: "14px",
+                  fontWeight: "600",
                 }}
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `${window.location.origin}/signup?aid=${Userdata?.data?.user?.userId}`
-                  );
-                  toast.success("Your Agent Link Copied!");
-                }}
-              />
+              >
+                Click to copy your link
+              </span>
+              <img src={copy} alt="" />
             </p>
           </div>
           <p className="title">Profile Settings</p>
@@ -241,7 +256,7 @@ const InnerBox = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 80%;
+      width: 100px;
       height: 100px;
       border-radius: 50%;
       border: 2px solid #00a85a;
