@@ -111,9 +111,11 @@ function Login() {
         localStorage.setItem("userDetails", JSON.stringify(data));
         if (data.data.user.kycStatus === "Completed") {
           if (data?.data?.user?.role?.id === 6) {
-            navigate("/user/dashboard");
+            //navigate("/user/dashboard");
+            window.location.pathname = "/user/dashboard";
           } else {
-            navigate("/agent/dashboard");
+            //navigate("/agent/dashboard");
+            window.location.pathname = "/agent/dashboard";
           }
         } else {
           setModal(true);
