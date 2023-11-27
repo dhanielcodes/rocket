@@ -29,8 +29,6 @@ import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
 import { countries } from "../services/Auth";
 
-// Inside your component
-
 const baseurl = BASE_URL;
 
 const Option = Select.Option;
