@@ -32,6 +32,7 @@ import Kyc from "../reuseables/Kyc";
 import toast from "react-hot-toast";
 import Autocomplete from "react-google-autocomplete";
 import { LocationInput } from "../reuseables/LocationInput";
+import AppInput from "../reuseables/AppInput";
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -75,6 +76,8 @@ function Register() {
     companyName: "",
     onboardingSource: "Web",
   });
+
+  const [confirm, setConfirm] = useState();
 
   console.log("🚀 ~ file: Register.jsx:44 ~ Register ~ user:", user);
 
@@ -396,8 +399,12 @@ function Register() {
   };
   const handleStepOne = () => {
     if (user?.email && user?.password) {
-      setstep1(false);
-      setstep2(true);
+      if (user?.password === confirm) {
+        setstep1(false);
+        setstep2(true);
+      } else {
+        toast.error("Passwords don't match");
+      }
     } else {
       toast.error("Fill all fields required");
     }
@@ -468,7 +475,7 @@ function Register() {
                 <div className="signupheadtext">
                   <p>Step 1 of 3</p>
                   <h1>What’s your email address?</h1>
-                  <p>Please enter your details.</p>
+                  <p> </p>
                 </div>
 
                 <div className="inputform">
@@ -487,27 +494,32 @@ function Register() {
 
                   <div>
                     <span className="span">Password</span>
-                    <InputStyle>
-                      <Input.Password
-                        name="password"
-                        className="input"
-                        style={{ width: "100%" }}
-                        placeholder="Enter your Password"
-                      />
-                    </InputStyle>
+                    <AppInput
+                      placeholder="Enter your password"
+                      type="password"
+                      onChange={(e) => {
+                        setUser({
+                          ...user,
+                          password: e.target.value,
+                        });
+                      }}
+                      name="password"
+                      padding="12px"
+                    />
                   </div>
 
                   <div>
                     <span className="span">Confirm Password</span>
-                    <InputStyle>
-                      <Input.Password
-                        onChange={handleChange}
-                        name="password"
-                        className="input"
-                        style={{ width: "100%" }}
-                        placeholder="Enter your Password"
-                      />
-                    </InputStyle>
+
+                    <AppInput
+                      placeholder="Enter your password"
+                      type="password"
+                      onChange={(e) => {
+                        setConfirm(e.target.value);
+                      }}
+                      name="password"
+                      padding="12px"
+                    />
 
                     <br />
                     <span className="smalltext">
@@ -596,7 +608,7 @@ function Register() {
               <div className="signupheadtext">
                 <p>Step 2 of 3</p>
                 <h1>Personal Information</h1>
-                <p>Please enter your details.</p>
+                <p> </p>
               </div>
 
               <div className="inputform ">
@@ -774,7 +786,7 @@ function Register() {
               <div className="signupheadtext">
                 <p>Step 3 of 3</p>
                 <h1>Lastly, Your Address</h1>
-                <p>Please enter your details.</p>
+                <p> </p>
               </div>
               <div className="inputform">
                 <div>
@@ -977,7 +989,6 @@ function Register() {
 
 const LoginCotainer = styled.div`
   height: 100vh;
-  overflow: hidden;
 
   .input {
     padding: 0.7em;

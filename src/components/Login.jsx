@@ -152,7 +152,7 @@ function Login() {
             <img src={Logo} />
             <div className="logintext">
               <h1>Log in to your account</h1>
-              <p>Welcome back! Please enter your details.</p>
+              <p>Welcome back! </p>
             </div>
             <div className="inputform">
               {modal && (
