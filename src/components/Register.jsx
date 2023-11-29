@@ -69,7 +69,6 @@ function Register() {
     address: "",
     postcode: "",
     countryId: "",
-    stateId: "",
     cityId: "",
     employmentStatusId: "",
     professionId: "",
@@ -186,29 +185,6 @@ function Register() {
       })
       .catch((error) => console.log("error", error));
   }, [countryDetails?.id]);
-  useEffect(() => {
-    // Fetch states whenever the country ID changes
-    const requestOptions = {
-      method: "GET",
-      redirect: "follow",
-    };
-
-    fetch(
-      `https://apidoc.transferrocket.co.uk/getstates?countryId=${countryDetails?.id}&stateId=0`,
-      requestOptions
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log(
-          "🚀 ~ file: Register.jsx:157 ~ useEffect ~ response:",
-          data
-        );
-        setState(data.data);
-      })
-      .catch((error) => console.log("error", error));
-  }, [countryDetails?.id]);
 
   useEffect(() => {
     // Fetch states whenever the country ID changes
@@ -218,7 +194,7 @@ function Register() {
     };
 
     fetch(
-      `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryDetails?.id}&stateId=${stateDetails?.id}&citiId=0`,
+      `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryDetails?.id}&citiId=0`,
       requestOptions
     )
       .then((response) => {
@@ -232,7 +208,7 @@ function Register() {
         setCity(data?.data);
       })
       .catch((error) => console.log("error", error));
-  }, [SelectState]);
+  }, [countryDetails?.id]);
 
   useEffect(() => {
     // Fetch states whenever the country ID changes
@@ -373,9 +349,7 @@ function Register() {
           country: {
             id: user?.countryId,
           },
-          state: {
-            id: user?.stateId,
-          },
+
           city: {
             id: user?.cityId,
           },
@@ -410,7 +384,6 @@ function Register() {
       user?.firstName &&
       user?.surName &&
       user?.countryId &&
-      user?.stateId &&
       user?.cityId &&
       user?.phone
     ) {
@@ -626,7 +599,7 @@ function Register() {
                 <p>Please enter your details.</p>
               </div>
 
-              <div className="inputform makescroll">
+              <div className="inputform ">
                 <div>
                   <span className="span">First Name</span>
                   {/* <InputStyle > */}
@@ -679,24 +652,8 @@ function Register() {
                   {/* </InputStyle> */}
                 </div>
                 <div>
-                  <span className="span">State</span>
+                  <span className="span">City</span>
 
-                  <Select
-                    name="stateId"
-                    styles={{
-                      padding: "0px !important",
-                      // You can add custom styles here if needed
-                    }}
-                    options={StateOption}
-                    value={SelectState} // Pass the selected option to the value prop
-                    onChange={handleSelectState} // Handle option selection
-                    placeholder="Please select a State"
-                    showSearch
-                    isClearable={true} // Allow clearing the selected option
-                  />
-                  {/* </InputStyle> */}
-                </div>
-                <div>
                   <Select
                     name="cityId"
                     styles={{
@@ -819,7 +776,7 @@ function Register() {
                 <h1>Lastly, Your Address</h1>
                 <p>Please enter your details.</p>
               </div>
-              <div className="inputform makescroll">
+              <div className="inputform">
                 <div>
                   <span className="span">Postcode</span>
                   <InputStyle>
