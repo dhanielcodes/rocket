@@ -614,7 +614,6 @@ function Register() {
               <div className="inputform ">
                 <div>
                   <span className="span">First Name</span>
-                  {/* <InputStyle > */}
                   <Input
                     name="firstName"
                     onChange={handleChange}
@@ -622,7 +621,6 @@ function Register() {
                     style={{ borderRadius: "8px;" }}
                     placeholder="Enter your Frist name"
                   />
-                  {/* </InputStyle> */}
                 </div>
                 <div>
                   <span className="span">Last Name</span>
@@ -639,15 +637,7 @@ function Register() {
 
                 <div>
                   <span className="span">Country</span>
-                  {/* <InputStyle > */}
-                  {/* <Select name="countryId" style={{height:"30px"}} onChange={handleSelectCountry} showSearch  value={"Nigeria"} placeholder='Please select a Country'  allowClear>
-                                    <p>{selectedCountry}</p>
-                                        {CountryOption.map((option, index) => (
-                                            <Option key={option} value={option}>
-                                            {option}
-                                            </Option>
-                                        ))}
-                                    </Select> */}
+
                   <Select
                     name="countryId"
                     styles={{
@@ -661,7 +651,6 @@ function Register() {
                     showSearch
                     isClearable={true} // Allow clearing the selected option
                   />
-                  {/* </InputStyle> */}
                 </div>
                 <div>
                   <span className="span">City</span>
@@ -862,54 +851,9 @@ function Register() {
                   </div>
                 </div>
                 {address && <br />}
-                {/*  <div>
-                  <span className="span">Address: 1</span>
-                  <InputStyle>
-                    <TextArea
-                      name="address"
-                      onChange={handleChange}
-                      className="textarea"
-                      placeholder="Please enter ..."
-                      style={{ minHeight: 64, background: "transparent" }}
-                    />
-                  </InputStyle>
-                </div>
-                <div>
-                  <span className="span">Address: 2</span>
-                  <InputStyle>
-                    <TextArea
-                      name="address"
-                      onChange={handleChange}
-                      className="textarea"
-                      placeholder="Please enter ..."
-                      style={{ minHeight: 64, background: "transparent" }}
-                    />
-                  </InputStyle>
-                </div> */}
-                <div>
-                  {/* <InputStyle >
-                                        <Select  name='cityId' style={{height:"30px"}} onChange={handleSelectCity} showSearch  value={cityDetails?.name && cityDetails?.name } placeholder='Please select a Country'  allowClear>
-                                            {CityOption.map((option, index) => (
-                                            <Option key={option} disabled={index === 3} value={option}>
-                                                {option}
-                                            </Option>
-                                            ))}
-                                        </Select> */}
-
-                  {/* </InputStyle> */}
-                </div>
 
                 <div>
                   <span className="span">Employment Status</span>
-                  {/* <InputStyle >
-                                        <Select name="employmentStatusId" style={{height:"30px"}} onChange={handleSelectCountry} showSearch  value={selectedCountry && selectedCountry } placeholder='Please select a Country'  allowClear>
-                                            {EmploymentOption.map((option, index) => (
-                                            <Option key={option} disabled={index === 3} value={option}>
-                                                {option}
-                                            </Option>
-                                            ))}
-                                        </Select>
-                                    </InputStyle> */}
 
                   <Select
                     name="cityId"
@@ -928,15 +872,7 @@ function Register() {
                 </div>
                 <div>
                   <span className="span">Profession</span>
-                  {/* <InputStyle >
-                                    <Select name="professionId" placeholder='Select Proffession' style={{borderRadius:'8px;',height:"20px",background:"none"}}   allowClear showSearch>
-                                        {ProffessionOption.map((option, index) => (
-                                        <Option key={option} disabled={index === 3} value={option}>
-                                            {option}
-                                        </Option>
-                                        ))}
-                                    </Select>
-                                    </InputStyle> */}
+
                   <Select
                     name="cityId"
                     styles={{
