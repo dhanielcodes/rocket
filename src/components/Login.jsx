@@ -157,7 +157,7 @@ function Login() {
             <div className="inputform">
               {modal && (
                 <ReusableModal isOpen={modal} onClose={() => setModal(false)}>
-                  <Msg>
+                  <Msg type={true}>
                     {/* {err} */}
                     <p
                       style={{
@@ -167,7 +167,7 @@ function Login() {
                       {data?.message}
                     </p>
                     <br />
-                    {data?.message === "User KYC not completed." && (
+                    {data?.data?.user?.kycStatus === "Not Started" && (
                       <Btn clicking={() => navigate("/upload")} size={30}>
                         Continue with Kyc{" "}
                       </Btn>
