@@ -157,7 +157,7 @@ function Login() {
             <div className="inputform">
               {modal && (
                 <ReusableModal isOpen={modal} onClose={() => setModal(false)}>
-                  <Msg type={true}>
+                  <Msg type={data?.status}>
                     {/* {err} */}
                     <p
                       style={{

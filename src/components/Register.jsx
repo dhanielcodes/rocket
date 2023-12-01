@@ -320,6 +320,9 @@ function Register() {
 
   const [params] = useSearchParams();
 
+  const agentName = params.get("name");
+  const agentInvite = params.get("agentInvite");
+
   const handleStepThree = async () => {
     if (
       user?.postcode &&
@@ -339,7 +342,7 @@ function Register() {
         body: JSON.stringify({
           firstName: user?.firstName,
           surName: user?.surName,
-          email: user?.email,
+          email: agentName ? "" : user?.email,
           password: user?.password,
           phone: user?.phone,
           address: newAddress?.description,
@@ -349,6 +352,7 @@ function Register() {
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
           agentId: params.get("aid") ? Number(params.get("aid")) : 0,
+          agentInvite: agentInvite ? agentInvite : "",
           country: {
             id: user?.countryId,
           },
@@ -398,15 +402,28 @@ function Register() {
     }
   };
   const handleStepOne = () => {
-    if (user?.email && user?.password) {
-      if (user?.password === confirm) {
-        setstep1(false);
-        setstep2(true);
+    if (agentName) {
+      if (user?.password) {
+        if (user?.password === confirm) {
+          setstep1(false);
+          setstep2(true);
+        } else {
+          toast.error("Passwords don't match");
+        }
       } else {
-        toast.error("Passwords don't match");
+        toast.error("Fill all fields required");
       }
     } else {
-      toast.error("Fill all fields required");
+      if (user?.email && user?.password) {
+        if (user?.password === confirm) {
+          setstep1(false);
+          setstep2(true);
+        } else {
+          toast.error("Passwords don't match");
+        }
+      } else {
+        toast.error("Fill all fields required");
+      }
     }
   };
 
@@ -474,23 +491,31 @@ function Register() {
                 </div>
                 <div className="signupheadtext">
                   <p>Step 1 of 3</p>
-                  <h1>What’s your email address?</h1>
+                  {agentName ? (
+                    <h1>Set Your Password {agentName}</h1>
+                  ) : (
+                    <h1>What’s your email address?</h1>
+                  )}
                   <p> </p>
                 </div>
 
                 <div className="inputform">
-                  <div>
-                    <span className="span">Email</span>
-                    <InputStyle>
-                      <Input
-                        name="email"
-                        onChange={handleChange}
-                        className="input"
-                        style={{ borderRadius: "8px;", width: "100%" }}
-                        placeholder="Enter your Email"
-                      />
-                    </InputStyle>
-                  </div>
+                  {agentName ? (
+                    ""
+                  ) : (
+                    <div>
+                      <span className="span">Email</span>
+                      <InputStyle>
+                        <Input
+                          name="email"
+                          onChange={handleChange}
+                          className="input"
+                          style={{ borderRadius: "8px;", width: "100%" }}
+                          placeholder="Enter your Email"
+                        />
+                      </InputStyle>
+                    </div>
+                  )}
 
                   <div>
                     <span className="span">Password</span>
