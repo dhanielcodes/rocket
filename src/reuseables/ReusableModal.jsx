@@ -44,12 +44,12 @@ const modalStyles = {
   },
 };
 
-function ReusableModal({ isOpen, onClose, children }) {
+function ReusableModal({ isOpen, onClose, children, width }) {
   if (!isOpen) return null;
 
   return (
     <div style={modalStyles.overlay}>
-      <div style={modalStyles.modal}>
+      <div style={{ ...modalStyles.modal, width: width }}>
         <span onClick={onClose} style={modalStyles.closeButton}>
           &#x2715;
         </span>

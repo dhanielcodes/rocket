@@ -156,7 +156,11 @@ function Login() {
             </div>
             <div className="inputform">
               {modal && (
-                <ReusableModal isOpen={modal} onClose={() => setModal(false)}>
+                <ReusableModal
+                  width="400px"
+                  isOpen={modal}
+                  onClose={() => setModal(false)}
+                >
                   <Msg type={data?.status}>
                     {/* {err} */}
                     <p
@@ -175,15 +179,27 @@ function Login() {
                       }}
                     >
                       {data?.data?.user?.kycStatus === "Not Started" && (
-                        <Btn clicking={() => navigate("/upload")} size={30}>
-                          Continue with Kyc{" "}
+                        <Btn
+                          styles={{
+                            width: "100%",
+                            marginRight: "10px",
+                            padding: "8px",
+                            fontWeight: "600",
+                          }}
+                          clicking={() => navigate("/upload")}
+                          size={30}
+                        >
+                          CONTINUE WITH KYC{" "}
                         </Btn>
                       )}
+                      &nbsp; &nbsp;
                       {data?.data?.user?.kycStatus === "Not Started" && (
                         <Btn
                           styles={{
                             width: "100%",
                             marginRight: "10px",
+                            padding: "8px",
+                            fontWeight: "600",
                           }}
                           clicking={() => {
                             // navigate("/upload")
@@ -197,7 +213,7 @@ function Login() {
                           }}
                           size={30}
                         >
-                          Skip{" "}
+                          SKIP FOR NOW{" "}
                         </Btn>
                       )}
                     </div>
