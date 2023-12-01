@@ -15,6 +15,7 @@ const CountryDropdown = ({
   defaultValue,
   removeNaira = false,
   newOptions,
+  collectionStatus = false,
 }) => {
   const [cList, setClist] = useState([]);
   const { data, isLoading, refetch } = useQuery({
@@ -58,7 +59,7 @@ const CountryDropdown = ({
   const filteredUsers = wallets?.country?.filter((cname) =>
     optionsmap.includes(cname)
   );
-
+  console.log(value);
   return (
     <CountyCont>
       <Select
@@ -66,9 +67,9 @@ const CountryDropdown = ({
         onChange={onChange}
         options={
           newOptions
-            ? removeNaira
-              ? newOptions?.filter((item) => item.value !== "NG")
-              : newOptions
+            ? collectionStatus
+              ? newOptions?.filter((item) => item.isCollectionCurrency)
+              : newOptions?.filter((item) => !item.isCollectionCurrency)
             : optionsmap
         }
         defaultValue={defaultValue}
@@ -79,7 +80,7 @@ const CountryDropdown = ({
           >
             <CountryFlag
               className="flag"
-              countryCode={country?.value?.slice(0, 2)}
+              countryCode={country?.code?.slice(0, 2)}
               svg
             />{" "}
             &nbsp;

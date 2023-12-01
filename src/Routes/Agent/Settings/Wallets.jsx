@@ -183,7 +183,7 @@ function WalletsAgent() {
     isLoading: namEnqloading,
     refetch: refetchnameEnq,
   } = useQuery({
-    queryKey: [userData?.data?.user?.userId],
+    queryKey: [userData?.data?.user?.userId, "wallet"],
     queryFn: Tranx,
     onError: (err) => {
       console.error(err);
@@ -200,6 +200,8 @@ function WalletsAgent() {
   const [transactionList, setTransactionList] = useState(
     nameEnqwe?.data || Trnx?.data
   );
+
+  console.log(nameEnqwe?.message);
 
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredData, setFilteredData] = useState(
@@ -285,7 +287,7 @@ function WalletsAgent() {
                     }}
                   >
                     <CountryFlag
-                      countryCode={item?.country?.currencyCode}
+                      countryCode={item?.country?.currencyCode?.slice(0, 2)}
                       style={{
                         width: "30px",
                         height: "30px",
@@ -310,7 +312,10 @@ function WalletsAgent() {
                       marginTop: "10px",
                     }}
                   >
-                    ${kFormatter2(item?.balance)}
+                    <AmountFormatter
+                      value={item?.balance}
+                      currency={item?.country?.currencyCode}
+                    />{" "}
                   </div>
                   <Link
                     to={`/user/settings/wallet/${"id"}`}

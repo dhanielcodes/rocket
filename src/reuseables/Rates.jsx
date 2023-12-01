@@ -8,6 +8,7 @@ import AmountFormatter from "../reuseables/AmountFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { Rates as Ratess } from "../services/Dashboard";
 import { countryObjectsArray } from "../../config/CountryCodes";
+import { countries } from "../services/Auth";
 
 function Rates() {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -44,7 +45,7 @@ function Rates() {
   const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
   const [selectedCountry2, setSelectedCountry2] = useState(defaultCountry2);
   console.log(
-    "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry2:",
+    "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry:",
     selectedCountry
   );
   console.log(
@@ -155,8 +156,8 @@ function Rates() {
     refetch: RatesnameEnq,
   } = useQuery({
     queryKey: [
-      getrates?.id || dataObject?.id?.country?.id,
-      dataObject2?.id?.country?.id,
+      getrates?.id || selectedCountry?.id,
+      selectedCountry2?.id,
       amount,
       amount2,
     ],
@@ -184,6 +185,24 @@ function Rates() {
     localStorage.setItem("amount", JSON.stringify(rates?.data));
   };
 
+  const {
+    data: countrylist,
+    isLoading: countrylistloading,
+    refetch: refetchcountrylist,
+  } = useQuery({
+    queryKey: ["getCategoriess"],
+    queryFn: countries,
+    onSuccess: (data) => {
+      setCountries(data?.data);
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
   return (
     <div>
       <RateCont>
@@ -191,6 +210,15 @@ function Rates() {
           <CountryDropdown
             value={selectedCountry}
             onChange={handleCountryChange}
+            newOptions={countrylist?.data?.map((item) => {
+              return {
+                code: item?.currencyCode,
+                value: item?.name,
+                label: item?.name,
+                id: item?.id,
+                ...item,
+              };
+            })}
           />
           <CustomInput
             placeholder="amount"
@@ -344,8 +372,18 @@ function Rates() {
         </div>
         <div className="cont3">
           <CountryDropdown
+            collectionStatus
             value={selectedCountry2}
             onChange={handleCountryChange2}
+            newOptions={countrylist?.data?.map((item) => {
+              return {
+                code: item?.currencyCode,
+                value: item?.name,
+                label: item?.name,
+                id: item?.id,
+                ...item,
+              };
+            })}
           />
           <CustomInput
             placeholder="amount"

@@ -342,7 +342,7 @@ function Register() {
         body: JSON.stringify({
           firstName: user?.firstName,
           surName: user?.surName,
-          email: agentName ? "" : user?.email,
+          email: user?.email,
           password: user?.password,
           phone: user?.phone,
           address: newAddress?.description,
@@ -352,6 +352,31 @@ function Register() {
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
           agentId: params.get("aid") ? Number(params.get("aid")) : 0,
+          country: {
+            id: user?.countryId,
+          },
+
+          city: {
+            id: user?.cityId,
+          },
+        }),
+      };
+
+      const requestOptions2 = {
+        method: "POST",
+        redirect: "follow",
+        body: JSON.stringify({
+          firstName: user?.firstName,
+          surName: user?.surName,
+          email: "",
+          password: user?.password,
+          phone: user?.phone,
+          address: newAddress?.description,
+          postcode: user?.postcode,
+          employmentStatusId: user?.employmentStatusId,
+          professionId: user?.professionId,
+          companyName: user?.companyName,
+          onboardingSource: user?.onboardingSource,
           agentInvite: agentInvite ? agentInvite : "",
           country: {
             id: user?.countryId,
@@ -363,7 +388,12 @@ function Register() {
         }),
       };
 
-      fetch(`https://apidoc.transferrocket.co.uk/signup`, requestOptions)
+      fetch(
+        agentName
+          ? `https://apidoc.transferrocket.co.uk/agentsignup`
+          : `https://apidoc.transferrocket.co.uk/signup`,
+        agentName ? requestOptions2 : requestOptions
+      )
         .then((response) => {
           return response.json();
         })

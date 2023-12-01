@@ -108,6 +108,8 @@ function Dashboard() {
   });
 
   const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
+
+  console.log(selectedCountry);
   const [showbalance, setShowBalance] = useState(false);
 
   const handleRates = (e) => {
@@ -125,6 +127,7 @@ function Dashboard() {
       value: countrySlug, // ISO country code for the UK
       flag: "", // URL to the UK flag image
       id: getCountryDetails?.id,
+      balance: e?.balance,
     });
   };
 
@@ -187,6 +190,15 @@ function Dashboard() {
                 <CountryDropdown
                   value={selectedCountry}
                   onChange={handleCountryChange}
+                  newOptions={countrylist?.data?.map((item) => {
+                    return {
+                      code: item?.currencyCode,
+                      value: item?.name,
+                      label: item?.name,
+                      id: item?.id,
+                      ...item,
+                    };
+                  })}
                 />
               </FlexCol>
             </div>
@@ -436,7 +448,7 @@ function Dashboard() {
             <div
               className="action"
               style={{ background: `url(${chooseplan})` }}
-              onClick={() => navigate("/user/wallet")}
+              onClick={() => navigate("/agent/settings/wallet")}
             >
               <span>Wallet</span>
               <p>Fund your wallet easily</p>

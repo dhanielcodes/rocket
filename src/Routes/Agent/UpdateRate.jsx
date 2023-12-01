@@ -195,6 +195,39 @@ function UpdateRate() {
                   </div>
                 </div>
               )}
+              {countrySelected?.rateUpdateValue ? (
+                <div>
+                  <span>My Updated Rate</span>
+                  <div
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <input
+                      type={"number"}
+                      disabled={true}
+                      value={countrySelected?.rateUpdateValue}
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      style={{
+                        width: "100%",
+                        padding: "10px",
+                        backgroundColor: "inherit",
+                        lineHeight: 1,
+                        border: "1px solid #D0D5DD",
+                        borderRadius: "6px",
+                        color: "#000",
+                        fontWeight: 300,
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </SectionThree>
           {selectedCountry && (
@@ -431,7 +464,7 @@ function UpdateRate() {
                       agentCurrentRate: {
                         id: selectedCountry?.id,
                         rateUpdateOption: type.value,
-                        rateUpdateValue: newRate,
+                        rateUpdateValue: amount,
                       },
                     });
                   }}

@@ -167,31 +167,40 @@ function Login() {
                       {data?.message}
                     </p>
                     <br />
-                    {data?.data?.user?.kycStatus === "Not Started" && (
-                      <Btn clicking={() => navigate("/upload")} size={30}>
-                        Continue with Kyc{" "}
-                      </Btn>
-                    )}
-                    {data?.data?.user?.kycStatus === "Not Started" && (
-                      <Btn
-                        styles={{
-                          marginTop: "10px",
-                        }}
-                        clicking={() => {
-                          // navigate("/upload")
-                          if (data?.data?.user?.role?.id === 6) {
-                            //navigate("/user/dashboard");
-                            window.location.pathname = "/user/dashboard";
-                          } else {
-                            //navigate("/agent/dashboard");
-                            window.location.pathname = "/agent/dashboard";
-                          }
-                        }}
-                        size={30}
-                      >
-                        Cancel{" "}
-                      </Btn>
-                    )}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      {data?.data?.user?.kycStatus === "Not Started" && (
+                        <Btn clicking={() => navigate("/upload")} size={30}>
+                          Continue with Kyc{" "}
+                        </Btn>
+                      )}
+                      {data?.data?.user?.kycStatus === "Not Started" && (
+                        <Btn
+                          styles={{
+                            width: "100%",
+                            marginRight: "10px",
+                          }}
+                          clicking={() => {
+                            // navigate("/upload")
+                            if (data?.data?.user?.role?.id === 6) {
+                              //navigate("/user/dashboard");
+                              window.location.pathname = "/user/dashboard";
+                            } else {
+                              //navigate("/agent/dashboard");
+                              window.location.pathname = "/agent/dashboard";
+                            }
+                          }}
+                          size={30}
+                        >
+                          Skip{" "}
+                        </Btn>
+                      )}
+                    </div>
                   </Msg>
                 </ReusableModal>
               )}
