@@ -41,6 +41,7 @@ import CustomInput from "../../reuseables/CustomInput";
 import Loader from "../../reuseables/Loader";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
+import { useNavigate } from "react-router-dom";
 
 function CreateBeneficiary() {
   const [accNum, setAccNum] = useState(null);
@@ -250,7 +251,7 @@ function CreateBeneficiary() {
     //   reset setCreateBene state to the useable one
     setType(e);
   };
-
+  const navigate = useNavigate();
   const [createBene, setCreateBene] = useState({
     userId: "",
     userBeneficiary: {
@@ -420,7 +421,13 @@ function CreateBeneficiary() {
                     onChange={(e) => setAccNum(e?.target?.value)}
                   />
                   {info && (
-                    <ReusableModal isOpen={show} onClose={() => setShow(false)}>
+                    <ReusableModal
+                      isOpen={show}
+                      onClose={() => {
+                        navigate("/user/beneficiary");
+                        setShow(false);
+                      }}
+                    >
                       <Msg type={true}>{info?.message}</Msg>
                     </ReusableModal>
                   )}

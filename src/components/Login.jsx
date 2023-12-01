@@ -172,6 +172,26 @@ function Login() {
                         Continue with Kyc{" "}
                       </Btn>
                     )}
+                    {data?.data?.user?.kycStatus === "Not Started" && (
+                      <Btn
+                        styles={{
+                          marginTop: "10px",
+                        }}
+                        clicking={() => {
+                          // navigate("/upload")
+                          if (data?.data?.user?.role?.id === 6) {
+                            //navigate("/user/dashboard");
+                            window.location.pathname = "/user/dashboard";
+                          } else {
+                            //navigate("/agent/dashboard");
+                            window.location.pathname = "/agent/dashboard";
+                          }
+                        }}
+                        size={30}
+                      >
+                        Cancel{" "}
+                      </Btn>
+                    )}
                   </Msg>
                 </ReusableModal>
               )}

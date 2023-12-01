@@ -178,7 +178,7 @@ function Beneficiary() {
   });
   console.log(
     "🚀 ~ file: Beneficiary.jsx:108 ~ Beneficiary ~ newDetails:",
-    newDetails
+    newDetails?.data?.beneficiaries
   );
 
   // localStorage.setItem("userDetails",newDetails)
@@ -238,7 +238,7 @@ function Beneficiary() {
           </svg>
         </Header>
         <BeneficiaryCont>
-          {filteredBeneList?.map((d) => {
+          {newDetails?.data?.beneficiaries?.map((d) => {
             return (
               <Link
                 key={d.id}

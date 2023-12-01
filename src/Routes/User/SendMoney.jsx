@@ -14,6 +14,7 @@ import { Dropdown, Menu, Divider } from "@arco-design/web-react";
 import { IconDown, IconMoreVertical } from "@arco-design/web-react/icon";
 import Btn from "../../reuseables/Btn";
 import {
+  GetDetails,
   Paymentchannel,
   Payoutchannel,
   Rates,
@@ -329,6 +330,22 @@ function SendMoney() {
   const c2 = JSON.parse(localStorage.getItem("country2"));
   const BeneList = Userdata?.data.user.beneficiaries;
 
+  const {
+    data: newDetails,
+    isLoading: newDetailsloading,
+    refetch: refetchnewDetails,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
   // const goBack = () => {
   //   navigate(-1); // This navigates back to the previous page in the navigation stack.
   // };
@@ -467,7 +484,7 @@ function SendMoney() {
 
   const sendObj = {
     userId: userDetails?.data?.user?.userId,
-    userBeneficiaryId: beneficiary?.id,
+    userBeneficiaryId: params.get("id") || beneficiary?.id,
     fromCountryId: country1?.id,
     toCountryId: country2?.id,
     amount: money?.fromAmount,
@@ -594,7 +611,7 @@ function SendMoney() {
               </Header>
 
               <BeneficiaryCont>
-                {filteredBeneList?.map((d) => {
+                {newDetails?.data?.beneficiaries?.map((d) => {
                   const isSelected = selectedItems === d?.id;
                   return (
                     <div

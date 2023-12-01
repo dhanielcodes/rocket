@@ -24,6 +24,7 @@ function Btn({
         background: "#00A85A",
         fontSize: "16px",
         cursor: "pointer",
+        width: "100%",
         ...styles,
       }}
       type={type}
