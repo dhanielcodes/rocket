@@ -2,13 +2,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import Header from "./Header";
 import Nav from "./Nav";
 import AgentNav from "./AgentNav";
+import { useNavigate } from "react-router-dom";
 
 function Agentlayout({ children, current, useBack }) {
+  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Userdata?.data?.user?.role?.id === 6) {
+      navigate("/user/dashboard");
+    }
+    //eslint-disable-next-line
+  }, []);
   return (
     <Layout>
       <div className="main">
