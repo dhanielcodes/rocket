@@ -262,7 +262,7 @@ function Beneficiary() {
                       createOn : <FormattedDate dateString={d?.dateCreated} />
                     </p>
                   </div>
-                  <div className="options">
+                  {/* <div className="options">
                     <Dropdown
                       droplist={
                         <Droplist id={d.id} onNavigate={handleNavigate} />
@@ -276,7 +276,7 @@ function Beneficiary() {
                         />
                       </Link>
                     </Dropdown>
-                  </div>
+                  </div> */}
                 </Box>
               </Link>
             );

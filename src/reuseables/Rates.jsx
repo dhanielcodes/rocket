@@ -13,7 +13,23 @@ import { countries } from "../services/Auth";
 function Rates() {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata);
-
+  const {
+    data: countrylist,
+    isLoading: countrylistloading,
+    refetch: refetchcountrylist,
+  } = useQuery({
+    queryKey: ["getCategoriess"],
+    queryFn: countries,
+    onSuccess: (data) => {
+      setCountries(data?.data);
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
   const countryFlags = [
     { code: "GB", label: "United Kingdom" },
 
@@ -41,9 +57,10 @@ function Rates() {
       flag: "",
     };
   });
+  const getC = JSON.parse(localStorage.getItem("countryList"));
 
-  const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
-  const [selectedCountry2, setSelectedCountry2] = useState(defaultCountry2);
+  const [selectedCountry, setSelectedCountry] = useState();
+  const [selectedCountry2, setSelectedCountry2] = useState();
   console.log(
     "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry:",
     selectedCountry
@@ -52,16 +69,47 @@ function Rates() {
     "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry2:",
     selectedCountry2
   );
-  localStorage.setItem("country1", JSON.stringify(selectedCountry));
-  localStorage.setItem("country2", JSON.stringify(selectedCountry2));
+  localStorage.setItem(
+    "country1",
+    JSON.stringify(
+      selectedCountry ||
+        countrylist?.data?.map((item) => {
+          return {
+            code: item?.currencyCode,
+            value: item?.name,
+            label: item?.name,
+            id: item?.id,
+            ...item,
+          };
+        })?.[0]
+    )
+  );
+  localStorage.setItem(
+    "country2",
+    JSON.stringify(
+      selectedCountry2 ||
+        countrylist?.data
+          ?.filter((item) => item?.isCollectionCurrency)
+          ?.map((item) => {
+            return {
+              code: item?.currencyCode,
+              value: item?.name,
+              label: item?.name,
+              id: item?.id,
+              ...item,
+            };
+          })?.[0]
+    )
+  );
 
   const handleCountryChange = (selectedOption) => {
     const getC = JSON.parse(localStorage.getItem("countryList"));
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
     );
+    console.log(selectedOption);
     console.log("🚀 ~ file: Rates.jsx:55 ~ handleCountryChange ~ newC:", newC);
-    localStorage.setItem("country1", JSON.stringify(newC));
+    localStorage.setItem("country1", JSON.stringify(selectedOption));
 
     setSelectedCountry(selectedOption);
     updateCurrencyDetails(selectedOption.label);
@@ -185,30 +233,25 @@ function Rates() {
     localStorage.setItem("amount", JSON.stringify(rates?.data));
   };
 
-  const {
-    data: countrylist,
-    isLoading: countrylistloading,
-    refetch: refetchcountrylist,
-  } = useQuery({
-    queryKey: ["getCategoriess"],
-    queryFn: countries,
-    onSuccess: (data) => {
-      setCountries(data?.data);
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
-
   return (
     <div>
       <RateCont>
         <div className="cont1">
           <CountryDropdown
-            value={selectedCountry}
+            value={
+              selectedCountry ||
+              getC
+                ?.filter((item) => !item?.isCollectionCurrency)
+                ?.map((item) => {
+                  return {
+                    code: item?.currencyCode,
+                    value: item?.name,
+                    label: item?.name,
+                    id: item?.id,
+                    ...item,
+                  };
+                })?.[0]
+            }
             onChange={handleCountryChange}
             newOptions={countrylist?.data?.map((item) => {
               return {
@@ -315,54 +358,39 @@ function Rates() {
           <div className="sidecontenr">
             <div className="line2"></div>
             <h4>
-              <span>
-                Rate{" "}
-                <AmountFormatter
-                  currency={currencyDetails[0]?.country?.currencyCode}
-                  value={1}
-                />{" "}
-                ={" "}
-              </span>
+              <span>Rate = </span>
               <span style={{ fontSize: "11px" }}>
                 <AmountFormatter
                   currency={currencyDetails[0]?.country?.currencyCode}
                   value={
-                    currentRates?.conversionRate || currencyDetails[0]?.balance
+                    currentRates?.conversionRate ||
+                    currencyDetails[0]?.balance ||
+                    0
                   }
                 />
               </span>
             </h4>
             <div className="line2"></div>
             <h4>
-              <span>
-                Fee{" "}
-                <AmountFormatter
-                  currency={currencyDetails[0]?.country?.currencyCode}
-                  value={0}
-                />{" "}
-                ={" "}
-              </span>
+              <span>Fee = </span>
               <AmountFormatter
-                currency={currencyDetails[0]?.country?.currencyCode}
-                value={currencyDetails[0]?.balance}
+                currency={
+                  currentRates?.localCurrencyId ||
+                  currencyDetails[0]?.country?.currencyCode
+                }
+                value={currentRates?.transitionFee || 0}
               />
             </h4>
             <div className="line2"></div>
             <h4>
-              <span>
-                Total to pay{" "}
-                <AmountFormatter
-                  currency={currencyDetails[0]?.country?.currencyCode}
-                  value={1}
-                />{" "}
-                ={" "}
-              </span>
+              <span>Total to pay = </span>
               <span style={{ fontSize: "11px" }}>
                 <AmountFormatter
-                  currency={currencyDetails[0]?.country?.currencyCode}
+                  currency={currencyDetails[0]?.country?.currencyCode || 0}
                   value={
                     currentRates?.computedToAmount ||
-                    currencyDetails[0]?.balance
+                    currencyDetails[0]?.balance ||
+                    0
                   }
                 />
               </span>
@@ -373,7 +401,23 @@ function Rates() {
         <div className="cont3">
           <CountryDropdown
             collectionStatus
-            value={selectedCountry2}
+            style={{
+              width: "100%",
+            }}
+            value={
+              selectedCountry2 ||
+              getC
+                ?.filter((item) => item?.isCollectionCurrency)
+                ?.map((item) => {
+                  return {
+                    code: item?.currencyCode,
+                    value: item?.name,
+                    label: item?.name,
+                    id: item?.id,
+                    ...item,
+                  };
+                })?.[0]
+            }
             onChange={handleCountryChange2}
             newOptions={countrylist?.data?.map((item) => {
               return {
@@ -389,7 +433,14 @@ function Rates() {
             placeholder="amount"
             className="input"
             style={{ borderRadius: "0px", borderSize: "0.5px" }}
-            val={amount.length ? currentRates?.computedToAmount : ""}
+            disabled
+            val={
+              amount.length
+                ? currentRates?.computedToAmount
+                  ? currentRates?.computedToAmount
+                  : ""
+                : ""
+            }
           />
         </div>
       </RateCont>
@@ -401,10 +452,14 @@ const RateCont = styled.div`
   border-radius: 10px;
   padding: 2em;
   background-color: #fff;
+  width: 100%;
 
   .cont1,
   .cont3 {
-    display: flex;
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+
+    width: 100%;
     .css-13cymwt-control {
       /* padding: 10px; */
       border-bottom-left-radius: 10px;

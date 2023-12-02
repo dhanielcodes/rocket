@@ -546,6 +546,7 @@ function SendMoney() {
             {status === true ? (
               <>
                 <Msg type={true}>{getmsg}</Msg>
+
                 {showBtn && (
                   <Btn
                     clicking={() => {
@@ -561,7 +562,49 @@ function SendMoney() {
                 )}
               </>
             ) : (
-              <Msg>{getmsg}</Msg>
+              <>
+                <Msg>{getmsg}</Msg>
+                {getmsg === "You are yet to complete your KYC." ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Btn
+                      styles={{
+                        width: "100%",
+                        marginRight: "10px",
+                        padding: "8px",
+                        fontWeight: "600",
+                      }}
+                      clicking={() => navigate("/upload")}
+                      size={30}
+                    >
+                      CONTINUE TO KYC{" "}
+                    </Btn>
+                    &nbsp; &nbsp;
+                    <Btn
+                      styles={{
+                        width: "100%",
+                        marginRight: "10px",
+                        padding: "8px",
+                        fontWeight: "600",
+                        background: "#b0b0b0",
+                      }}
+                      clicking={() => {
+                        navigate("/user/dahsboard");
+                      }}
+                      size={30}
+                    >
+                      CANCEL{" "}
+                    </Btn>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </>
             )}
           </ReusableModal>
         )}

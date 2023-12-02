@@ -88,6 +88,7 @@ const CountryDropdown = ({
           </div>
         )}
         styles={{
+          ...style,
           option: (styles) => ({
             ...styles,
             display: "flex",

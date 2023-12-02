@@ -13,6 +13,7 @@ function Msg({ children, type }) {
           flexDirection: "column",
           gap: "20px",
           padding: "1em",
+          textAlign: "center",
           fontSize: "20px",
         }}
       >

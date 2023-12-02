@@ -30,6 +30,8 @@ function BeneficiaryDetails() {
     JSON.stringify({ id: id, name: BeneList?.beneficiaryName })
   );
 
+  console.log(BeneList);
+
   return (
     <Userlayout current="Beneficiary Details" useBack={true}>
       <Content>
@@ -43,15 +45,15 @@ function BeneficiaryDetails() {
             <div className="detailscont">
               <div className="details">
                 <h5>Beneficiary Name</h5>
-                <p>{BeneList?.beneficiaryName}</p>
-              </div>
-              <div className="details">
-                <h5>Date of Birth</h5>
-                <p>2000</p>
+                <p>{BeneList?.beneficiaryName || "---"}</p>
               </div>
               <div className="details">
                 <h5>Mobile number</h5>
-                <p>{BeneList?.beneficiaryPhoneNumber}</p>
+                <p>{BeneList?.beneficiaryPhoneNumber || "---"}</p>
+              </div>
+              <div className="details">
+                <h5>Date Created</h5>
+                <p>{BeneList?.dateCreated || "---"}</p>
               </div>
             </div>
             {BeneList?.beneficiaryBank?.accountNumber != null &&
@@ -61,15 +63,15 @@ function BeneficiaryDetails() {
                   <div className="detailscont">
                     <div className="details">
                       <h5>Account Name</h5>
-                      <p>Bada Sulaimon</p>
+                      <p>{BeneList?.beneficiaryBank?.accountName || "---"}</p>
                     </div>
                     <div className="details">
                       <h5>Account Number</h5>
-                      <p>{BeneList?.beneficiaryBank?.accountNumber}</p>
+                      <p>{BeneList?.beneficiaryBank?.accountNumber || "---"}</p>
                     </div>
                     <div className="details">
                       <h5>Bank Name</h5>
-                      <p>Unity Bank</p>
+                      <p>{BeneList?.beneficiaryBank?.bankName || "---"}</p>
                     </div>
                   </div>
                 </div>

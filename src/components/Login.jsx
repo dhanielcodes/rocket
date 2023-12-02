@@ -199,6 +199,8 @@ function Login() {
                             width: "100%",
                             marginRight: "10px",
                             padding: "8px",
+                            background: "#b0b0b0",
+
                             fontWeight: "600",
                           }}
                           clicking={() => {
