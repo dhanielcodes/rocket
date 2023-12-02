@@ -1361,19 +1361,13 @@ function SendMoney() {
                      <button>Upload Id</button>
                      <button>Send Money</button>
                 </div> */}
-
                   <Total
-                    other={getCurrencyOne?.country?.currencyCode}
-                    currency={countryObjectsArray(
-                      getCurrencyOne?.country?.name
-                    )}
+                    currency={country1?.currencyCode}
                     amount={money && money?.fromAmount}
                   />
                   <Total
-                    other={getCurrencyTwo?.country?.currencyCode}
-                    currency={countryObjectsArray(
-                      getCurrencyTwo?.country?.name
-                    )}
+                    currency={country2?.currencyCode}
+                    text={"Total amount you'll be receiving"}
                     amount={money && money?.computedToAmount}
                   />
 
