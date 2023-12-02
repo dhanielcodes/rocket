@@ -28,6 +28,7 @@ import Kyc from "../reuseables/Kyc";
 import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
 import { countries } from "../services/Auth";
+import { countryObjectsArray } from "../../config/CountryCodes";
 
 const baseurl = BASE_URL;
 
@@ -95,7 +96,17 @@ function Login() {
     queryKey: [],
     queryFn: countries,
     onSuccess: (data) => {
-      localStorage.setItem("countryList", JSON.stringify(data?.data));
+      localStorage.setItem(
+        "countryList",
+        JSON.stringify(
+          data?.data?.map((item) => {
+            return {
+              ...item,
+              slug: countryObjectsArray(item?.name),
+            };
+          })
+        )
+      );
     },
     onError: (err) => {
       console.log(err);

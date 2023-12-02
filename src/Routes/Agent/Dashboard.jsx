@@ -196,6 +196,7 @@ function Dashboard() {
                       value: item?.name,
                       label: item?.name,
                       id: item?.id,
+                      slug: countryObjectsArray(item?.name),
                       ...item,
                     };
                   })}
@@ -482,6 +483,7 @@ function Dashboard() {
                   value: item?.name,
                   label: item?.name,
                   id: item?.id,
+                  slug: countryObjectsArray(item?.name),
                   ...item,
                 };
               })}

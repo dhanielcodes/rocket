@@ -143,7 +143,17 @@ function Dashboard() {
     );
     const countrySlug = countryObjectsArray(getCountryDetails?.name);
 
-    console.log(e);
+    console.log(
+      getCountryDetails,
+      {
+        label: getCountryDetails?.name,
+        code: getCountryDetails.currencyCode,
+        value: countrySlug, // ISO country code for the UK
+        flag: "", // URL to the UK flag image
+        id: getCountryDetails?.id,
+      },
+      "getCountryDetailss"
+    );
 
     setRates(getCountryDetails);
     setSelectedCountry({
@@ -299,12 +309,12 @@ function Dashboard() {
                       value: item?.name,
                       label: item?.name,
                       id: item?.id,
+                      slug: countryObjectsArray(item?.name),
                       ...item,
                     };
                   })}
                 />
                 {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
-
                 <div className="rates">
                   <div className="pri">
                     <CountryFlag

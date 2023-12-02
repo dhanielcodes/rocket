@@ -60,6 +60,11 @@ const CountryDropdown = ({
     optionsmap.includes(cname)
   );
   console.log(value);
+
+  const countrySlug = countryObjectsArray(value?.label);
+
+  console.log(countrySlug, value, "countrySlugs");
+
   return (
     <CountyCont>
       <Select
@@ -78,13 +83,11 @@ const CountryDropdown = ({
             className="dropdown"
             style={{ fontSize: "16px", display: "flex", alignItems: "center" }}
           >
-            <CountryFlag
-              className="flag"
-              countryCode={country?.code?.slice(0, 2)}
-              svg
-            />{" "}
+            <CountryFlag className="flag" countryCode={country.slug} svg />{" "}
             &nbsp;
-            <span className="countryName">{country.label}</span>
+            <span className="countryName">
+              {country.label} - [{country.code}]
+            </span>
           </div>
         )}
         styles={{

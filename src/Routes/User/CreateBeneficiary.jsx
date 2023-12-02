@@ -42,6 +42,7 @@ import Loader from "../../reuseables/Loader";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import { useNavigate } from "react-router-dom";
+import { countryObjectsArray } from "../../../config/CountryCodes";
 
 function CreateBeneficiary() {
   const [accNum, setAccNum] = useState(null);
@@ -335,6 +336,7 @@ function CreateBeneficiary() {
                       value: item?.name,
                       label: item?.name,
                       id: item?.id,
+                      slug: countryObjectsArray(item?.name),
                       ...item,
                     };
                   })}
