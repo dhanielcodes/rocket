@@ -18,6 +18,21 @@ function Userlayout({ children, current, useBack }) {
     }
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    localStorage.removeItem("userBeneficiaryId");
+    localStorage.removeItem("note");
+    localStorage.removeItem("payoutChannelId");
+    localStorage.removeItem("paymentChannelId");
+    localStorage.removeItem("amount");
+    localStorage.removeItem("promoCode");
+    localStorage.removeItem("purpose");
+    localStorage.removeItem("note");
+
+    localStorage.removeItem("country1");
+    localStorage.removeItem("country2");
+    //eslint-disable-next-line
+  }, [window.location.pathname]);
   return (
     <Layout>
       <div className="main">

@@ -182,6 +182,8 @@ const Droplist = ({ id, onNavigate }) => (
 function SendMoney() {
   const navigates = useNavigate();
   const location = useLocation();
+  const [params] = useSearchParams();
+
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
 
@@ -281,7 +283,7 @@ function SendMoney() {
   );
 
   const getLocals = (name) => {
-    console.log(name);
+    console.log(name, "localsss");
     const data = localStorage.getItem(name);
     return data ? JSON.parse(data) : [];
   };
@@ -301,7 +303,6 @@ function SendMoney() {
   console.log("currentArr:", currentArr);
   console.log("current:", pchannel);
 
-  const [params] = useSearchParams();
   console.log(params.get("statusMessage"));
 
   const handleStep = () => {
@@ -528,7 +529,6 @@ function SendMoney() {
               localStorage.removeItem("purpose");
               localStorage.removeItem("country1");
               localStorage.removeItem("country2");
-              localStorage.removeItem("countryList");
               localStorage.removeItem("walletID");
               localStorage.removeItem("userBeneficiaryId");
               localStorage.removeItem("payoutChannelId");
@@ -594,7 +594,7 @@ function SendMoney() {
                         background: "#b0b0b0",
                       }}
                       clicking={() => {
-                        navigate("/user/dahsboard");
+                        navigate("/user/dashboard");
                       }}
                       size={30}
                     >

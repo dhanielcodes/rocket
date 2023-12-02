@@ -115,14 +115,28 @@ const Settings = () => {
         <InnerBox>
           <div className="user-info">
             <div className="pro-photo" onClick={handleUploadImage}>
-              <img src={Userdata?.data?.user?.idImageURL} alt="" />
+              <img
+                style={{
+                  width: "100px",
+                  height: "300px",
+                }}
+                src={Userdata?.data?.user?.idImageURL}
+                alt=""
+              />
               <input
                 type="file"
                 className="uploader"
                 style={{ display: "none" }}
               />
             </div>
-            <p className="proname">{Userdata?.data?.user?.firstName}</p>
+            <p
+              className="proname"
+              style={{
+                fontSize: "18px",
+              }}
+            >
+              {Userdata?.data?.user?.firstName} {Userdata?.data?.user?.surName}
+            </p>
             {/*    <p className="copyreg">
               {" "}
               <span>bit.ly/agentkorede</span>
@@ -227,7 +241,7 @@ const InnerBox = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 80%;
+      width: 100px;
       height: 100px;
       border-radius: 50%;
       border: 2px solid #00a85a;

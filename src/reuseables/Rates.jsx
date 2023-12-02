@@ -73,7 +73,7 @@ function Rates() {
     "country1",
     JSON.stringify(
       selectedCountry ||
-        countrylist?.data?.map((item) => {
+        getC?.map((item) => {
           return {
             code: item?.currencyCode,
             value: item?.name,
@@ -88,7 +88,7 @@ function Rates() {
     "country2",
     JSON.stringify(
       selectedCountry2 ||
-        countrylist?.data
+        getC
           ?.filter((item) => item?.isCollectionCurrency)
           ?.map((item) => {
             return {
@@ -198,14 +198,38 @@ function Rates() {
   });
   console.log("🚀 ~ file: Rates.jsx:104 ~ Rates ~ dataObject2:", dataObject2);
 
+  const c1 = getC
+    ?.filter((item) => !item?.isCollectionCurrency)
+    ?.map((item) => {
+      return {
+        code: item?.currencyCode,
+        value: item?.name,
+        label: item?.name,
+        id: item?.id,
+        ...item,
+      };
+    })?.[0]?.id;
+
+  const c2 = getC
+    ?.filter((item) => item?.isCollectionCurrency)
+    ?.map((item) => {
+      return {
+        code: item?.currencyCode,
+        value: item?.name,
+        label: item?.name,
+        id: item?.id,
+        ...item,
+      };
+    })?.[0]?.id;
+
   const {
     data: rates,
     isLoading: Ratesloading,
     refetch: RatesnameEnq,
   } = useQuery({
     queryKey: [
-      getrates?.id || selectedCountry?.id,
-      selectedCountry2?.id,
+      getrates?.id || selectedCountry?.id || c1,
+      selectedCountry2?.id || c2,
       amount,
       amount2,
     ],
@@ -253,7 +277,7 @@ function Rates() {
                 })?.[0]
             }
             onChange={handleCountryChange}
-            newOptions={countrylist?.data?.map((item) => {
+            newOptions={getC?.map((item) => {
               return {
                 code: item?.currencyCode,
                 value: item?.name,
@@ -419,7 +443,7 @@ function Rates() {
                 })?.[0]
             }
             onChange={handleCountryChange2}
-            newOptions={countrylist?.data?.map((item) => {
+            newOptions={getC?.map((item) => {
               return {
                 code: item?.currencyCode,
                 value: item?.name,
