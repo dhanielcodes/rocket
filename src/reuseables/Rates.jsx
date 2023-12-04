@@ -9,6 +9,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Rates as Ratess } from "../services/Dashboard";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { countries } from "../services/Auth";
+import InputNumber from "rc-input-number";
+import { CFormatter } from "../hooks/format";
 
 function Rates() {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -252,11 +254,15 @@ function Rates() {
   }, [selectedCountry, selectedCountry2]);
 
   const handleRatesChanges = (e) => {
-    const { value } = e?.target;
-    setAmount(value);
+    setAmount(e);
     localStorage.setItem("amount", JSON.stringify(rates?.data));
   };
 
+  /*   const handleRatesChanges3 = (e) => {
+    const { value } = e?.target;
+    setAmount(value);
+    localStorage.setItem("amount", JSON.stringify(rates?.data));
+  }; */
   return (
     <div>
       <RateCont>
@@ -287,7 +293,27 @@ function Rates() {
               };
             })}
           />
-          <CustomInput
+          <InputNumber
+            className="input"
+            style={{
+              borderSize: "0.5px",
+              fontSize: "6px",
+              borderRadius: "0  0 10px",
+              padding: "13px",
+              border: "1px solid #ccc",
+              width: "100%",
+              background: "#ffffff",
+              color: "#000000",
+            }}
+            onChange={(newValue) => {
+              console.log("Change:", `${newValue}`);
+              handleRatesChanges(`${newValue}`);
+            }}
+            formatter={(value) => {
+              return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }}
+          />
+          {/*  <CustomInput
             placeholder="amount"
             className="input"
             style={{
@@ -295,8 +321,11 @@ function Rates() {
               borderSize: "0.5px",
               fontSize: "6px",
             }}
-            onChange={(e) => handleRatesChanges(e)}
-          />
+            onChange={(e) => {
+              handleRatesChanges3(e);
+              console.log(e.target.value);
+            }}
+          /> */}
         </div>
         <div className="cont2">
           <div className="cont2content">
@@ -384,39 +413,30 @@ function Rates() {
             <h4>
               <span>Rate = </span>
               <span style={{ fontSize: "11px" }}>
-                <AmountFormatter
-                  currency={currencyDetails[0]?.country?.currencyCode}
-                  value={
-                    currentRates?.conversionRate ||
+                {CFormatter(
+                  currentRates?.conversionRate ||
                     currencyDetails[0]?.balance ||
                     0
-                  }
-                />
+                )}
               </span>
             </h4>
             <div className="line2"></div>
             <h4>
               <span>Fee = </span>
-              <AmountFormatter
-                currency={
-                  currentRates?.localCurrencyId ||
-                  currencyDetails[0]?.country?.currencyCode
-                }
-                value={currentRates?.transitionFee || 0}
-              />
+
+              <span style={{ fontSize: "13px" }}>
+                {CFormatter(currentRates?.transitionFee || 0)}
+              </span>
             </h4>
             <div className="line2"></div>
             <h4>
               <span>Total to pay = </span>
               <span style={{ fontSize: "11px" }}>
-                <AmountFormatter
-                  currency={currencyDetails[0]?.country?.currencyCode || 0}
-                  value={
-                    currentRates?.computedToAmount ||
+                {CFormatter(
+                  currentRates?.computedToAmount ||
                     currencyDetails[0]?.balance ||
                     0
-                  }
-                />
+                )}
               </span>
             </h4>
             <div className="line2"></div>
@@ -453,7 +473,32 @@ function Rates() {
               };
             })}
           />
-          <CustomInput
+          <InputNumber
+            className="input"
+            style={{
+              borderSize: "0.5px",
+              fontSize: "6px",
+              borderRadius: "0  0 10px",
+              padding: "13px",
+              border: "1px solid #ccc",
+              background: "#ffffff",
+              color: "#000000",
+              width: "100%",
+              backgroundColor: "transparent",
+            }}
+            formatter={(value) => {
+              return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }}
+            disabled
+            value={
+              Number(amount.length)
+                ? Number(currentRates?.computedToAmount)
+                  ? Number(currentRates?.computedToAmount)
+                  : ""
+                : ""
+            }
+          />
+          {/*     <CustomInput
             placeholder="amount"
             className="input"
             style={{ borderRadius: "0px", borderSize: "0.5px" }}
@@ -465,7 +510,7 @@ function Rates() {
                   : ""
                 : ""
             }
-          />
+          /> */}
         </div>
       </RateCont>
     </div>
@@ -477,6 +522,13 @@ const RateCont = styled.div`
   padding: 2em;
   background-color: #fff;
   width: 100%;
+
+  .rc-input-number-input {
+    background: #fff;
+    border: none;
+    color: black;
+    width: 100%;
+  }
 
   .cont1,
   .cont3 {

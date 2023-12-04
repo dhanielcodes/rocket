@@ -60,11 +60,27 @@ const Layout = styled.div`
     max-width: 440px;
     width: 100%;
     margin: 0 auto;
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      width: 10px;
+      background-color: #41ff8d9b;
+      border-radius: 30px;
+    }
   }
 
   .cont {
     height: 80vh;
     overflow-y: scroll;
+    ::-webkit-scrollbar {
+      width: 0px;
+    }
+    ::-webkit-scrollbar-thumb {
+      width: 10px;
+      background-color: #41ff8d9b;
+      border-radius: 30px;
+    }
   }
   .space {
     height: 7vh;

@@ -4,9 +4,12 @@
   box-sizing: border-box;
   transition: opacity 0.3s ease;
   > ::-webkit-scrollbar{
-    display: none !important ;
+   width: 0;
   }
 }
+
+
+
 
 
 * > .arco-input-inner-wrapper .arco-input-group{

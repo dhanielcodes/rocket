@@ -197,7 +197,9 @@ function Login() {
                             padding: "8px",
                             fontWeight: "600",
                           }}
-                          clicking={() => navigate("/upload")}
+                          clicking={() => {
+                            window.location.pathname = "/upload";
+                          }}
                           size={30}
                         >
                           CONTINUE WITH KYC{" "}
