@@ -1128,7 +1128,7 @@ function SendMoney() {
                     className="textarea"
                     placeholder="Enter comments ..."
                     style={{
-                      minHeight: 304,
+                      minHeight: 104,
                       background: "transparent",
                       border: "1px solid #d8d8d8",
                       borderRadius: "8px",
