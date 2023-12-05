@@ -11,7 +11,7 @@ import Btn from "../reuseables/Btn";
 import { Switch, Timeline, Typography } from "@arco-design/web-react";
 import { DatePicker } from "@arco-design/web-react";
 import { Select } from "@arco-design/web-react";
-import { userLogin, checkEmail } from "../services/Auth";
+import { userLogin, checkEmail, getCurrencies } from "../services/Auth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useNavigate } from "react-router-dom";
@@ -103,6 +103,25 @@ function Login() {
             return {
               ...item,
               slug: countryObjectsArray(item?.name),
+            };
+          })
+        )
+      );
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const { data: currenciess } = useQuery({
+    queryKey: ["jhj"],
+    queryFn: getCurrencies,
+    onSuccess: (data) => {
+      localStorage.setItem(
+        "currencyList",
+        JSON.stringify(
+          data?.data?.map((item) => {
+            return {
+              ...item,
             };
           })
         )

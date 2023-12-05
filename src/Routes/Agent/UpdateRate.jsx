@@ -84,7 +84,7 @@ function UpdateRate() {
     onSuccess: (data) => {
       if (data?.status) {
         toast.success(
-          `Rate for ${selectedCountry?.fromCountryCurrency?.name} to ${selectedCountry?.toCountryCurrency?.name} was updated successfully`
+          `Rate for ${selectedCountry?.fromCurrency?.name} to ${selectedCountry?.toCurrency?.name} was updated successfully`
         );
         setAmount("");
         setNewRate("");
@@ -152,7 +152,7 @@ function UpdateRate() {
                 <div className="rates">
                   <div className="pri">
                     <CountryFlag
-                      countryCode={countrySelected?.fromCountryCurrency?.currencyCode?.slice(
+                      countryCode={countrySelected?.fromCurrency?.code?.slice(
                         0,
                         2
                       )}
@@ -163,9 +163,7 @@ function UpdateRate() {
                       svg
                     />
                     <AmountFormatter
-                      currency={
-                        countrySelected?.fromCountryCurrency?.currencyCode
-                      }
+                      currency={countrySelected?.fromCurrency?.code}
                       value={1}
                     />
                     {/* <p>{rates?.data?.fromAmount}</p> */}
@@ -173,16 +171,14 @@ function UpdateRate() {
                   <div style={{ color: "#000" }}>=</div>
                   <div className="sec">
                     <CountryFlag
-                      countryCode={countrySelected?.toCountryCurrency?.currencyCode?.slice(
+                      countryCode={countrySelected?.toCurrency?.code?.slice(
                         0,
                         2
                       )}
                       svg
                     />
                     <AmountFormatter
-                      currency={
-                        countrySelected?.toCountryCurrency?.currencyCode
-                      }
+                      currency={countrySelected?.toCurrency?.code}
                       value={
                         countrySelected?.conversionRate ||
                         rates?.data[0]?.conversionRate ||

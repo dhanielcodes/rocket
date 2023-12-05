@@ -486,8 +486,8 @@ function SendMoney() {
   const sendObj = {
     userId: userDetails?.data?.user?.userId,
     userBeneficiaryId: params.get("id") || beneficiary?.id,
-    fromCountryId: country1?.id,
-    toCountryId: country2?.id,
+    fromCurrencyId: country1?.id,
+    toCurrencyId: country2?.id,
     amount: money?.fromAmount,
     paymentChannelId: paychannel?.id,
     walletId: 0,

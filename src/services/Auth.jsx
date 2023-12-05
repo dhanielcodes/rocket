@@ -17,7 +17,11 @@ export const createUser = async (body) => {
 };
 
 export const countries = async () => {
-  const { data } = await Axios.get(`${baseurl}/getactivecountries`);
+  const { data } = await Axios.get(`${baseurl}/getcountries`);
+  return data;
+};
+export const getCurrencies = async () => {
+  const { data } = await Axios.get(`${baseurl}/getcurrency`);
   return data;
 };
 export const checkEmail = async (body) => {

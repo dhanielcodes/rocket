@@ -108,6 +108,18 @@ export const Rates = async (query) => {
   );
   return data;
 };
+
+export const agentCustomerGetRate = async (query) => {
+  const q = query?.queryKey;
+  const { data } = await Axios.get(
+    `${baseurl}//agentcustomersgetrate?fromCurrencyId=${
+      q[0] || 0
+    }&toCurrencyId=${q[1] || 0}&fromAmount=${q[2] || 0}&toAmount=${
+      q[3] || 0
+    }&roleId=${Userdata?.data?.user?.role?.id}`
+  );
+  return data;
+};
 export const TodayRates = async (query) => {
   const q = query?.queryKey;
   const { data } = await Axios.get(
@@ -117,6 +129,17 @@ export const TodayRates = async (query) => {
   );
   return data;
 };
+
+export const TodayRatesType2 = async (query) => {
+  const q = query?.queryKey;
+  const { data } = await Axios.get(
+    `${baseurl}/gettodaysrate?fromCurrencyId=${q[0] || 0}&toCurrencyId=${
+      q[1] || 0
+    }&roleId=${Userdata?.data?.user?.role?.id}`
+  );
+  return data;
+};
+
 export const TodayRates2 = async (query) => {
   const q = query?.queryKey;
   const { data } = await Axios.get(

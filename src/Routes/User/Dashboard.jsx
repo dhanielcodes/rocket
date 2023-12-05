@@ -22,21 +22,21 @@ import {
   Rates,
   TodayRates,
   TodayRatesAgent2,
+  TodayRatesType2,
 } from "../../services/Dashboard";
-import { countries } from "../../services/Auth";
 import { useQuery } from "@tanstack/react-query";
 import CustomInput from "../../reuseables/CustomInput";
 import { countryObjectsArray } from "../../../config/CountryCodes";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import { getLocals } from "../../hooks/useSessionStorage";
+import WalletList from "../../reuseables/WalletList";
 
 function Dashboard() {
   const navigate = useNavigate();
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   // const [currencyDetails, setCurrencyDetails] = useState([]);
   const [currencyDetails, setCurrencyDetails] = useState(null);
-  const [Countries, setCountries] = useState(null);
   const [getrates, setRates] = useState(null);
   const [currentRates, setcurrentRates] = useState(null);
   console.log(
@@ -61,8 +61,9 @@ function Dashboard() {
     isLoading: Ratesloading,
     refetch: RatesnameEnq,
   } = useQuery({
-    queryKey: [getrates?.id || dataObject?.id?.country?.id, 161],
-    queryFn: TodayRatesAgent2,
+    queryKey: [getrates?.id || dataObject?.id?.country?.id, 1],
+    queryFn: Userdata?.data?.user?.agentId ? TodayRatesAgent2 : TodayRatesType2,
+
     onSuccess: (data) => {
       setcurrentRates(data?.data);
     },
@@ -94,29 +95,10 @@ function Dashboard() {
     newDetails
   );
 
-  const {
-    data: countrylist,
-    isLoading: countrylistloading,
-    refetch: refetchcountrylist,
-  } = useQuery({
-    queryKey: ["getCategories"],
-    queryFn: countries,
-    onSuccess: (data) => {
-      setCountries(data?.data);
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
-
   const countryFlags = [
     { code: "GB", label: "United Kingdom" },
 
     { code: "NG", label: "Nigeria" },
-    // Add more countries as needed
   ];
 
   const defaultCountry = {
@@ -138,31 +120,8 @@ function Dashboard() {
   const [showbalance, setShowBalance] = useState(false);
 
   const handleRates = (e) => {
-    const getCountryDetails = Countries?.find(
-      (d) => d?.name?.toLowerCase() === e?.label?.toLowerCase()
-    );
-    const countrySlug = countryObjectsArray(getCountryDetails?.name);
-
-    console.log(
-      getCountryDetails,
-      {
-        label: getCountryDetails?.name,
-        code: getCountryDetails.currencyCode,
-        value: countrySlug, // ISO country code for the UK
-        flag: "", // URL to the UK flag image
-        id: getCountryDetails?.id,
-      },
-      "getCountryDetailss"
-    );
-
-    setRates(getCountryDetails);
-    setSelectedCountry({
-      label: getCountryDetails?.name,
-      code: getCountryDetails.currencyCode,
-      value: countrySlug, // ISO country code for the UK
-      flag: "", // URL to the UK flag image
-      id: getCountryDetails?.id,
-    });
+    setRates(e);
+    setSelectedCountry(e);
   };
 
   const handleCountryChange = (selectedOption) => {
@@ -206,6 +165,9 @@ function Dashboard() {
     updateCurrencyDetails(defaultCountry.label);
   }, []);
   console.log(getLocals("kycStatus"));
+  const [wallet, selectedWallet] = useState();
+  const wallets = Userdata?.data?.user?.wallet;
+
   return (
     <Userlayout>
       <Content>
@@ -240,57 +202,65 @@ function Dashboard() {
               <img className="avatar" src={Userdata?.data?.user?.idImageURL} />
               <FlexCol className="currencyselect">
                 {/* <Select></Select> */}
-                <CountryDropdown
-                  value={selectedCountry2}
-                  onChange={handleCountryChange}
+                <WalletList
+                  value={wallet}
+                  onChange={(e) => {
+                    selectedWallet(e);
+                  }}
                 />
               </FlexCol>
             </div>
 
             <p>Wallet Balance</p>
             <div className="wallets">
-              <h5>
-                {showbalance ? (
-                  <AmountFormatter
-                    currency={currencyDetails[0]?.country?.currencyCode || 0}
-                    value={currencyDetails[0]?.balance || 0}
-                  />
-                ) : (
-                  "****"
-                )}
-              </h5>
-              {showbalance ? (
-                <svg
-                  onClick={() => setShowBalance(!showbalance)}
-                  width="28"
-                  height="29"
-                  viewBox="0 0 28 29"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.0943 14.4995C11.0943 15.2841 11.406 16.0366 11.9608 16.5914C12.5156 17.1462 13.268 17.4579 14.0526 17.4579C14.8372 17.4579 15.5897 17.1462 16.1445 16.5914C16.6993 16.0366 17.011 15.2841 17.011 14.4995C17.011 13.7149 16.6993 12.9625 16.1445 12.4077C15.5897 11.8529 14.8372 11.5412 14.0526 11.5412C13.268 11.5412 12.5156 11.8529 11.9608 12.4077C11.406 12.9625 11.0943 13.7149 11.0943 14.4995ZM25.5214 13.8181C23.0174 8.54325 19.2323 5.88867 14.1583 5.88867C9.08156 5.88867 5.29912 8.54325 2.7951 13.8207C2.69467 14.0334 2.64258 14.2657 2.64258 14.5009C2.64258 14.7361 2.69467 14.9683 2.7951 15.181C5.29912 20.4558 9.0842 23.1104 14.1583 23.1104C19.235 23.1104 23.0174 20.4558 25.5214 15.1784C25.7248 14.7505 25.7248 14.2539 25.5214 13.8181ZM14.0526 19.1483C11.4852 19.1483 9.40381 17.0669 9.40381 14.4995C9.40381 11.9321 11.4852 9.85073 14.0526 9.85073C16.62 9.85073 18.7014 11.9321 18.7014 14.4995C18.7014 17.0669 16.62 19.1483 14.0526 19.1483Z"
-                    fill="white"
-                  />
-                </svg>
+              {wallets?.length ? (
+                <>
+                  <h5>
+                    {showbalance ? (
+                      <AmountFormatter
+                        currency={wallet?.code || 0}
+                        value={wallet?.balance || 0}
+                      />
+                    ) : (
+                      "****"
+                    )}
+                  </h5>
+                  {showbalance ? (
+                    <svg
+                      onClick={() => setShowBalance(!showbalance)}
+                      width="28"
+                      height="29"
+                      viewBox="0 0 28 29"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.0943 14.4995C11.0943 15.2841 11.406 16.0366 11.9608 16.5914C12.5156 17.1462 13.268 17.4579 14.0526 17.4579C14.8372 17.4579 15.5897 17.1462 16.1445 16.5914C16.6993 16.0366 17.011 15.2841 17.011 14.4995C17.011 13.7149 16.6993 12.9625 16.1445 12.4077C15.5897 11.8529 14.8372 11.5412 14.0526 11.5412C13.268 11.5412 12.5156 11.8529 11.9608 12.4077C11.406 12.9625 11.0943 13.7149 11.0943 14.4995ZM25.5214 13.8181C23.0174 8.54325 19.2323 5.88867 14.1583 5.88867C9.08156 5.88867 5.29912 8.54325 2.7951 13.8207C2.69467 14.0334 2.64258 14.2657 2.64258 14.5009C2.64258 14.7361 2.69467 14.9683 2.7951 15.181C5.29912 20.4558 9.0842 23.1104 14.1583 23.1104C19.235 23.1104 23.0174 20.4558 25.5214 15.1784C25.7248 14.7505 25.7248 14.2539 25.5214 13.8181ZM14.0526 19.1483C11.4852 19.1483 9.40381 17.0669 9.40381 14.4995C9.40381 11.9321 11.4852 9.85073 14.0526 9.85073C16.62 9.85073 18.7014 11.9321 18.7014 14.4995C18.7014 17.0669 16.62 19.1483 14.0526 19.1483Z"
+                        fill="white"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      onClick={() => setShowBalance(!showbalance)}
+                      width="28"
+                      height="29"
+                      viewBox="0 0 28 29"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M14.0531 17.4575C14.8377 17.4575 15.5902 17.1458 16.145 16.591C16.6998 16.0362 17.0114 15.2837 17.0114 14.4991C17.0114 14.4125 17.0075 14.3266 17.0001 14.2418L13.7958 17.4461C13.8806 17.4535 13.9662 17.4575 14.0531 17.4575ZM23.8452 5.34836L22.7168 4.22102C22.6772 4.18142 22.6234 4.15918 22.5674 4.15918C22.5114 4.15918 22.4577 4.18142 22.4181 4.22102L19.5305 7.10936C17.9376 6.29529 16.147 5.88825 14.1588 5.88825C9.08205 5.88825 5.29433 8.53226 2.79559 13.8203C2.69516 14.033 2.64307 14.2652 2.64307 14.5004C2.64307 14.7356 2.69516 14.9679 2.79559 15.1806C3.79403 17.2836 4.99629 18.9693 6.40238 20.2375L3.60808 23.0307C3.56848 23.0704 3.54624 23.1241 3.54624 23.1801C3.54624 23.2361 3.56848 23.2899 3.60808 23.3295L4.73568 24.4571C4.7753 24.4967 4.82903 24.5189 4.88505 24.5189C4.94107 24.5189 4.99479 24.4967 5.03442 24.4571L23.8452 5.64736C23.8648 5.62774 23.8804 5.60443 23.8911 5.57878C23.9017 5.55313 23.9072 5.52563 23.9072 5.49786C23.9072 5.47009 23.9017 5.44259 23.8911 5.41694C23.8804 5.39129 23.8648 5.36798 23.8452 5.34836ZM9.4043 14.4991C9.40422 13.6962 9.61213 12.9069 10.0078 12.2081C10.4034 11.5094 10.9733 10.9251 11.6619 10.512C12.3504 10.099 13.1343 9.87139 13.937 9.85134C14.7397 9.83128 15.5339 10.0195 16.2423 10.3976L14.958 11.6818C14.4401 11.516 13.8865 11.496 13.358 11.6241C12.8295 11.7522 12.3465 12.0234 11.9619 12.4079C11.5774 12.7925 11.3062 13.2755 11.1781 13.804C11.05 14.3325 11.07 14.8861 11.2358 15.4041L9.95159 16.6883C9.5912 16.0149 9.40317 15.2628 9.4043 14.4991Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M25.5219 13.8184C24.5921 11.8603 23.4855 10.2636 22.202 9.02832L18.3947 12.8359C18.7156 13.6748 18.7868 14.5887 18.5995 15.4672C18.4122 16.3457 17.9746 17.1512 17.3395 17.7863C16.7043 18.4215 15.8988 18.8591 15.0204 19.0463C14.1419 19.2336 13.2279 19.1625 12.389 18.8415L9.15967 22.0709C10.6579 22.7641 12.3242 23.1108 14.1587 23.1108C19.2354 23.1108 23.0232 20.4668 25.5219 15.1787C25.6223 14.9661 25.6744 14.7338 25.6744 14.4986C25.6744 14.2634 25.6223 14.0311 25.5219 13.8184Z"
+                        fill="white"
+                      />
+                    </svg>
+                  )}
+                </>
               ) : (
-                <svg
-                  onClick={() => setShowBalance(!showbalance)}
-                  width="28"
-                  height="29"
-                  viewBox="0 0 28 29"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M14.0531 17.4575C14.8377 17.4575 15.5902 17.1458 16.145 16.591C16.6998 16.0362 17.0114 15.2837 17.0114 14.4991C17.0114 14.4125 17.0075 14.3266 17.0001 14.2418L13.7958 17.4461C13.8806 17.4535 13.9662 17.4575 14.0531 17.4575ZM23.8452 5.34836L22.7168 4.22102C22.6772 4.18142 22.6234 4.15918 22.5674 4.15918C22.5114 4.15918 22.4577 4.18142 22.4181 4.22102L19.5305 7.10936C17.9376 6.29529 16.147 5.88825 14.1588 5.88825C9.08205 5.88825 5.29433 8.53226 2.79559 13.8203C2.69516 14.033 2.64307 14.2652 2.64307 14.5004C2.64307 14.7356 2.69516 14.9679 2.79559 15.1806C3.79403 17.2836 4.99629 18.9693 6.40238 20.2375L3.60808 23.0307C3.56848 23.0704 3.54624 23.1241 3.54624 23.1801C3.54624 23.2361 3.56848 23.2899 3.60808 23.3295L4.73568 24.4571C4.7753 24.4967 4.82903 24.5189 4.88505 24.5189C4.94107 24.5189 4.99479 24.4967 5.03442 24.4571L23.8452 5.64736C23.8648 5.62774 23.8804 5.60443 23.8911 5.57878C23.9017 5.55313 23.9072 5.52563 23.9072 5.49786C23.9072 5.47009 23.9017 5.44259 23.8911 5.41694C23.8804 5.39129 23.8648 5.36798 23.8452 5.34836ZM9.4043 14.4991C9.40422 13.6962 9.61213 12.9069 10.0078 12.2081C10.4034 11.5094 10.9733 10.9251 11.6619 10.512C12.3504 10.099 13.1343 9.87139 13.937 9.85134C14.7397 9.83128 15.5339 10.0195 16.2423 10.3976L14.958 11.6818C14.4401 11.516 13.8865 11.496 13.358 11.6241C12.8295 11.7522 12.3465 12.0234 11.9619 12.4079C11.5774 12.7925 11.3062 13.2755 11.1781 13.804C11.05 14.3325 11.07 14.8861 11.2358 15.4041L9.95159 16.6883C9.5912 16.0149 9.40317 15.2628 9.4043 14.4991Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M25.5219 13.8184C24.5921 11.8603 23.4855 10.2636 22.202 9.02832L18.3947 12.8359C18.7156 13.6748 18.7868 14.5887 18.5995 15.4672C18.4122 16.3457 17.9746 17.1512 17.3395 17.7863C16.7043 18.4215 15.8988 18.8591 15.0204 19.0463C14.1419 19.2336 13.2279 19.1625 12.389 18.8415L9.15967 22.0709C10.6579 22.7641 12.3242 23.1108 14.1587 23.1108C19.2354 23.1108 23.0232 20.4668 25.5219 15.1787C25.6223 14.9661 25.6744 14.7338 25.6744 14.4986C25.6744 14.2634 25.6223 14.0311 25.5219 13.8184Z"
-                    fill="white"
-                  />
-                </svg>
+                "No Active Wallets"
               )}
             </div>
           </div>
@@ -303,24 +273,13 @@ function Dashboard() {
                   removeNaira={true}
                   value={selectedCountry}
                   onChange={handleRates}
-                  newOptions={countrylist?.data?.map((item) => {
-                    return {
-                      code: item?.currencyCode,
-                      value: item?.name,
-                      label: item?.name,
-                      id: item?.id,
-                      slug: countryObjectsArray(item?.name),
-                      ...item,
-                    };
-                  })}
+                  setValue={setSelectedCountry}
                 />
                 {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
                 <div className="rates">
                   <div className="pri">
                     <CountryFlag
-                      countryCode={
-                        selectedCountry?.value || countryFlags[0].code
-                      }
+                      countryCode={selectedCountry?.code?.slice(0, 2)}
                       style={{
                         width: "40px",
                         height: "40px",

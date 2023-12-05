@@ -175,10 +175,7 @@ function Register() {
       redirect: "follow",
     };
 
-    fetch(
-      `https://apidoc.transferrocket.co.uk/getactivecountries`,
-      requestOptions
-    )
+    fetch(`https://apidoc.transferrocket.co.uk/getcountries`, requestOptions)
       .then((response) => {
         return response.json();
       })

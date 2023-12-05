@@ -27,9 +27,9 @@ const AddWalletAgent = () => {
       console.log(data);
       if (data?.status) {
         toast.success(data.message);
+        navigate("/agent/settings/wallet");
       } else {
         toast.error(data.message);
-        navigate("/user/settings/wallet");
       }
     },
     onError: (data) => {
@@ -137,7 +137,7 @@ const AddWalletAgent = () => {
               userWallet: {
                 name: "My Naira Wallet",
                 note: "My Naira Wallet",
-                country: {
+                currency: {
                   id: selectedCountry?.id,
                 },
               },

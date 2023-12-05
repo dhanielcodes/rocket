@@ -6,32 +6,15 @@ import CustomInput from "./CustomInput";
 import styled from "styled-components";
 import AmountFormatter from "../reuseables/AmountFormatter";
 import { useQuery } from "@tanstack/react-query";
-import { Rates as Ratess } from "../services/Dashboard";
+import { Rates as Ratess, agentCustomerGetRate } from "../services/Dashboard";
 import { countryObjectsArray } from "../../config/CountryCodes";
-import { countries } from "../services/Auth";
 import InputNumber from "rc-input-number";
 import { CFormatter } from "../hooks/format";
 
 function Rates() {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata);
-  const {
-    data: countrylist,
-    isLoading: countrylistloading,
-    refetch: refetchcountrylist,
-  } = useQuery({
-    queryKey: ["getCategoriess"],
-    queryFn: countries,
-    onSuccess: (data) => {
-      setCountries(data?.data);
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
+
   const countryFlags = [
     { code: "GB", label: "United Kingdom" },
 
@@ -59,7 +42,7 @@ function Rates() {
       flag: "",
     };
   });
-  const getC = JSON.parse(localStorage.getItem("countryList"));
+  const getC = JSON.parse(localStorage.getItem("currencyList"));
 
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedCountry2, setSelectedCountry2] = useState();
@@ -75,15 +58,15 @@ function Rates() {
     "country1",
     JSON.stringify(
       selectedCountry ||
-        getC?.map((item) => {
-          return {
-            code: item?.currencyCode,
-            value: item?.name,
-            label: item?.name,
-            id: item?.id,
-            ...item,
-          };
-        })?.[0]
+        getC
+          ?.filter((item) => item?.isSending)
+          ?.map((item) => {
+            return {
+              value: item?.name,
+              label: item?.name,
+              ...item,
+            };
+          })?.[0]
     )
   );
   localStorage.setItem(
@@ -91,13 +74,11 @@ function Rates() {
     JSON.stringify(
       selectedCountry2 ||
         getC
-          ?.filter((item) => item?.isCollectionCurrency)
+          ?.filter((item) => item?.isReceiving)
           ?.map((item) => {
             return {
-              code: item?.currencyCode,
               value: item?.name,
               label: item?.name,
-              id: item?.id,
               ...item,
             };
           })?.[0]
@@ -105,7 +86,7 @@ function Rates() {
   );
 
   const handleCountryChange = (selectedOption) => {
-    const getC = JSON.parse(localStorage.getItem("countryList"));
+    const getC = JSON.parse(localStorage.getItem("currenyList"));
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
     );
@@ -122,7 +103,7 @@ function Rates() {
       "🚀 ~ file: Dashboard.jsx:37 ~ handleCountryChange ~ selectedOption:",
       selectedOption
     );
-    const getC = JSON.parse(localStorage.getItem("countryList"));
+    const getC = JSON.parse(localStorage.getItem("currenyList"));
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
     );
@@ -140,7 +121,6 @@ function Rates() {
     currencyDetails
   );
   const [dashboardDetails, setDashboardDetails] = useState(null);
-  const [Countries, setCountries] = useState(null);
   const [getrates, setRates] = useState(null);
   const [currentRates, setcurrentRates] = useState(null);
   const [currentCountry, setcurrentCountry] = useState(null);
@@ -235,9 +215,14 @@ function Rates() {
       amount,
       amount2,
     ],
-    queryFn: Ratess,
+    queryFn: Userdata?.data?.user?.agentId ? agentCustomerGetRate : Ratess,
     onSuccess: (data) => {
-      localStorage.setItem("amount", JSON.stringify(data?.data));
+      console.log(data, "jklssds");
+      if (data?.data === "") {
+        localStorage.setItem("amount", JSON.stringify({}));
+      } else {
+        localStorage.setItem("amount", JSON.stringify(data?.data));
+      }
       setcurrentRates(data?.data);
     },
     // refetchInterval: 10000, // fetch data every 10 seconds
@@ -248,21 +233,15 @@ function Rates() {
     },
   });
 
-  useEffect(() => {
+  /*   useEffect(() => {
     setcurrentRates(rates?.data);
     localStorage.setItem("amount", JSON.stringify(rates?.data));
-  }, [selectedCountry, selectedCountry2]);
+  }, [selectedCountry, selectedCountry2]); */
 
   const handleRatesChanges = (e) => {
     setAmount(e);
     localStorage.setItem("amount", JSON.stringify(rates?.data));
   };
-
-  /*   const handleRatesChanges3 = (e) => {
-    const { value } = e?.target;
-    setAmount(value);
-    localStorage.setItem("amount", JSON.stringify(rates?.data));
-  }; */
   return (
     <div>
       <RateCont>
@@ -271,7 +250,7 @@ function Rates() {
             value={
               selectedCountry ||
               getC
-                ?.filter((item) => !item?.isCollectionCurrency)
+                ?.filter((item) => item?.isSending)
                 ?.map((item) => {
                   return {
                     code: item?.currencyCode,
@@ -451,7 +430,7 @@ function Rates() {
             value={
               selectedCountry2 ||
               getC
-                ?.filter((item) => item?.isCollectionCurrency)
+                ?.filter((item) => item?.isReceiving)
                 ?.map((item) => {
                   return {
                     code: item?.currencyCode,

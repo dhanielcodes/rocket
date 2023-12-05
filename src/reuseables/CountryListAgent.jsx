@@ -18,26 +18,6 @@ const CountryListAgent = ({
   removeNaira = false,
 }) => {
   const [cList, setClist] = useState([]);
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: [],
-    queryFn: countries,
-    onSuccess: (data) => {
-      const mapped = data?.data?.map((d) => {
-        return {
-          value: d?.currencyCode,
-          label: d?.name,
-          id: d?.id,
-        };
-      });
-      setClist;
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
 
   const { data: agentRates, isLoading: agentsLoading } = useQuery({
     queryKey: ["getAgentRates"],
@@ -106,16 +86,11 @@ const CountryListAgent = ({
             <div>
               <CountryFlag
                 className="flag"
-                countryCode={country.fromCountryCurrency?.currencyCode?.slice(
-                  0,
-                  2
-                )}
+                countryCode={country.fromCurrency?.code?.slice(0, 2)}
                 svg
               />{" "}
               &nbsp;
-              <span className="countryName">
-                {country.fromCountryCurrency?.name}
-              </span>
+              <span className="countryName">{country.fromCurrency?.name}</span>
             </div>
             &nbsp; &nbsp;
             <span className="countryName" style={{ fontWeight: "bold" }}>
@@ -125,16 +100,11 @@ const CountryListAgent = ({
             <div>
               <CountryFlag
                 className="flag"
-                countryCode={country.toCountryCurrency?.currencyCode?.slice(
-                  0,
-                  2
-                )}
+                countryCode={country.toCurrency?.code?.slice(0, 2)}
                 svg
               />{" "}
               &nbsp;
-              <span className="countryName">
-                {country.toCountryCurrency?.name}
-              </span>
+              <span className="countryName">{country.toCurrency?.name}</span>
             </div>
           </div>
         )}
