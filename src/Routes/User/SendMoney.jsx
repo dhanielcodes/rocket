@@ -1362,11 +1362,11 @@ function SendMoney() {
                      <button>Send Money</button>
                 </div> */}
                   <Total
-                    currency={country1?.currencyCode}
+                    currency={country1?.code}
                     amount={money && money?.fromAmount}
                   />
                   <Total
-                    currency={country2?.currencyCode}
+                    currency={country2?.code}
                     text={"Total amount you'll be receiving"}
                     amount={money && money?.computedToAmount}
                   />

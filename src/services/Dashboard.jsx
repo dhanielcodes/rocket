@@ -116,7 +116,9 @@ export const agentCustomerGetRate = async (query) => {
       q[0] || 0
     }&toCurrencyId=${q[1] || 0}&fromAmount=${q[2] || 0}&toAmount=${
       q[3] || 0
-    }&roleId=${Userdata?.data?.user?.role?.id}`
+    }&roleId=${Userdata?.data?.user?.role?.id}&agentId=${
+      Userdata?.data?.user?.agentId
+    }`
   );
   return data;
 };

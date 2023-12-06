@@ -181,25 +181,21 @@ function Rates() {
   console.log("🚀 ~ file: Rates.jsx:104 ~ Rates ~ dataObject2:", dataObject2);
 
   const c1 = getC
-    ?.filter((item) => !item?.isCollectionCurrency)
+    ?.filter((item) => item?.isSending)
     ?.map((item) => {
       return {
-        code: item?.currencyCode,
         value: item?.name,
         label: item?.name,
-        id: item?.id,
         ...item,
       };
     })?.[0]?.id;
 
   const c2 = getC
-    ?.filter((item) => item?.isCollectionCurrency)
+    ?.filter((item) => item?.isReceiving)
     ?.map((item) => {
       return {
-        code: item?.currencyCode,
         value: item?.name,
         label: item?.name,
-        id: item?.id,
         ...item,
       };
     })?.[0]?.id;
