@@ -45,6 +45,26 @@ function Dashboard() {
   );
   const [amount, setamount] = useState(0);
 
+  const getC = JSON.parse(localStorage.getItem("currencyList"));
+  const c1 = getC
+    ?.filter((item) => item?.isSending)
+    ?.map((item) => {
+      return {
+        value: item?.name,
+        label: item?.name,
+        ...item,
+      };
+    })?.[0];
+  const c2 = getC
+    ?.filter((item) => item?.isReceiving)
+    ?.map((item) => {
+      return {
+        value: item?.name,
+        label: item?.name,
+        ...item,
+      };
+    })?.[0];
+
   // Userdata?.data?.user?.userIdupdateCurrencyDetails
 
   const dataObject = {};
@@ -61,7 +81,7 @@ function Dashboard() {
     isLoading: Ratesloading,
     refetch: RatesnameEnq,
   } = useQuery({
-    queryKey: [getrates?.id || dataObject?.id?.country?.id, 1],
+    queryKey: [getrates?.id || dataObject?.id?.country?.id || c1?.id, c2?.id],
     queryFn: Userdata?.data?.user?.agentId ? TodayRatesAgent2 : TodayRatesType2,
 
     onSuccess: (data) => {
@@ -95,11 +115,7 @@ function Dashboard() {
     newDetails
   );
 
-  const countryFlags = [
-    { code: "GB", label: "United Kingdom" },
-
-    { code: "NG", label: "Nigeria" },
-  ];
+  const countryFlags = [c1, c2];
 
   const defaultCountry = {
     label: "United Kingdom",
@@ -279,7 +295,10 @@ function Dashboard() {
                 <div className="rates">
                   <div className="pri">
                     <CountryFlag
-                      countryCode={selectedCountry?.code?.slice(0, 2)}
+                      countryCode={
+                        selectedCountry?.code?.slice(0, 2) ||
+                        c1?.code?.slice(0, 2)
+                      }
                       style={{
                         width: "40px",
                         height: "40px",
@@ -289,14 +308,18 @@ function Dashboard() {
                     {/* <p>920.000 USD</p> */}
                     {/* <AmountFormatter currency={countryFlags[0].code} value={1}/> */}
                     <AmountFormatter
-                      currency={(currencyDetails && selectedCountry?.code) || 0}
+                      currency={
+                        (currencyDetails && selectedCountry?.code) ||
+                        c1?.code ||
+                        0
+                      }
                       value={1}
                     />
                     {/* <p>{rates?.data?.fromAmount}</p> */}
                   </div>
                   <div style={{ color: "#000" }}>=</div>
                   <div className="sec">
-                    <CountryFlag countryCode={countryFlags[1].code} svg />
+                    <CountryFlag countryCode={c2?.code?.slice(0, 2)} svg />
                     {currentRates === "Unable to get rate." ? (
                       <div
                         style={{
@@ -309,7 +332,7 @@ function Dashboard() {
                       <div>
                         NGN{" "}
                         <AmountFormatter
-                          currency={countryFlags[0].code}
+                          currency={countryFlags[0].code || c2?.code}
                           value={currentRates}
                         />
                       </div>

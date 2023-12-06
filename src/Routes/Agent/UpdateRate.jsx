@@ -52,6 +52,7 @@ import Agentlayout from "../../reuseables/AgentLayout";
 import { countries } from "../../services/Auth";
 import CountryListAgent from "../../reuseables/CountryListAgent";
 import toast from "react-hot-toast";
+import InputNumber from "rc-input-number";
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -67,12 +68,14 @@ function UpdateRate() {
     return data ? JSON.parse(data) : [];
   };
   const [amount, setAmount] = useState(null);
-  const [newRate, setNewRate] = useState(null);
+  const [fee, setFee] = useState(null);
+  const [feeFixed, setFeeFixed] = useState(null);
 
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
   const [status, setStatus] = useState(false);
   const [type, setType] = useState();
+  const [thresh, setThresh] = useState();
 
   const [selectedCountry, setSelectedCountry] = useState();
   const [open, setOpen] = useState(false);
@@ -87,7 +90,9 @@ function UpdateRate() {
           `Rate for ${selectedCountry?.fromCurrency?.name} to ${selectedCountry?.toCurrency?.name} was updated successfully`
         );
         setAmount("");
-        setNewRate("");
+        setFee("");
+        setFeeFixed("");
+        setThresh("");
         setSelectedCountry("");
         setType("");
         navigates("/agent/dashboard");
@@ -127,6 +132,7 @@ function UpdateRate() {
   console.log(rates);
   const handleRates = (e) => {
     setSelectedCountry(e);
+    console.log(e, "kdksdsdsd");
   };
 
   const countrySelected = selectedCountry;
@@ -141,7 +147,6 @@ function UpdateRate() {
             <div className="text">
               <p>Select Rates</p>
               <CountryListAgent
-                removeNaira={true}
                 value={countrySelected}
                 setValue={setSelectedCountry}
                 onChange={handleRates}
@@ -229,225 +234,179 @@ function UpdateRate() {
           {selectedCountry && (
             <SectionThree>
               <div className="text" style={{ fontSize: "13px" }}>
-                <p className="textheader">How would you like to top up</p>
-                <CustomSelect
-                  options={[
-                    { label: "Percentage", value: "Percentage" },
-                    { label: "Fixed Amount", value: "Fixed" },
-                  ]}
-                  styles={{ fontSize: "10px ! important" }}
-                  placeholder="How would you like to top up"
-                  value={type}
-                  onChange={(e) => {
-                    setType(e);
-                    setAmount();
-                    setNewRate("");
-                    console.log(e);
-                  }}
-                />
-
-                {type?.value === "Percentage" ? (
-                  <div>
-                    <span>How many percent</span>
-                    <div
+                <div>
+                  <span>Your New Rate</span>
+                  <div
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <InputNumber
+                      className="input"
                       style={{
-                        position: "relative",
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "8px",
+                        padding: "13px",
+                        border: "1px solid #000000",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
                       }}
-                    >
-                      <input
-                        name="note"
-                        type={"number"}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(e) => {
-                          setAmount(e.target.value);
-                          setNewRate(
-                            percentage(
-                              Number(e.target.value),
-                              Number(
-                                countrySelected?.conversionRate ||
-                                  rates?.data[0]?.conversionRate ||
-                                  countrySelected?.rateUpdateValue ||
-                                  rates?.data[0]?.rateUpdateValue
-                              )
-                            ) +
-                              Number(
-                                countrySelected?.conversionRate ||
-                                  rates?.data[0]?.conversionRate ||
-                                  countrySelected?.rateUpdateValue ||
-                                  rates?.data[0]?.rateUpdateValue
-                              )
-                          );
-                        }}
-                        style={{
-                          width: "100%",
-                          padding: "10px",
-                          backgroundColor: "inherit",
-                          lineHeight: 1,
-                          border: "1px solid #676767",
-                          borderRadius: "6px",
-                          color: "#000",
-                          fontWeight: 300,
-                        }}
-                      />
-                    </div>
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        console.log("Change:", `${newValue}`);
+                        setAmount(newValue);
+                      }}
+                      formatter={(value) => {
+                        return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      }}
+                    />
                   </div>
-                ) : (
-                  ""
-                )}
-                {type?.value === "Fixed" && (
-                  <div>
-                    <span>Enter top-up amount</span>
-                    <div
+                </div>
+                <div>
+                  <span>Charge Base Amount</span>
+                  <div
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <InputNumber
+                      className="input"
                       style={{
-                        position: "relative",
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "8px",
+                        padding: "13px",
+                        border: "1px solid #000000",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
                       }}
-                    >
-                      <input
-                        name="note"
-                        type={"number"}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(e) => {
-                          setAmount(e.target.value);
-                          setNewRate(
-                            Number(e.target.value) +
-                              Number(
-                                countrySelected?.conversionRate ||
-                                  rates?.data[0]?.conversionRate ||
-                                  countrySelected?.rateUpdateValue ||
-                                  rates?.data[0]?.rateUpdateValue
-                              )
-                          );
-                          console.log(
-                            Number(e.target.value) +
-                              Number(
-                                countrySelected?.conversionRate ||
-                                  rates?.data[0]?.conversionRate ||
-                                  countrySelected?.rateUpdateValue ||
-                                  rates?.data[0]?.rateUpdateValue
-                              )
-                          );
-                        }}
-                        style={{
-                          width: "100%",
-                          padding: "10px",
-                          backgroundColor: "inherit",
-                          lineHeight: 1,
-                          border: "1px solid #676767",
-                          borderRadius: "6px",
-                          color: "#000",
-                          fontWeight: 300,
-                        }}
-                      />
-                    </div>
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        console.log("Change:", `${newValue}`);
+                        setFeeFixed(newValue);
+                      }}
+                      formatter={(value) => {
+                        return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      }}
+                    />
                   </div>
-                )}
-
-                {type && (
-                  <div>
-                    <span>New Rate</span>
-                    <div
+                </div>
+                <div>
+                  <span>Charge Percentage</span>
+                  <div
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <InputNumber
+                      className="input"
                       style={{
-                        position: "relative",
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "8px",
+                        padding: "13px",
+                        border: "1px solid #000000",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
                       }}
-                    >
-                      <input
-                        name="note"
-                        type={"number"}
-                        disabled={true}
-                        value={newRate}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        style={{
-                          width: "100%",
-                          padding: "10px",
-                          backgroundColor: "inherit",
-                          lineHeight: 1,
-                          border: "1px solid #D0D5DD",
-                          borderRadius: "6px",
-                          color: "#000",
-                          fontWeight: 300,
-                        }}
-                      />
-                    </div>
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        console.log("Change:", `${newValue}`);
+                        setFee(newValue);
+                      }}
+                      formatter={(value) => {
+                        return `% ${value}`;
+                      }}
+                    />
                   </div>
-                )}
+                </div>
 
-                {type && (
-                  <div className="rates">
-                    <div className="pri">
-                      <CountryFlag
-                        countryCode={selectedCountry?.fromCountryCurrency?.currencyCode?.slice(
-                          0,
-                          2
-                        )}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                        }}
-                        svg
-                      />
-                      <AmountFormatter
-                        currency={
-                          selectedCountry?.fromCountryCurrency?.currencyCode
-                        }
-                        value={1}
-                      />
-                      {/* <p>{rates?.data?.fromAmount}</p> */}
-                    </div>
-                    <div style={{ color: "#000" }}>=</div>
-                    <div className="sec">
-                      <CountryFlag
-                        countryCode={selectedCountry?.toCountryCurrency?.currencyCode?.slice(
-                          0,
-                          2
-                        )}
-                        svg
-                      />
-                      <AmountFormatter
-                        currency={
-                          selectedCountry?.toCountryCurrency?.currencyCode
-                        }
-                        value={newRate || 0}
-                      />
-                      {/* <p>920.000 NGN</p> */}
-                    </div>
+                <div>
+                  <span>Charge Percentage Threshold</span>
+                  <div
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <InputNumber
+                      className="input"
+                      style={{
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "8px",
+                        padding: "13px",
+                        border: "1px solid #000000",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
+                      }}
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        console.log("Change:", `${newValue}`);
+                        setThresh(newValue);
+                      }}
+                      formatter={(value) => {
+                        return `% ${value}`;
+                      }}
+                    />
                   </div>
-                )}
+                </div>
+
+                <div className="rates">
+                  <div className="pri">
+                    <CountryFlag
+                      countryCode={selectedCountry?.fromCurrency?.code?.slice(
+                        0,
+                        2
+                      )}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                      }}
+                      svg
+                    />
+                    <AmountFormatter
+                      currency={selectedCountry?.fromCurrency?.code}
+                      value={1}
+                    />
+                    {/* <p>{rates?.data?.fromAmount}</p> */}
+                  </div>
+                  <div style={{ color: "#000" }}>=</div>
+                  <div className="sec">
+                    <CountryFlag
+                      countryCode={selectedCountry?.toCurrency?.code?.slice(
+                        0,
+                        2
+                      )}
+                      svg
+                    />
+                    <AmountFormatter
+                      currency={selectedCountry?.toCurrency?.currencyCode}
+                      value={amount || 0}
+                    />
+                    {/* <p>920.000 NGN</p> */}
+                  </div>
+                </div>
               </div>
               {amount && (
                 <Btn
@@ -459,8 +418,10 @@ function UpdateRate() {
                         Userdata?.data?.user?.userId,
                       agentCurrentRate: {
                         id: selectedCountry?.id,
-                        rateUpdateOption: type.value,
-                        rateUpdateValue: amount,
+                        agentRate: amount, //Agent new rate
+                        agentFeeFixedBaseAmount: feeFixed, //Agent fixed fee (in sending currency if amount isn't up to the percentage threshold
+                        agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
+                        agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
                       },
                     });
                   }}
@@ -485,6 +446,24 @@ const SectionThree = styled.div`
   color: var(--grey-400, #98a2b3);
   margin-top: 10vh;
   border-radius: 10px;
+
+  .input {
+    /* border-bottom-left-radius: 10px; */
+    /* border-top-left-radius: 10px; */
+
+    /* border: none !important; */
+
+    &::placeholder {
+      font-size: 12px;
+    }
+
+    .rc-input-number-input {
+      background: #fff;
+      border: none;
+      color: black;
+      width: 100%;
+    }
+  }
   .text {
     font-weight: bold;
     background-color: #fff;

@@ -39,6 +39,26 @@ function Dashboard() {
   const [currentRates, setcurrentRates] = useState(null);
   const [amount, setamount] = useState(0);
 
+  const getC = JSON.parse(localStorage.getItem("currencyList"));
+  const c1 = getC
+    ?.filter((item) => item?.isSending)
+    ?.map((item) => {
+      return {
+        value: item?.name,
+        label: item?.name,
+        ...item,
+      };
+    })?.[0];
+  const c2 = getC
+    ?.filter((item) => item?.isReceiving)
+    ?.map((item) => {
+      return {
+        value: item?.name,
+        label: item?.name,
+        ...item,
+      };
+    })?.[0];
+
   // Userdata?.data?.user?.userIdupdateCurrencyDetails
 
   const dataObject = {};
@@ -55,7 +75,12 @@ function Dashboard() {
     isLoading: Ratesloading,
     refetch: RatesnameEnq,
   } = useQuery({
-    queryKey: [getrates?.id || dataObject?.id?.country?.id, 1, 2, 0],
+    queryKey: [
+      getrates?.id || dataObject?.id?.country?.id || c1?.id,
+      c2?.id,
+      2,
+      0,
+    ],
     queryFn: TodayRates,
     onSuccess: (data) => {
       setcurrentRates(data?.data);
@@ -454,7 +479,7 @@ function Dashboard() {
               <div className="pri">
                 <CountryFlag
                   countryCode={
-                    selectedCountry?.code?.slice(0, 2) || countryFlags[0].code
+                    selectedCountry?.code?.slice(0, 2) || c1?.code?.slice(0, 2)
                   }
                   style={{
                     width: "40px",
@@ -465,14 +490,16 @@ function Dashboard() {
                 {/* <p>920.000 USD</p> */}
                 {/* <AmountFormatter currency={countryFlags[0].code} value={1}/> */}
                 <AmountFormatter
-                  currency={(currencyDetails && selectedCountry?.code) || 0}
+                  currency={
+                    (currencyDetails && selectedCountry?.code) || c1?.code || 0
+                  }
                   value={1}
                 />
                 {/* <p>{rates?.data?.fromAmount}</p> */}
               </div>
               <div style={{ color: "#000" }}>=</div>
               <div className="sec">
-                <CountryFlag countryCode={countryFlags[1].code} svg />
+                <CountryFlag countryCode={c2.code?.slice(0, 2)} svg />
                 {currentRates === "Unable to get rate." ? (
                   <div
                     style={{
@@ -483,11 +510,7 @@ function Dashboard() {
                   </div>
                 ) : (
                   <div>
-                    NGN{" "}
-                    <AmountFormatter
-                      currency={countryFlags[0].code}
-                      value={currentRates}
-                    />
+                    <AmountFormatter currency={c2?.code} value={currentRates} />
                   </div>
                 )}
                 {/* <p>920.000 NGN</p> */}

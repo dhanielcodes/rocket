@@ -57,27 +57,28 @@ const CountryListAgent = ({
   const newRates = agentRates?.data?.map((item) => {
     return {
       ...item,
-      value:
-        item?.fromCountryCurrency?.name +
+      label:
+        item?.fromCurrency?.name +
         " to " +
-        item?.toCountryCurrency?.name,
+        item?.toCurrency?.name +
+        " " +
+        item?.id,
+      value:
+        item?.fromCurrency?.name +
+        " to " +
+        item?.toCurrency?.name +
+        " " +
+        item?.id,
     };
   });
-
-  function countInArray(array, key) {
-    return [...new Map(array?.map((x) => [key(x), x])).values()];
-  }
-
-  console.log(countInArray(newRates, (it) => it?.value));
 
   return (
     <CountyCont>
       <Select
         value={value}
         onChange={onChange}
-        options={countInArray(newRates, (it) => it?.value)}
+        options={newRates}
         isSearchable={true}
-        defaultValue={defaultValue}
         getOptionLabel={(country) => (
           <div
             className="dropdown"
