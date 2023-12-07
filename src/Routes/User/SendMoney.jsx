@@ -668,15 +668,17 @@ function SendMoney() {
             )}
           </ReusableModal>
         )}
-        {statusCode === "2" && (
+        {statusCode && (
           <ReusableModal
-            isOpen={statusCode === "2"}
+            isOpen={statusCode}
             onClose={() => {
               navigate("/user/sendmoney");
               localStorage.removeItem("amount");
             }}
           >
-            <Msg type={true}>{params.get("statusMessage")}</Msg>
+            <Msg type={statusCode === "0" ? true : false}>
+              {params.get("statusMessage")}
+            </Msg>
           </ReusableModal>
         )}
         <div className="cont">
