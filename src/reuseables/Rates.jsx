@@ -388,11 +388,25 @@ function Rates() {
             <h4>
               <span>Rate = </span>
               <span style={{ fontSize: "11px" }}>
-                {CFormatter(
-                  currentRates?.conversionRate ||
+                <AmountFormatter
+                  currency={
+                    selectedCountry2?.code ||
+                    getC
+                      ?.filter((item) => item?.isReceiving)
+                      ?.map((item) => {
+                        return {
+                          value: item?.name,
+                          label: item?.name,
+                          ...item,
+                        };
+                      })?.[0]?.code
+                  }
+                  value={
+                    currentRates?.conversionRate ||
                     currencyDetails[0]?.balance ||
                     0
-                )}
+                  }
+                />
               </span>
             </h4>
             <div className="line2"></div>
@@ -400,18 +414,46 @@ function Rates() {
               <span>Fee = </span>
 
               <span style={{ fontSize: "13px" }}>
-                {CFormatter(currentRates?.transitionFee || 0)}
+                <AmountFormatter
+                  currency={
+                    selectedCountry?.code ||
+                    getC
+                      ?.filter((item) => item?.isSending)
+                      ?.map((item) => {
+                        return {
+                          value: item?.name,
+                          label: item?.name,
+                          ...item,
+                        };
+                      })?.[0]?.code
+                  }
+                  value={currentRates?.transitionFee || 0}
+                />
               </span>
             </h4>
             <div className="line2"></div>
             <h4>
               <span>Total to pay = </span>
               <span style={{ fontSize: "11px" }}>
-                {CFormatter(
-                  currentRates?.totalAmountToPay ||
+                <AmountFormatter
+                  currency={
+                    selectedCountry?.code ||
+                    getC
+                      ?.filter((item) => item?.isSending)
+                      ?.map((item) => {
+                        return {
+                          value: item?.name,
+                          label: item?.name,
+                          ...item,
+                        };
+                      })?.[0]?.code
+                  }
+                  value={
+                    currentRates?.totalAmountToPay ||
                     currencyDetails[0]?.balance ||
                     0
-                )}
+                  }
+                />
               </span>
             </h4>
             <div className="line2"></div>

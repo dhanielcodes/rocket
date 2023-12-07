@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Userlayout from "../../reuseables/Userlayout";
 import { styled } from "styled-components";
 import Stepses from "../../reuseables/Stepses";
@@ -72,6 +72,7 @@ function UpdateRate() {
   const [feeFixed, setFeeFixed] = useState(null);
 
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
+  const inputElem = useRef();
 
   const [status, setStatus] = useState(false);
   const [type, setType] = useState();
@@ -128,6 +129,19 @@ function UpdateRate() {
       console.log(err);
     },
   });
+
+  const numberInputOnWheelPreventChange = (e) => {
+    // Prevent the input value change
+    e.target.blur();
+
+    // Prevent the page/container scrolling
+    e.stopPropagation();
+
+    // Refocus immediately, on the next tick (after the current function is done)
+    setTimeout(() => {
+      e.target.focus();
+    }, 0);
+  };
 
   console.log(rates);
   const handleRates = (e) => {
@@ -247,6 +261,7 @@ function UpdateRate() {
                       <CustomInput
                         placeholder="amount"
                         className="input"
+                        disabled
                         style={{
                           borderRadius: "8px 0px 0px 8px",
                           borderSize: "0.5px",
@@ -256,33 +271,88 @@ function UpdateRate() {
                         val={selectedCountry?.toCurrency?.code}
                       />
                     </div>
-                    <InputNumber
-                      className="input"
-                      style={{
-                        borderSize: "0.5px",
-                        fontSize: "6px",
-                        borderRadius: "0px 8px 8px 0px",
-                        padding: "13px",
-                        borderTop: "1px solid #000000",
-                        borderBottom: "1px solid #000000",
-                        borderRight: "1px solid #000000",
-                        width: "100%",
-                        background: "#ffffff",
-                        color: "#000000",
-                      }}
-                      onKeyDown={(evt) => {
-                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
-                          evt.key
-                        ) && evt.preventDefault();
-                      }}
-                      onChange={(newValue) => {
-                        console.log("Change:", `${newValue}`);
-                        setAmount(newValue);
-                      }}
-                      formatter={(value) => {
-                        return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      }}
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input
+                        className="input"
+                        onWheel={numberInputOnWheelPreventChange}
+                        onKeyDown={(evt) => {
+                          [
+                            "e",
+                            "E",
+                            "+",
+                            "-",
+                            "=",
+                            "(",
+                            ")",
+                            "*",
+                            "&",
+                          ].includes(evt.key) && evt.preventDefault();
+                        }}
+                        onChange={(newValue) => {
+                          setAmount(newValue.target.value);
+                        }}
+                        style={{
+                          borderSize: "0.5px",
+                          fontSize: "6px",
+                          borderRadius: "0px 8px 8px 0px",
+                          padding: "13px",
+                          borderTop: "1px solid #000000",
+                          borderBottom: "1px solid #000000",
+                          borderLeft: "0px solid",
+                          width: "100%",
+                          background: "#ffffff",
+                          color: "#000000",
+                        }}
+                      />
+                      {amount && (
+                        <InputNumber
+                          className="input"
+                          ref={inputElem}
+                          onWheel={numberInputOnWheelPreventChange}
+                          disabled
+                          value={amount}
+                          style={{
+                            borderSize: "0.5px",
+                            fontSize: "6px",
+                            borderRadius: "0px 8px 8px 0px",
+                            padding: "13px",
+                            borderTop: "1px solid #000000",
+                            borderBottom: "1px solid #000000",
+                            borderRight: "1px solid #000000",
+                            width: "100%",
+                            background: "#ffffff",
+                            color: "#000000",
+                            pointerEvents: "none",
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                          }}
+                          onKeyDown={(evt) => {
+                            [
+                              "e",
+                              "E",
+                              "+",
+                              "-",
+                              "=",
+                              "(",
+                              ")",
+                              "*",
+                              "&",
+                            ].includes(evt.key) && evt.preventDefault();
+                          }}
+                          onChange={(newValue) => {
+                            console.log("Change:", `${newValue}`);
+                            setAmount(newValue);
+                          }}
+                          formatter={(value) => {
+                            return `${value}`.replace(
+                              /\B(?=(\d{3})+(?!\d))/g,
+                              ","
+                            );
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -297,6 +367,7 @@ function UpdateRate() {
                     <div>
                       <CustomInput
                         placeholder="amount"
+                        disabled
                         className="input"
                         style={{
                           borderRadius: "8px 0px 0px 8px",
@@ -307,33 +378,88 @@ function UpdateRate() {
                         val={selectedCountry?.fromCurrency?.code}
                       />
                     </div>
-                    <InputNumber
-                      className="input"
-                      style={{
-                        borderSize: "0.5px",
-                        fontSize: "6px",
-                        borderRadius: "0px 8px 8px 0px",
-                        padding: "13px",
-                        borderTop: "1px solid #000000",
-                        borderBottom: "1px solid #000000",
-                        borderRight: "1px solid #000000",
-                        width: "100%",
-                        background: "#ffffff",
-                        color: "#000000",
-                      }}
-                      onKeyDown={(evt) => {
-                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
-                          evt.key
-                        ) && evt.preventDefault();
-                      }}
-                      onChange={(newValue) => {
-                        console.log("Change:", `${newValue}`);
-                        setFeeFixed(newValue);
-                      }}
-                      formatter={(value) => {
-                        return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      }}
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input
+                        className="input"
+                        onWheel={numberInputOnWheelPreventChange}
+                        onKeyDown={(evt) => {
+                          [
+                            "e",
+                            "E",
+                            "+",
+                            "-",
+                            "=",
+                            "(",
+                            ")",
+                            "*",
+                            "&",
+                          ].includes(evt.key) && evt.preventDefault();
+                        }}
+                        onChange={(newValue) => {
+                          setFeeFixed(newValue.target.value);
+                        }}
+                        style={{
+                          borderSize: "0.5px",
+                          fontSize: "6px",
+                          borderRadius: "0px 8px 8px 0px",
+                          padding: "13px",
+                          borderTop: "1px solid #000000",
+                          borderBottom: "1px solid #000000",
+                          borderLeft: "0px solid",
+                          width: "100%",
+                          background: "#ffffff",
+                          color: "#000000",
+                        }}
+                      />
+                      {feeFixed && (
+                        <InputNumber
+                          className="input"
+                          ref={inputElem}
+                          onWheel={numberInputOnWheelPreventChange}
+                          disabled
+                          value={feeFixed}
+                          style={{
+                            borderSize: "0.5px",
+                            fontSize: "6px",
+                            borderRadius: "0px 8px 8px 0px",
+                            padding: "13px",
+                            borderTop: "1px solid #000000",
+                            borderBottom: "1px solid #000000",
+                            borderRight: "1px solid #000000",
+                            width: "100%",
+                            background: "#ffffff",
+                            color: "#000000",
+                            pointerEvents: "none",
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                          }}
+                          onKeyDown={(evt) => {
+                            [
+                              "e",
+                              "E",
+                              "+",
+                              "-",
+                              "=",
+                              "(",
+                              ")",
+                              "*",
+                              "&",
+                            ].includes(evt.key) && evt.preventDefault();
+                          }}
+                          onChange={(newValue) => {
+                            console.log("Change:", `${newValue}`);
+                            setFeeFixed(newValue);
+                          }}
+                          formatter={(value) => {
+                            return `${value}`.replace(
+                              /\B(?=(\d{3})+(?!\d))/g,
+                              ","
+                            );
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -384,6 +510,7 @@ function UpdateRate() {
                       <CustomInput
                         placeholder="amount"
                         className="input"
+                        disabled
                         style={{
                           borderRadius: "8px 0px 0px 8px",
                           borderSize: "0.5px",
@@ -394,33 +521,88 @@ function UpdateRate() {
                       />
                     </div>
 
-                    <InputNumber
-                      className="input"
-                      style={{
-                        borderSize: "0.5px",
-                        fontSize: "6px",
-                        borderRadius: "0px 8px 8px 0px",
-                        padding: "13px",
-                        borderTop: "1px solid #000000",
-                        borderBottom: "1px solid #000000",
-                        borderRight: "1px solid #000000",
-                        width: "100%",
-                        background: "#ffffff",
-                        color: "#000000",
-                      }}
-                      onKeyDown={(evt) => {
-                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
-                          evt.key
-                        ) && evt.preventDefault();
-                      }}
-                      onChange={(newValue) => {
-                        console.log("Change:", `${newValue}`);
-                        setThresh(newValue);
-                      }}
-                      formatter={(value) => {
-                        return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      }}
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input
+                        className="input"
+                        onWheel={numberInputOnWheelPreventChange}
+                        onKeyDown={(evt) => {
+                          [
+                            "e",
+                            "E",
+                            "+",
+                            "-",
+                            "=",
+                            "(",
+                            ")",
+                            "*",
+                            "&",
+                          ].includes(evt.key) && evt.preventDefault();
+                        }}
+                        onChange={(newValue) => {
+                          setThresh(newValue.target.value);
+                        }}
+                        style={{
+                          borderSize: "0.5px",
+                          fontSize: "6px",
+                          borderRadius: "0px 8px 8px 0px",
+                          padding: "13px",
+                          borderTop: "1px solid #000000",
+                          borderBottom: "1px solid #000000",
+                          borderLeft: "0px solid",
+                          width: "100%",
+                          background: "#ffffff",
+                          color: "#000000",
+                        }}
+                      />
+                      {thresh && (
+                        <InputNumber
+                          className="input"
+                          ref={inputElem}
+                          onWheel={numberInputOnWheelPreventChange}
+                          disabled
+                          value={thresh}
+                          style={{
+                            borderSize: "0.5px",
+                            fontSize: "6px",
+                            borderRadius: "0px 8px 8px 0px",
+                            padding: "13px",
+                            borderTop: "1px solid #000000",
+                            borderBottom: "1px solid #000000",
+                            borderRight: "1px solid #000000",
+                            width: "100%",
+                            background: "#ffffff",
+                            color: "#000000",
+                            pointerEvents: "none",
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                          }}
+                          onKeyDown={(evt) => {
+                            [
+                              "e",
+                              "E",
+                              "+",
+                              "-",
+                              "=",
+                              "(",
+                              ")",
+                              "*",
+                              "&",
+                            ].includes(evt.key) && evt.preventDefault();
+                          }}
+                          onChange={(newValue) => {
+                            console.log("Change:", `${newValue}`);
+                            setThresh(newValue);
+                          }}
+                          formatter={(value) => {
+                            return `${value}`.replace(
+                              /\B(?=(\d{3})+(?!\d))/g,
+                              ","
+                            );
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -460,7 +642,7 @@ function UpdateRate() {
                   </div>
                 </div>
               </div>
-              {amount && (
+              {amount && feeFixed && thresh && fee && (
                 <Btn
                   disabled={isLoading}
                   clicking={() => {
