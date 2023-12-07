@@ -306,6 +306,22 @@ function SendMoney() {
   console.log(params.get("statusMessage"));
 
   const handleStep = () => {
+    localStorage.setItem(
+      "paymentChannelId",
+      JSON.stringify({
+        id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
+        name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")
+          ?.name,
+      })
+    );
+    localStorage.setItem(
+      "payoutChannelId",
+      JSON.stringify({
+        id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
+        name: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")
+          ?.name,
+      })
+    );
     setCurrent((prev) => {
       localStorage.setItem("steps", prev + 1);
       return prev + 1;
@@ -356,9 +372,15 @@ function SendMoney() {
   const [selectedBene, setselectedBene] = useState();
   const [isSelected, setisSelected] = useState(false);
   const [promocode, setPromoCode] = useState("");
-  const [selectedItems, setSelectedItems] = useState(null);
+  const [selectedItems, setSelectedItems] = useState({
+    id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
+    name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
+  });
   const [selectedItems2, setSelectedItems2] = useState(null);
-  const [selected3, setSelected3] = useState(null);
+  const [selected3, setSelected3] = useState({
+    id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
+    name: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.name,
+  });
   const [status, setStatus] = useState(false);
 
   const beneficiary = JSON.parse(localStorage.getItem("userBeneficiaryId"));
@@ -403,17 +425,39 @@ function SendMoney() {
       JSON.stringify({ id, name: name, ...all })
     );
   };
+
+  const [pre1, setPre1] = useState({
+    id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
+    name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
+  });
+  const [pre2, setPre2] = useState("Direct To Bank");
   const handleSelect = (id, name) => {
     console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id, name);
     setSelectedItems(id);
+    setPre1({ name, id });
     localStorage.setItem("paymentChannelId", JSON.stringify({ id, name }));
   };
+  /* 
+  localStorage.setItem(
+    "paymentChannelId",
+    JSON.stringify({
+      id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
+      name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
+    })
+  );
+  localStorage.setItem(
+    "payoutChannelId",
+    JSON.stringify({
+      id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
+      name: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.name,
+    })
+  ); */
   const handleSelect2 = (id, name) => {
     console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id, name);
-
+    setPre2({ name, id });
     localStorage.setItem("payoutChannelId", JSON.stringify({ id, name: name }));
     setSelectedItems2(id);
-    setSelected3(name);
+    setSelected3({ name, id });
   };
 
   const defaultCountry = {
@@ -783,7 +827,9 @@ function SendMoney() {
                   {paymentchannel?.data
                     ?.filter((item) => item.status)
                     ?.map((d) => {
-                      const isSelected = selectedItems === d?.id;
+                      const isSelected = pre1?.id === d?.id;
+
+                      console.log(isSelected, selectedItems, d, "dsdsdsd");
                       return (
                         <div
                           key={d.id}
@@ -803,7 +849,7 @@ function SendMoney() {
                         >
                           <Box>
                             {/* <Avatar className="av"> */}
-                            {d?.name === "Bank Transfer" ? (
+                            {isSelected ? (
                               <svg
                                 width="40"
                                 height="40"
@@ -819,29 +865,6 @@ function SendMoney() {
                                 />
                                 <path
                                   d="M19.0445 11.9691C19.3219 11.7722 19.6566 11.666 20.0001 11.666C20.3436 11.666 20.6782 11.7722 20.9556 11.9691L27.8269 16.8453C28.7316 17.4864 28.2658 18.8774 27.1473 18.8801H12.8519C11.7334 18.8774 11.2686 17.4864 12.1723 16.8453L19.0436 11.9691H19.0445ZM20.926 15.5029C20.926 15.2642 20.8285 15.0352 20.6548 14.8663C20.4812 14.6975 20.2457 14.6026 20.0001 14.6026C19.7545 14.6026 19.519 14.6975 19.3454 14.8663C19.1717 15.0352 19.0742 15.2642 19.0742 15.5029C19.0742 15.7417 19.1717 15.9707 19.3454 16.1396C19.519 16.3084 19.7545 16.4033 20.0001 16.4033C20.2457 16.4033 20.4812 16.3084 20.6548 16.1396C20.8285 15.9707 20.926 15.7417 20.926 15.5029ZM19.3056 24.2812H17.4538V19.7795H19.3056V24.2812ZM22.5464 24.2812H20.6945V19.7795H22.5464V24.2812ZM26.0186 24.2812H23.9353V19.7795H26.0186V24.2812ZM26.2501 25.1815H13.7501C13.1975 25.1815 12.6676 25.3949 12.2769 25.7748C11.8862 26.1547 11.6667 26.67 11.6667 27.2073V27.6574C11.6667 28.0311 11.9779 28.3327 12.3612 28.3327H27.639C27.8231 28.3327 27.9998 28.2615 28.13 28.1349C28.2603 28.0083 28.3334 27.8365 28.3334 27.6574V27.2073C28.3334 26.67 28.1139 26.1547 27.7232 25.7748C27.3325 25.3949 26.8026 25.1815 26.2501 25.1815ZM16.0649 24.2812H13.9816V19.7795H16.0649V24.2812Z"
-                                  fill="white"
-                                />
-                              </svg>
-                            ) : d?.name === "Card" ? (
-                              <svg
-                                width="40"
-                                height="40"
-                                viewBox="0 0 40 40"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <rect
-                                  width="40"
-                                  height="40"
-                                  rx="20"
-                                  fill="#00A85A"
-                                />
-                                <path
-                                  d="M30 16.3672V15.3125C30 14.1044 29.0206 13.125 27.8125 13.125H12.1875C10.9794 13.125 10 14.1044 10 15.3125V16.3672C10 16.475 10.0875 16.5625 10.1953 16.5625H29.8047C29.9125 16.5625 30 16.475 30 16.3672Z"
-                                  fill="white"
-                                />
-                                <path
-                                  d="M10 18.0078V24.6875C10 25.8956 10.9794 26.875 12.1875 26.875H27.8125C29.0206 26.875 30 25.8956 30 24.6875V18.0078C30 17.9 29.9125 17.8125 29.8047 17.8125H10.1953C10.0875 17.8125 10 17.9 10 18.0078ZM15 23.125C15 23.4702 14.7202 23.75 14.375 23.75H13.75C13.4048 23.75 13.125 23.4702 13.125 23.125V22.5C13.125 22.1548 13.4048 21.875 13.75 21.875H14.375C14.7202 21.875 15 22.1548 15 22.5V23.125Z"
                                   fill="white"
                                 />
                               </svg>
@@ -957,7 +980,7 @@ function SendMoney() {
                 <div className="longcont">
                   <p>Collection Type</p>
                   {payoutchannels?.data?.map((d) => {
-                    const isSelected = selected3 === d?.name;
+                    const isSelected = selected3?.name === d?.name;
                     return (
                       <div
                         key={d.id}
