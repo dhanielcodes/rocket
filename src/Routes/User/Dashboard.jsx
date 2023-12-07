@@ -330,9 +330,8 @@ function Dashboard() {
                       </div>
                     ) : (
                       <div>
-                        NGN{" "}
                         <AmountFormatter
-                          currency={countryFlags[0].code || c2?.code}
+                          currency={c2?.code}
                           value={currentRates}
                         />
                       </div>

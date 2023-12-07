@@ -395,12 +395,12 @@ function SendMoney() {
     getCurrencyTwo
   );
 
-  const handleSelectBeneId = (id, name) => {
+  const handleSelectBeneId = (id, name, all) => {
     console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id, name);
     setSelectedItems(id);
     localStorage.setItem(
       "userBeneficiaryId",
-      JSON.stringify({ id, name: name })
+      JSON.stringify({ id, name: name, ...all })
     );
   };
   const handleSelect = (id, name) => {
@@ -516,6 +516,15 @@ function SendMoney() {
   const statusCode = params.get("statusCode");
 
   console.log(statusCode === "2", "statusCode");
+
+  console.log(
+    newDetails?.data?.beneficiaries.find((d) => d?.id == params.get("id")),
+    "selsld"
+  );
+
+  const userBene = newDetails?.data?.beneficiaries.find(
+    (d) => d?.id == params.get("id")
+  );
 
   return (
     <Userlayout current="Send Money" useBack={true}>
@@ -662,7 +671,7 @@ function SendMoney() {
                       className="box"
                       style={{ color: "#000", textDecoration: "none" }}
                       onClick={() =>
-                        handleSelectBeneId(d?.id, d?.beneficiaryName)
+                        handleSelectBeneId(d?.id, d?.beneficiaryName, d)
                       }
                     >
                       <Box>
@@ -1333,7 +1342,26 @@ function SendMoney() {
                   <div className="detailscont">
                     <div className="details">
                       <h5>Beneficiary Name</h5>
-                      <p>{getBeneF && getBeneF?.name}</p>
+                      <p>
+                        {(getBeneF && getBeneF?.name) ||
+                          userBene?.beneficiaryName}
+                      </p>
+                    </div>
+
+                    <div className="details">
+                      <h5>Beneficiary Bank</h5>
+                      <p>
+                        {(getBeneF && getBeneF?.beneficiaryBank?.bankName) ||
+                          userBene?.beneficiaryBank?.bankName}
+                      </p>
+                    </div>
+                    <div className="details">
+                      <h5>Beneficiary Account Number</h5>
+                      <p>
+                        {(getBeneF &&
+                          getBeneF?.beneficiaryBank?.accountNumber) ||
+                          userBene?.beneficiaryBank?.accountNumber}
+                      </p>
                     </div>
                     <div className="details">
                       <h5>Note</h5>
@@ -1363,7 +1391,7 @@ function SendMoney() {
                 </div> */}
                   <Total
                     currency={country1?.code}
-                    amount={money && money?.fromAmount}
+                    amount={money && money?.totalAmountToPay}
                   />
                   <Total
                     currency={country2?.code}
@@ -1443,6 +1471,7 @@ function SendMoney() {
                       <h5>Beneficiary Name</h5>
                       <p>{getBeneF && getBeneF?.name}</p>
                     </div>
+
                     <div className="details">
                       <h5>Date of Birth</h5>
                       <p>2000</p>

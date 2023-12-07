@@ -408,7 +408,7 @@ function Rates() {
               <span>Total to pay = </span>
               <span style={{ fontSize: "11px" }}>
                 {CFormatter(
-                  currentRates?.computedToAmount ||
+                  currentRates?.totalAmountToPay ||
                     currencyDetails[0]?.balance ||
                     0
                 )}

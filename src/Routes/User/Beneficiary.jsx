@@ -245,6 +245,12 @@ function Beneficiary() {
                 className="box"
                 to={`/user/beneficiary/details?id=${d.id}`}
                 style={{ color: "#000", textDecoration: "none" }}
+                onClick={() => {
+                  localStorage.setItem(
+                    "userBeneficiaryId",
+                    JSON.stringify({ id: d?.id, name: d?.name, ...d })
+                  );
+                }}
               >
                 <Box>
                   <Avatar className="av">

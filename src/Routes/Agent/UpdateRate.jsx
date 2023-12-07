@@ -239,16 +239,33 @@ function UpdateRate() {
                   <div
                     style={{
                       position: "relative",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 4fr",
                     }}
                   >
+                    <div>
+                      <CustomInput
+                        placeholder="amount"
+                        className="input"
+                        style={{
+                          borderRadius: "8px 0px 0px 8px",
+                          borderSize: "0.5px",
+                          border: "1px solid",
+                          fontSize: "6px",
+                        }}
+                        val={selectedCountry?.toCurrency?.code}
+                      />
+                    </div>
                     <InputNumber
                       className="input"
                       style={{
                         borderSize: "0.5px",
                         fontSize: "6px",
-                        borderRadius: "8px",
+                        borderRadius: "0px 8px 8px 0px",
                         padding: "13px",
-                        border: "1px solid #000000",
+                        borderTop: "1px solid #000000",
+                        borderBottom: "1px solid #000000",
+                        borderRight: "1px solid #000000",
                         width: "100%",
                         background: "#ffffff",
                         color: "#000000",
@@ -273,16 +290,33 @@ function UpdateRate() {
                   <div
                     style={{
                       position: "relative",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 4fr",
                     }}
                   >
+                    <div>
+                      <CustomInput
+                        placeholder="amount"
+                        className="input"
+                        style={{
+                          borderRadius: "8px 0px 0px 8px",
+                          borderSize: "0.5px",
+                          border: "1px solid",
+                          fontSize: "6px",
+                        }}
+                        val={selectedCountry?.fromCurrency?.code}
+                      />
+                    </div>
                     <InputNumber
                       className="input"
                       style={{
                         borderSize: "0.5px",
                         fontSize: "6px",
-                        borderRadius: "8px",
+                        borderRadius: "0px 8px 8px 0px",
                         padding: "13px",
-                        border: "1px solid #000000",
+                        borderTop: "1px solid #000000",
+                        borderBottom: "1px solid #000000",
+                        borderRight: "1px solid #000000",
                         width: "100%",
                         background: "#ffffff",
                         color: "#000000",
@@ -338,20 +372,38 @@ function UpdateRate() {
                 </div>
 
                 <div>
-                  <span>Charge Percentage Threshold</span>
+                  <span>Charge Threshold</span>
                   <div
                     style={{
                       position: "relative",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 4fr",
                     }}
                   >
+                    <div>
+                      <CustomInput
+                        placeholder="amount"
+                        className="input"
+                        style={{
+                          borderRadius: "8px 0px 0px 8px",
+                          borderSize: "0.5px",
+                          border: "1px solid",
+                          fontSize: "6px",
+                        }}
+                        val={selectedCountry?.fromCurrency?.code}
+                      />
+                    </div>
+
                     <InputNumber
                       className="input"
                       style={{
                         borderSize: "0.5px",
                         fontSize: "6px",
-                        borderRadius: "8px",
+                        borderRadius: "0px 8px 8px 0px",
                         padding: "13px",
-                        border: "1px solid #000000",
+                        borderTop: "1px solid #000000",
+                        borderBottom: "1px solid #000000",
+                        borderRight: "1px solid #000000",
                         width: "100%",
                         background: "#ffffff",
                         color: "#000000",
@@ -366,7 +418,7 @@ function UpdateRate() {
                         setThresh(newValue);
                       }}
                       formatter={(value) => {
-                        return `% ${value}`;
+                        return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                       }}
                     />
                   </div>

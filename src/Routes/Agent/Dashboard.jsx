@@ -289,7 +289,6 @@ function Dashboard() {
                       dashboardDetails?.depositedAmount ||
                       0}
                   </h3>
-                  <p>Count: 12,900</p>
                 </div>
               </div>
               <div className="dbox dbox2">
@@ -334,7 +333,6 @@ function Dashboard() {
                       dashboardDetails?.pendingAmount ||
                       0}
                   </h3>
-                  <p>Count: 12,900</p>
                 </div>
               </div>
               <div className="dbox dbox3">

@@ -27,7 +27,7 @@ function BeneficiaryDetails() {
   )[0];
   localStorage.setItem(
     "userBeneficiaryId",
-    JSON.stringify({ id: id, name: BeneList?.beneficiaryName })
+    JSON.stringify({ id: id, name: BeneList?.beneficiaryName, ...BeneList })
   );
 
   console.log(BeneList);
@@ -86,7 +86,17 @@ function BeneficiaryDetails() {
                 </button>
                 <button
                   className="send"
-                  onClick={() => navigate(`/user/sendmoney?id=${id}`)}
+                  onClick={() => {
+                    localStorage.setItem(
+                      "userBeneficiaryId",
+                      JSON.stringify({
+                        id: id,
+                        name: BeneList?.beneficiaryName,
+                        ...BeneList,
+                      })
+                    );
+                    navigate(`/user/sendmoney?id=${id}`);
+                  }}
                 >
                   Send Money
                 </button>
