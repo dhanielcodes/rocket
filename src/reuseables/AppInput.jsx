@@ -12,24 +12,47 @@ function AppInput({
   padding,
   disabled,
   defaultValue,
+  cut,
+  removeCutBorder,
 }) {
   const [ntype, setType] = useState("password");
+
+  const numberInputOnWheelPreventChange = (e) => {
+    // Prevent the input value change
+    e.target.blur();
+
+    // Prevent the page/container scrolling
+    e.stopPropagation();
+
+    // Refocus immediately, on the next tick (after the current function is done)
+    setTimeout(() => {
+      e.target.focus();
+    }, 0);
+  };
   return (
     <Content>
       <div className="top">
         <input
-          style={{ width: width, padding: padding }}
+          style={{
+            width: width,
+            padding: padding,
+            borderRadius: cut ? "0px 8px 8px 0px" : "8px",
+            borderTop: "1px solid #b3b3b3",
+            borderLeft: removeCutBorder ? "none" : "1px solid #b3b3b3",
+            borderRight: "1px solid #b3b3b3",
+            borderBottom: "1px solid #b3b3b3",
+          }}
           type={type === "password" ? ntype : type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onWheel={numberInputOnWheelPreventChange}
           name={name}
           disabled={disabled}
           defaultValue={defaultValue}
           onKeyDown={(evt) => {
-            if (type === "number") {
-              ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault();
-            }
+            ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(evt.key) &&
+              evt.preventDefault();
           }}
         />
       </div>
@@ -68,8 +91,6 @@ const Content = styled.div`
   .top input {
     padding: 12px;
     width: 100%;
-    border-radius: 8px;
-    border: 1px solid gainsboro;
     font-size: 14px;
     color: #000000;
     font-weight: 500;

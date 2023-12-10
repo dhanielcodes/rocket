@@ -16,20 +16,9 @@ const CountryListAgent = ({
   style,
   defaultValue,
   removeNaira = false,
+  agentRates,
 }) => {
   const [cList, setClist] = useState([]);
-
-  const { data: agentRates, isLoading: agentsLoading } = useQuery({
-    queryKey: ["getAgentRates"],
-    queryFn: getAgentRates,
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (err) => {
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
 
   console.log(agentRates);
 

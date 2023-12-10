@@ -14,6 +14,7 @@ import { Dropdown, Menu, Divider } from "@arco-design/web-react";
 import { IconDown, IconMoreVertical } from "@arco-design/web-react/icon";
 import Btn from "../../reuseables/Btn";
 import {
+  GetDetails,
   Paymentchannel,
   Payoutchannel,
   Rates,
@@ -36,7 +37,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import CustomSelect from "../../reuseables/CustomSelect";
 import CustomInput from "../../reuseables/CustomInput";
 import CountryDropdown from "../../reuseables/CountryList";
-import CountryFlag from "react-country-flag";
+import CountryFlag, { ReactCountryFlag } from "react-country-flag";
 import RateComponent from "../../reuseables/Rates";
 import Total from "../../reuseables/Total";
 import Checktrnx from "../../images/checktnx.svg";
@@ -53,6 +54,10 @@ import { countries } from "../../services/Auth";
 import CountryListAgent from "../../reuseables/CountryListAgent";
 import toast from "react-hot-toast";
 import InputNumber from "rc-input-number";
+import CustomTable from "../../reuseables/CustomTable";
+import AppModal from "../../components/AppModal";
+import AppInput from "../../reuseables/AppInput";
+import AppSelect from "../../reuseables/AppSelect";
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -83,6 +88,33 @@ function UpdateRate() {
   function percentage(num, per) {
     return (num / 100) * per;
   }
+
+  const {
+    data: newDetails,
+    isLoading: newDetailsloading,
+    refetch: refetchnewDetails,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+  const { data: agentRates, isLoading: agentsLoading } = useQuery({
+    queryKey: ["getAgentRates"],
+    queryFn: getAgentRates,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
   const { mutate, isLoading, isError } = useMutation({
     mutationFn: updateRate,
     onSuccess: (data) => {
@@ -144,17 +176,250 @@ function UpdateRate() {
   };
 
   console.log(rates);
+  const [rateBands, setRateBands] = useState([]);
+  const [rateBand, setRateBand] = useState({});
   const handleRates = (e) => {
     setSelectedCountry(e);
+    setRateBands(e?.rateBands);
     console.log(e, "kdksdsdsd");
   };
 
   const countrySelected = selectedCountry;
 
-  console.log(selectedCountry, "hskkhskk");
+  console.log(rateBands, rateBand, "hskkhskk");
 
+  /*   function handleToggleYourList(artworkId, nextSeen) {
+    const yourNextList = [...yourList];
+    const artwork = yourNextList.find(
+      a => a.id === artworkId
+    );
+    artwork.seen = nextSeen;
+    setYourList(yourNextList);
+  } */
+
+  const updateRateBandsArray = () => {
+    const newState = rateBands.map((obj) => {
+      // 👇️ if id equals 2, update country property
+      setModal(false);
+
+      if (obj?.rateBandId === rateBand?.rateBandId) {
+        toast.success(`Rate Column Updated`);
+        setModal(false);
+        return {
+          ...obj,
+          minimumAmount: rateBand?.minimumAmount,
+          maximuAmount: rateBand?.maximuAmount,
+          rate: rateBand?.rate,
+          chargeType: rateBand?.chargeType,
+          charge: rateBand?.charge,
+        };
+      }
+
+      // 👇️ otherwise return the object as is
+      return obj;
+    });
+
+    setRateBands(newState);
+  };
+
+  const columns = [
+    {
+      title: "MIN AMT",
+      dataIndex: "minimumAmount",
+      width: "130%",
+    },
+    {
+      title: "MAX AMT",
+      dataIndex: "maximuAmount",
+      width: "130%",
+    },
+    {
+      title: "RATE",
+      width: "100%",
+      dataIndex: "rate",
+    },
+    {
+      title: "FEE",
+      dataIndex: "charge",
+      width: "100%",
+    },
+    {
+      title: "ACTION",
+      dataIndex: "action",
+      width: "100%",
+    },
+  ];
+  const newRatesTable = rateBands?.map((item) => {
+    return {
+      ...item,
+      action: (
+        <svg
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setModal(true);
+            setRateBand(item);
+            console.log(item);
+          }}
+          width="16"
+          height="17"
+          viewBox="0 0 16 17"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.334 2.49955C11.5091 2.32445 11.7169 2.18556 11.9457 2.0908C12.1745 1.99604 12.4197 1.94727 12.6673 1.94727C12.9149 1.94727 13.1601 1.99604 13.3889 2.0908C13.6177 2.18556 13.8256 2.32445 14.0007 2.49955C14.1757 2.67465 14.3146 2.88252 14.4094 3.11129C14.5042 3.34006 14.5529 3.58526 14.5529 3.83288C14.5529 4.08051 14.5042 4.3257 14.4094 4.55448C14.3146 4.78325 14.1757 4.99112 14.0007 5.16622L5.00065 14.1662L1.33398 15.1662L2.33398 11.4995L11.334 2.49955Z"
+            stroke="#464F60"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+    };
+  });
+  const [modal, setModal] = useState(false);
   return (
-    <Agentlayout current="Send Money" useBack={true}>
+    <Agentlayout current="Update Rate" useBack={true}>
+      {modal && (
+        <AppModal
+          closeModal={() => {
+            setModal(false);
+          }}
+          heading="Update Fees"
+          maxWidth="380px"
+        >
+          <div className="gridLay">
+            <div
+              style={{
+                marginTop: "20px",
+                width: "100%",
+              }}
+            >
+              <label>Maximum Amount</label>
+              <AppInput
+                defaultValue={rateBand?.maximuAmount}
+                type="number"
+                name="username"
+                padding="12px"
+                onChange={(e) => {
+                  setRateBand({
+                    ...rateBand,
+                    maximuAmount: Number(e.target.value),
+                  });
+                }}
+              />
+            </div>
+            <div
+              style={{
+                width: "100%",
+                marginTop: "20px",
+              }}
+            >
+              <label>Minimum Amount</label>
+              <AppInput
+                defaultValue={rateBand?.minimumAmount}
+                type="number"
+                name="username"
+                padding="12px"
+                onChange={(e) => {
+                  setRateBand({
+                    ...rateBand,
+                    minimumAmount: Number(e.target.value),
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <AppSelect
+            defaultValue={{
+              label: rateBand?.chargeType,
+              value: rateBand?.chargeType,
+            }}
+            options={[
+              { label: "Fixed", value: "Fixed" },
+              { label: "Percentage", value: "Percentage" },
+            ]}
+            label="Charge Type"
+            onChange={(e) => {
+              setRateBand({
+                ...rateBand,
+                chargeType: e.value,
+              });
+            }}
+          />
+          <div className="gridLay">
+            <div
+              style={{
+                marginTop: "20px",
+                width: "100%",
+              }}
+            >
+              <label>Rate</label>
+              <AppInput
+                defaultValue={rateBand?.rate}
+                type="number"
+                name="username"
+                padding="12px"
+                onChange={(e) => {
+                  setRateBand({
+                    ...rateBand,
+                    rate: Number(e.target.value),
+                  });
+                }}
+              />
+            </div>
+            <div
+              style={{
+                width: "100%",
+                marginTop: "20px",
+              }}
+            >
+              <label>Transfer Fee</label>
+              <AppInput
+                defaultValue={rateBand?.charge}
+                type="number"
+                name="username"
+                padding="12px"
+                onChange={(e) => {
+                  setRateBand({
+                    ...rateBand,
+                    charge: Number(e.target.value),
+                  });
+                }}
+              />
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gridGap: "10px",
+              marginTop: "30px",
+            }}
+          >
+            <div></div>
+            <button
+              onClick={() => {
+                setModal(false);
+              }}
+              className="cancel"
+            >
+              {" "}
+              <span>Cancel</span>
+            </button>
+            <button
+              className="confirm"
+              onClick={() => {
+                updateRateBandsArray();
+              }}
+            >
+              {" "}
+              <span>{false ? "creating..." : "Update"}</span>
+            </button>
+          </div>
+        </AppModal>
+      )}
       <Content>
         <div className="dashboardcontent">
           <SectionThree>
@@ -164,6 +429,7 @@ function UpdateRate() {
                 value={countrySelected}
                 setValue={setSelectedCountry}
                 onChange={handleRates}
+                agentRates={agentRates}
               />
               {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
 
@@ -249,27 +515,41 @@ function UpdateRate() {
             <SectionThree>
               <div className="text" style={{ fontSize: "13px" }}>
                 <div>
-                  <span>Your New Rate</span>
+                  <span>New Rate</span>
                   <div
                     style={{
                       position: "relative",
                       display: "grid",
-                      gridTemplateColumns: "1fr 4fr",
+                      gridTemplateColumns: "2fr 5.8fr",
                     }}
                   >
                     <div>
-                      <CustomInput
-                        placeholder="amount"
-                        className="input"
-                        disabled
-                        style={{
-                          borderRadius: "8px 0px 0px 8px",
-                          borderSize: "0.5px",
-                          border: "1px solid",
-                          fontSize: "6px",
-                        }}
-                        val={selectedCountry?.toCurrency?.code}
-                      />
+                      <div>
+                        <span
+                          style={{
+                            fontSize: "16px",
+                            display: "flex",
+                            alignItems: "center",
+                            border: "1px solid #b3b3b3",
+                            padding: "10.5px",
+                            borderRadius: "10px 0px 0px 10px",
+                          }}
+                        >
+                          <ReactCountryFlag
+                            countryCode={selectedCountry?.toCurrency?.code?.slice(
+                              0,
+                              2
+                            )}
+                            title={selectedCountry?.toCurrency.code}
+                            style={{
+                              marginRight: "6px",
+                              borderRadius: "10000000px",
+                            }}
+                            svg
+                          />{" "}
+                          {selectedCountry?.toCurrency.code}
+                        </span>
+                      </div>
                     </div>
                     <div style={{ position: "relative" }}>
                       <input
@@ -296,8 +576,9 @@ function UpdateRate() {
                           fontSize: "6px",
                           borderRadius: "0px 8px 8px 0px",
                           padding: "13px",
-                          borderTop: "1px solid #000000",
-                          borderBottom: "1px solid #000000",
+                          borderTop: "1px solid #b3b3b3",
+                          borderBottom: "1px solid #b3b3b3",
+                          borderRight: "1px solid #b3b3b3",
                           borderLeft: "0px solid",
                           width: "100%",
                           background: "#ffffff",
@@ -316,9 +597,9 @@ function UpdateRate() {
                             fontSize: "6px",
                             borderRadius: "0px 8px 8px 0px",
                             padding: "13px",
-                            borderTop: "1px solid #000000",
-                            borderBottom: "1px solid #000000",
-                            borderRight: "1px solid #000000",
+                            borderTop: "1px solid #b3b3b3",
+                            borderBottom: "1px solid #b3b3b3",
+                            borderRight: "1px solid #b3b3b3",
                             width: "100%",
                             background: "#ffffff",
                             color: "#000000",
@@ -355,143 +636,43 @@ function UpdateRate() {
                     </div>
                   </div>
                 </div>
-                <div>
-                  <span>Charge Base Amount</span>
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "grid",
-                      gridTemplateColumns: "1fr 4fr",
-                    }}
-                  >
-                    <div>
-                      <CustomInput
-                        placeholder="amount"
-                        disabled
-                        className="input"
-                        style={{
-                          borderRadius: "8px 0px 0px 8px",
-                          borderSize: "0.5px",
-                          border: "1px solid",
-                          fontSize: "6px",
-                        }}
-                        val={selectedCountry?.fromCurrency?.code}
-                      />
-                    </div>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        className="input"
-                        onWheel={numberInputOnWheelPreventChange}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(newValue) => {
-                          setFeeFixed(newValue.target.value);
-                        }}
-                        style={{
-                          borderSize: "0.5px",
-                          fontSize: "6px",
-                          borderRadius: "0px 8px 8px 0px",
-                          padding: "13px",
-                          borderTop: "1px solid #000000",
-                          borderBottom: "1px solid #000000",
-                          borderLeft: "0px solid",
-                          width: "100%",
-                          background: "#ffffff",
-                          color: "#000000",
-                        }}
-                      />
-                      {feeFixed && (
-                        <InputNumber
-                          className="input"
-                          ref={inputElem}
-                          onWheel={numberInputOnWheelPreventChange}
-                          disabled
-                          value={feeFixed}
-                          style={{
-                            borderSize: "0.5px",
-                            fontSize: "6px",
-                            borderRadius: "0px 8px 8px 0px",
-                            padding: "13px",
-                            borderTop: "1px solid #000000",
-                            borderBottom: "1px solid #000000",
-                            borderRight: "1px solid #000000",
-                            width: "100%",
-                            background: "#ffffff",
-                            color: "#000000",
-                            pointerEvents: "none",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                          }}
-                          onKeyDown={(evt) => {
-                            [
-                              "e",
-                              "E",
-                              "+",
-                              "-",
-                              "=",
-                              "(",
-                              ")",
-                              "*",
-                              "&",
-                            ].includes(evt.key) && evt.preventDefault();
-                          }}
-                          onChange={(newValue) => {
-                            console.log("Change:", `${newValue}`);
-                            setFeeFixed(newValue);
-                          }}
-                          formatter={(value) => {
-                            return `${value}`.replace(
-                              /\B(?=(\d{3})+(?!\d))/g,
-                              ","
-                            );
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
+
                 <div>
                   <span>Charge Percentage</span>
                   <div
                     style={{
                       position: "relative",
+                      display: "grid",
+                      gridTemplateColumns: "0.5fr 5.8fr",
                     }}
                   >
-                    <InputNumber
-                      className="input"
-                      style={{
-                        borderSize: "0.5px",
-                        fontSize: "6px",
-                        borderRadius: "8px",
-                        padding: "13px",
-                        border: "1px solid #000000",
-                        width: "100%",
-                        background: "#ffffff",
-                        color: "#000000",
-                      }}
-                      onKeyDown={(evt) => {
-                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
-                          evt.key
-                        ) && evt.preventDefault();
-                      }}
+                    <div>
+                      <div>
+                        <span
+                          style={{
+                            fontSize: "16px",
+                            display: "flex",
+                            alignItems: "center",
+                            borderLeft: "1px solid #b3b3b3",
+                            borderTop: "1px solid #b3b3b3",
+                            borderBottom: "1px solid #b3b3b3",
+                            padding: "9px",
+                            borderRadius: "10px 0px 0px 10px",
+                          }}
+                        >
+                          %
+                        </span>
+                      </div>
+                    </div>
+                    <AppInput
+                      type="number"
+                      name="username"
+                      padding="12px"
+                      cut
+                      removeCutBorder
                       onChange={(newValue) => {
-                        console.log("Change:", `${newValue}`);
-                        setFee(newValue);
-                      }}
-                      formatter={(value) => {
-                        return `% ${value}`;
+                        console.log("Change:", `${newValue.target.value}`);
+                        setFee(newValue.target.value);
                       }}
                     />
                   </div>
@@ -503,22 +684,36 @@ function UpdateRate() {
                     style={{
                       position: "relative",
                       display: "grid",
-                      gridTemplateColumns: "1fr 4fr",
+                      gridTemplateColumns: "2fr 5.8fr",
                     }}
                   >
                     <div>
-                      <CustomInput
-                        placeholder="amount"
-                        className="input"
-                        disabled
-                        style={{
-                          borderRadius: "8px 0px 0px 8px",
-                          borderSize: "0.5px",
-                          border: "1px solid",
-                          fontSize: "6px",
-                        }}
-                        val={selectedCountry?.fromCurrency?.code}
-                      />
+                      <div>
+                        <span
+                          style={{
+                            fontSize: "16px",
+                            display: "flex",
+                            alignItems: "center",
+                            border: "1px solid #b3b3b3",
+                            padding: "10.4px",
+                            borderRadius: "10px 0px 0px 10px",
+                          }}
+                        >
+                          <ReactCountryFlag
+                            countryCode={selectedCountry?.fromCurrency?.code?.slice(
+                              0,
+                              2
+                            )}
+                            title={selectedCountry?.fromCurrency.code}
+                            style={{
+                              marginRight: "6px",
+                              borderRadius: "10000000px",
+                            }}
+                            svg
+                          />{" "}
+                          {selectedCountry?.fromCurrency.code}
+                        </span>
+                      </div>
                     </div>
 
                     <div style={{ position: "relative" }}>
@@ -546,8 +741,9 @@ function UpdateRate() {
                           fontSize: "6px",
                           borderRadius: "0px 8px 8px 0px",
                           padding: "13px",
-                          borderTop: "1px solid #000000",
-                          borderBottom: "1px solid #000000",
+                          borderTop: "1px solid #b3b3b3",
+                          borderBottom: "1px solid #b3b3b3",
+                          borderRight: "1px solid #b3b3b3",
                           borderLeft: "0px solid",
                           width: "100%",
                           background: "#ffffff",
@@ -566,9 +762,9 @@ function UpdateRate() {
                             fontSize: "6px",
                             borderRadius: "0px 8px 8px 0px",
                             padding: "13px",
-                            borderTop: "1px solid #000000",
-                            borderBottom: "1px solid #000000",
-                            borderRight: "1px solid #000000",
+                            borderTop: "1px solid #b3b3b3",
+                            borderBottom: "1px solid #b3b3b3",
+                            borderRight: "1px solid #b3b3b3",
                             width: "100%",
                             background: "#ffffff",
                             color: "#000000",
@@ -642,21 +838,40 @@ function UpdateRate() {
                   </div>
                 </div>
               </div>
-              {amount && feeFixed && thresh && fee && (
+              <CustomTable
+                Apidata={newRatesTable}
+                noData={rateBands?.length}
+                tableColumns={columns}
+              />
+              {amount && thresh && fee && (
                 <Btn
                   disabled={isLoading}
                   clicking={() => {
-                    mutate({
+                    /*   mutate({
                       agentId:
                         Userdata?.data?.user?.agentId ||
                         Userdata?.data?.user?.userId,
                       agentCurrentRate: {
                         id: selectedCountry?.id,
                         agentRate: amount, //Agent new rate
-                        agentFeeFixedBaseAmount: feeFixed, //Agent fixed fee (in sending currency if amount isn't up to the percentage threshold
                         agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
                         agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
                       },
+                      rateBands: {
+                        ...rateBands,
+                      },
+                    }); */
+                    console.log({
+                      agentId:
+                        Userdata?.data?.user?.agentId ||
+                        Userdata?.data?.user?.userId,
+                      agentCurrentRate: {
+                        id: selectedCountry?.id,
+                        agentRate: amount, //Agent new rate
+                        agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
+                        agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
+                      },
+                      rateBands: [...rateBands],
                     });
                   }}
                   styles={{
@@ -676,10 +891,15 @@ function UpdateRate() {
 }
 const SectionThree = styled.div`
   border-radius: 10px;
-  padding-inline: 1em;
   color: var(--grey-400, #98a2b3);
   margin-top: 10vh;
   border-radius: 10px;
+
+  .gridLay {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
 
   .input {
     /* border-bottom-left-radius: 10px; */
@@ -701,7 +921,7 @@ const SectionThree = styled.div`
   .text {
     font-weight: bold;
     background-color: #fff;
-    padding: 1em;
+    padding: 1.3em;
     font-size: 20px;
     border-radius: 10px;
     font-weight: 500;
