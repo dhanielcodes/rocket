@@ -104,7 +104,7 @@ export const Rates = async (query) => {
       q[1] || 0
     }&fromAmount=${q[2] || 0}&toAmount=${q[3] || 0}&roleId=${
       Userdata?.data?.user?.role?.id
-    }`
+    }&userId=${Userdata?.data?.user?.userId}`
   );
   return data;
 };
@@ -118,7 +118,7 @@ export const agentCustomerGetRate = async (query) => {
       q[3] || 0
     }&roleId=${Userdata?.data?.user?.role?.id}&agentId=${
       Userdata?.data?.user?.agentId
-    }`
+    }&userId=${Userdata?.data?.user?.userId}`
   );
   return data;
 };
@@ -127,7 +127,9 @@ export const TodayRates = async (query) => {
   const { data } = await Axios.get(
     `${baseurl}/gettodaysrate?fromCurrencyId=${q[0] || 0}&toCurrencyId=${
       q[1] || 0
-    }&roleId=${Userdata?.data?.user?.role?.id}`
+    }&roleId=${Userdata?.data?.user?.role?.id}&userId=${
+      Userdata?.data?.user?.userId
+    }`
   );
   return data;
 };
@@ -137,7 +139,9 @@ export const TodayRatesType2 = async (query) => {
   const { data } = await Axios.get(
     `${baseurl}/gettodaysrate?fromCurrencyId=${q[0] || 0}&toCurrencyId=${
       q[1] || 0
-    }&roleId=${Userdata?.data?.user?.role?.id}`
+    }&roleId=${Userdata?.data?.user?.role?.id}&userId=${
+      Userdata?.data?.user?.userId
+    }`
   );
   return data;
 };
@@ -149,7 +153,7 @@ export const TodayRates2 = async (query) => {
       q[0]?.fromCountryCurrency?.id || 0
     }&toCurrencyId=${q[0]?.toCountryCurrency?.id || 0}&roleId=${
       Userdata?.data?.user?.role?.id
-    }`
+    }&userId=${Userdata?.data?.user?.userId}`
   );
   return data;
 };
