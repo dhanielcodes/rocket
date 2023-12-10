@@ -17,11 +17,18 @@ import FormattedDate from "../../reuseables/FormattedDate";
 import { GetCustomers } from "../../services/Dashboard";
 import Agentlayout from "../../reuseables/AgentLayout";
 
-const Droplist = ({ id, onNavigate }) => (
+const Droplist = ({ id, name, onNavigate }) => (
   //   <Menu.Item key='1' onClick={() => onNavigate(id)}>
-  <Menu>
-    <IconMoreVertical />
-    <Menu.Item
+  <Menu
+    style={{
+      borderRadius: "10px",
+      paddingTop: "6px",
+      width: "150px",
+    }}
+  >
+    {/*     <IconMoreVertical />
+     */}{" "}
+    {/*  <Menu.Item
       key="1"
       onClick={(id) => onNavigate(`/user/beneficiary/details?id=${id}`)}
     >
@@ -43,8 +50,8 @@ const Droplist = ({ id, onNavigate }) => (
         </svg>
       </span>
       View Details
-    </Menu.Item>
-    <Menu.Item key="2">
+    </Menu.Item> */}
+    {/*  <Menu.Item key="2">
       <svg
         width="30"
         height="20"
@@ -61,26 +68,62 @@ const Droplist = ({ id, onNavigate }) => (
         />
       </svg>
       Edit
-    </Menu.Item>
-    <Menu.Item key="3">
+    </Menu.Item> */}
+    <Menu.Item
+      onClick={() =>
+        onNavigate(`/agent/update-rate-customer?id=${id}&name=${name}`)
+      }
+      key="3"
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
       <svg
-        width="30"
+        width="20"
         height="20"
         viewBox="0 0 20 20"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M5.83337 14.1673L14.1667 5.83398M14.1667 5.83398H5.83337M14.1667 5.83398V14.1673"
+          d="M5.83398 4.16797V16.668"
           stroke="#464F60"
-          stroke-width="1.66667"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M14.168 15.834L14.168 3.33398"
+          stroke="#464F60"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M3.33398 5.83398L5.24473 3.78155C5.52251 3.48317 5.6614 3.33398 5.83398 3.33398C6.00657 3.33398 6.14546 3.48317 6.42324 3.78155L8.33398 5.83398"
+          stroke="#464F60"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M11.668 14.168L13.5787 16.2204C13.8565 16.5188 13.9954 16.668 14.168 16.668C14.3406 16.668 14.4794 16.5188 14.7572 16.2204L16.668 14.168"
+          stroke="#464F60"
+          stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
       </svg>
-      Send Money
+      <span
+        style={{
+          marginLeft: "10px",
+        }}
+      >
+        Update Rate
+      </span>
     </Menu.Item>
-    <Menu.Item
+    {/* <Menu.Item
       key="4"
       onClick={(id) => onNavigate(`/user/beneficiary/upload?id=${id}`)}
     >
@@ -107,8 +150,8 @@ const Droplist = ({ id, onNavigate }) => (
         </defs>
       </svg>
       ID Upload
-    </Menu.Item>
-    <Menu.Item key="5">
+    </Menu.Item> */}
+    {/*   <Menu.Item key="5">
       <svg
         width="30"
         height="20"
@@ -125,8 +168,8 @@ const Droplist = ({ id, onNavigate }) => (
         />
       </svg>
       View Document
-    </Menu.Item>
-    <Menu.Item key="6" style={{ color: "red" }}>
+    </Menu.Item> */}
+    {/*   <Menu.Item key="6" style={{ color: "red" }}>
       <svg
         width="30"
         height="20"
@@ -143,14 +186,9 @@ const Droplist = ({ id, onNavigate }) => (
         />
       </svg>
       Delete Document
-    </Menu.Item>
+    </Menu.Item> */}
   </Menu>
 );
-
-const handleNavigate = (id) => {
-  const navigate = useNavigate();
-  navigate(`/user/beneficiary/details?id=${id}`);
-};
 
 const InputSearch = Input.Search;
 
@@ -158,6 +196,10 @@ function AgentCustomer() {
   const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
   const BeneList = Userdata?.data.user.beneficiaries;
 
+  const navigate = useNavigate();
+  const handleNavigate = (id) => {
+    navigate(id);
+  };
   // useEffect(() => {
 
   // },[Userdata])
@@ -174,8 +216,6 @@ function AgentCustomer() {
   });
 
   console.log(customersList, "newDeteree");
-
-  const navigate = useNavigate();
 
   // const goBack = () => {
   //   navigate(-1); // This navigates back to the previous page in the navigation stack.
@@ -263,7 +303,11 @@ function AgentCustomer() {
                                 </Dropdown> */}
                       <Dropdown
                         droplist={
-                          <Droplist id={d.id} onNavigate={handleNavigate} />
+                          <Droplist
+                            id={d.userId}
+                            name={d?.firstName + " " + d?.surName}
+                            onNavigate={handleNavigate}
+                          />
                         }
                         position="bl"
                         on

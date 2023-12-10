@@ -212,6 +212,13 @@ export const updateRate = async (body) => {
   const { data } = await Axios.post(`${baseurl}/agentupdaterate`, body);
   return data;
 };
+export const updateSpecialRate = async (body) => {
+  const { data } = await Axios.post(
+    `${baseurl}/updatecustomerspeacialrate`,
+    body
+  );
+  return data;
+};
 
 export const generateJourneyToken = async (body) => {
   const { data } = await Axios.post(`${baseurl}/GetGBGAccessToken`, body);

@@ -26,6 +26,7 @@ import {
   getAgentRates,
   sendMoney,
   updateRate,
+  updateSpecialRate,
 } from "../../services/Dashboard";
 import {
   Paychannels as testpaymentchannel,
@@ -64,7 +65,7 @@ const TextArea = Input.TextArea;
 const InputSearch = Input.Search;
 const TabPane = Tabs.TabPane;
 
-function UpdateRate() {
+function UpdateRateCustomer() {
   const navigates = useNavigate();
 
   const getLocals = (name) => {
@@ -116,11 +117,13 @@ function UpdateRate() {
     },
   });
   const { mutate, isLoading, isError } = useMutation({
-    mutationFn: updateRate,
+    mutationFn: updateSpecialRate,
     onSuccess: (data) => {
       if (data?.status) {
         toast.success(
-          `Rate for ${selectedCountry?.fromCurrency?.name} to ${selectedCountry?.toCurrency?.name} was updated successfully`
+          `Rate for ${selectedCountry?.fromCurrency?.name} to ${
+            selectedCountry?.toCurrency?.name
+          } for ${params?.get("name")} was updated successfully`
         );
         setAmount("");
         setFee("");
@@ -130,7 +133,9 @@ function UpdateRate() {
         setType("");
         navigates("/agent/dashboard");
       } else {
-        toast.error(data?.message);
+        toast.error(
+          data?.message + " " + `for your customer ${params.get("name")}`
+        );
       }
       console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data?.data);
       console.log(data);
@@ -278,6 +283,8 @@ function UpdateRate() {
     };
   });
   const [modal, setModal] = useState(false);
+
+  const [params] = useSearchParams();
   return (
     <Agentlayout current="Update Rate" useBack={true}>
       {modal && (
@@ -638,7 +645,7 @@ function UpdateRate() {
                 </div>
 
                 <div>
-                  <span>Charge Percentage</span>
+                  <span>Fees</span>
                   <div
                     style={{
                       position: "relative",
@@ -678,130 +685,6 @@ function UpdateRate() {
                   </div>
                 </div>
 
-                <div>
-                  <span>Charge Threshold</span>
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "grid",
-                      gridTemplateColumns: "2fr 5.8fr",
-                    }}
-                  >
-                    <div>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: "16px",
-                            display: "flex",
-                            alignItems: "center",
-                            border: "1px solid #b3b3b3",
-                            padding: "10.4px",
-                            borderRadius: "10px 0px 0px 10px",
-                          }}
-                        >
-                          <ReactCountryFlag
-                            countryCode={selectedCountry?.fromCurrency?.code?.slice(
-                              0,
-                              2
-                            )}
-                            title={selectedCountry?.fromCurrency.code}
-                            style={{
-                              marginRight: "6px",
-                              borderRadius: "10000000px",
-                            }}
-                            svg
-                          />{" "}
-                          {selectedCountry?.fromCurrency.code}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div style={{ position: "relative" }}>
-                      <input
-                        className="input"
-                        onWheel={numberInputOnWheelPreventChange}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(newValue) => {
-                          setThresh(newValue.target.value);
-                        }}
-                        style={{
-                          borderSize: "0.5px",
-                          fontSize: "6px",
-                          borderRadius: "0px 8px 8px 0px",
-                          padding: "13px",
-                          borderTop: "1px solid #b3b3b3",
-                          borderBottom: "1px solid #b3b3b3",
-                          borderRight: "1px solid #b3b3b3",
-                          borderLeft: "0px solid",
-                          width: "100%",
-                          background: "#ffffff",
-                          color: "#000000",
-                        }}
-                      />
-                      {thresh && (
-                        <InputNumber
-                          className="input"
-                          ref={inputElem}
-                          onWheel={numberInputOnWheelPreventChange}
-                          disabled
-                          value={thresh}
-                          style={{
-                            borderSize: "0.5px",
-                            fontSize: "6px",
-                            borderRadius: "0px 8px 8px 0px",
-                            padding: "13px",
-                            borderTop: "1px solid #b3b3b3",
-                            borderBottom: "1px solid #b3b3b3",
-                            borderRight: "1px solid #b3b3b3",
-                            width: "100%",
-                            background: "#ffffff",
-                            color: "#000000",
-                            pointerEvents: "none",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                          }}
-                          onKeyDown={(evt) => {
-                            [
-                              "e",
-                              "E",
-                              "+",
-                              "-",
-                              "=",
-                              "(",
-                              ")",
-                              "*",
-                              "&",
-                            ].includes(evt.key) && evt.preventDefault();
-                          }}
-                          onChange={(newValue) => {
-                            console.log("Change:", `${newValue}`);
-                            setThresh(newValue);
-                          }}
-                          formatter={(value) => {
-                            return `${value}`.replace(
-                              /\B(?=(\d{3})+(?!\d))/g,
-                              ","
-                            );
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-
                 <div className="rates">
                   <div className="pri">
                     <CountryFlag
@@ -838,12 +721,8 @@ function UpdateRate() {
                   </div>
                 </div>
               </div>
-              <CustomTable
-                Apidata={newRatesTable}
-                noData={rateBands?.length}
-                tableColumns={columns}
-              />
-              {amount && thresh && fee && (
+
+              {amount && fee && (
                 <Btn
                   disabled={isLoading}
                   clicking={() => {
@@ -851,25 +730,12 @@ function UpdateRate() {
                       agentId:
                         Userdata?.data?.user?.agentId ||
                         Userdata?.data?.user?.userId,
-                      agentCurrentRate: {
-                        id: selectedCountry?.id,
-                        agentRate: amount, //Agent new rate
-                        agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
-                        agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
+                      customerId: Number(params?.get("id")),
+                      specialRate: {
+                        currencyRateId: selectedCountry?.id,
+                        specialRate: Number(amount), //Agent new rate
+                        charge: Number(fee), //Percetange of the sending amount if upto or equal to threshold
                       },
-                      rateBands: [...rateBands],
-                    });
-                    console.log({
-                      agentId:
-                        Userdata?.data?.user?.agentId ||
-                        Userdata?.data?.user?.userId,
-                      agentCurrentRate: {
-                        id: selectedCountry?.id,
-                        agentRate: amount, //Agent new rate
-                        agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
-                        agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
-                      },
-                      rateBands: [...rateBands],
                     });
                   }}
                   styles={{
@@ -1401,4 +1267,4 @@ const Header = styled.div`
   }
 `;
 
-export default UpdateRate;
+export default UpdateRateCustomer;

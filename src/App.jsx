@@ -54,6 +54,7 @@ import WalletsDetailsAgent from "./Routes/Agent/Settings/WalletsDetails";
 import UpdateRate from "./Routes/Agent/UpdateRate";
 import DocumentUploadAgent from "./Routes/Agent/DocumentUpload";
 import TransactionDetailsAgent from "./Routes/Agent/TransactionDetails";
+import UpdateRateCustomer from "./Routes/Agent/UpdateRateCustomer";
 //
 
 function App() {
@@ -93,6 +94,10 @@ function App() {
             />
             <Route path="/user/sendmoney" element={<SendMoney />} />
             <Route path="/agent/update-rate" element={<UpdateRate />} />
+            <Route
+              path="/agent/update-rate-customer"
+              element={<UpdateRateCustomer />}
+            />
             <Route path="/user/transaction/history" element={<Dashboard />} />
             <Route path="/user/setting" element={<Dashboard />} />
             <Route path="/user/wallet" element={<Wallet />} />
