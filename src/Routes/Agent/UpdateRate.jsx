@@ -555,6 +555,7 @@ function UpdateRate() {
                       <input
                         className="input"
                         onWheel={numberInputOnWheelPreventChange}
+                        type="number"
                         onKeyDown={(evt) => {
                           [
                             "e",
