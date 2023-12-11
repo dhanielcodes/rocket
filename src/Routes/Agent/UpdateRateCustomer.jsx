@@ -213,7 +213,7 @@ function UpdateRateCustomer() {
         return {
           ...obj,
           minimumAmount: rateBand?.minimumAmount,
-          maximuAmount: rateBand?.maximuAmount,
+          maximumAmount: rateBand?.maximumAmount,
           rate: rateBand?.rate,
           chargeType: rateBand?.chargeType,
           charge: rateBand?.charge,
@@ -235,7 +235,7 @@ function UpdateRateCustomer() {
     },
     {
       title: "MAX AMT",
-      dataIndex: "maximuAmount",
+      dataIndex: "maximumAmount",
       width: "130%",
     },
     {
@@ -304,14 +304,14 @@ function UpdateRateCustomer() {
             >
               <label>Maximum Amount</label>
               <AppInput
-                defaultValue={rateBand?.maximuAmount}
+                defaultValue={rateBand?.maximumAmount}
                 type="number"
                 name="username"
                 padding="12px"
                 onChange={(e) => {
                   setRateBand({
                     ...rateBand,
-                    maximuAmount: Number(e.target.value),
+                    maximumAmount: Number(e.target.value),
                   });
                 }}
               />

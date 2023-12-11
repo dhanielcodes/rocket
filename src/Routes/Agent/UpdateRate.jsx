@@ -208,7 +208,7 @@ function UpdateRate() {
         return {
           ...obj,
           minimumAmount: rateBand?.minimumAmount,
-          maximuAmount: rateBand?.maximuAmount,
+          maximumAmount: rateBand?.maximumAmount,
           rate: rateBand?.rate,
           chargeType: rateBand?.chargeType,
           charge: rateBand?.charge,
@@ -230,7 +230,7 @@ function UpdateRate() {
     },
     {
       title: "MAX AMT",
-      dataIndex: "maximuAmount",
+      dataIndex: "maximumAmount",
       width: "130%",
     },
     {
@@ -297,14 +297,14 @@ function UpdateRate() {
             >
               <label>Maximum Amount</label>
               <AppInput
-                defaultValue={rateBand?.maximuAmount}
+                defaultValue={rateBand?.maximumAmount}
                 type="number"
                 name="username"
                 padding="12px"
                 onChange={(e) => {
                   setRateBand({
                     ...rateBand,
-                    maximuAmount: Number(e.target.value),
+                    maximumAmount: Number(e.target.value),
                   });
                 }}
               />
@@ -856,8 +856,8 @@ function UpdateRate() {
                         agentRate: amount, //Agent new rate
                         agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
                         agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
+                        rateBands: [...rateBands],
                       },
-                      rateBands: [...rateBands],
                     });
                     console.log({
                       agentId:
