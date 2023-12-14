@@ -176,7 +176,9 @@ export const TodayRatesAgent2 = async (query) => {
   const { data } = await Axios.get(
     `${baseurl}/getagenttodaysrate?fromCurrencyId=${q[0] || 0}&toCurrencyId=${
       q[1] || 0
-    }&agentId=${Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId}`
+    }&agentId=${
+      Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId
+    }&userId=${Userdata?.data?.user?.userId}`
   );
   return data;
 };
@@ -187,7 +189,7 @@ export const TodayRatesAgent = async (from, to) => {
       to || 0
     }&roleId=${Userdata?.data?.user?.role?.id}&agentId=${
       Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId
-    }`
+    }&userId=${Userdata?.data?.user?.userId}`
   );
   return data;
 };
