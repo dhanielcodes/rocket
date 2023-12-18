@@ -25,6 +25,7 @@ import {
   cityTest as cityTest,
   employment as employmentTest,
   profession as professionTest,
+  newProfessions,
 } from "../../config/Test";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -72,7 +73,7 @@ function Register() {
     countryId: "",
     cityId: "",
     employmentStatusId: "",
-    professionId: "",
+    profession: "",
     companyName: "",
     onboardingSource: "Web",
   });
@@ -266,7 +267,9 @@ function Register() {
     StateOption
   );
   const EmploymentOption = [...Employment.map((d) => d?.name)];
-  const ProffessionOption = [...Proffession.map((d) => d?.name)];
+  const ProffessionOption = [
+    ...newProfessions.map((d) => d.toLocaleUpperCase()),
+  ];
   const CityOption = [...City?.map((d) => d?.name)];
   console.log(
     "🚀 ~ file: Register.jsx:220 ~ Register ~ CityOption:",
@@ -295,9 +298,8 @@ function Register() {
     setStateDetails(getStateDetails && getStateDetails);
   };
   const handleSelectProf = (e) => {
-    const getStateDetails = Proffession.find((d) => d.name === e);
     setUser((prev) => {
-      return { ...prev, ["professionId"]: getStateDetails?.id };
+      return { ...prev, ["profession"]: e };
     });
     setprof(e);
   };
@@ -328,7 +330,7 @@ function Register() {
       user?.postcode &&
       newAddress?.description &&
       user?.employmentStatusId &&
-      user?.professionId &&
+      user?.profession &&
       user?.companyName &&
       user?.phone
     ) {
@@ -348,7 +350,7 @@ function Register() {
           address: newAddress?.description,
           postcode: user?.postcode,
           employmentStatusId: user?.employmentStatusId,
-          professionId: user?.professionId,
+          profession: user?.profession,
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
           agentId: params.get("aid") ? Number(params.get("aid")) : 0,
@@ -374,7 +376,7 @@ function Register() {
           address: newAddress?.description,
           postcode: user?.postcode,
           employmentStatusId: user?.employmentStatusId,
-          professionId: user?.professionId,
+          profession: user?.profession,
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
           agentInvite: agentInvite ? agentInvite : "",
