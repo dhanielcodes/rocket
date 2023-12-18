@@ -465,11 +465,13 @@ function UpdateRate() {
                     <AmountFormatter
                       currency={countrySelected?.toCurrency?.code}
                       value={
-                        countrySelected?.conversionRate ||
-                        rates?.data[0]?.conversionRate ||
-                        countrySelected?.rateUpdateValue ||
-                        rates?.data[0]?.rateUpdateValue ||
-                        0
+                        countrySelected?.conversionRate === 0
+                          ? 0
+                          : countrySelected?.conversionRate ||
+                            rates?.data[0]?.conversionRate ||
+                            countrySelected?.rateUpdateValue ||
+                            rates?.data[0]?.rateUpdateValue ||
+                            0
                       }
                     />
                     {/* <p>920.000 NGN</p> */}
