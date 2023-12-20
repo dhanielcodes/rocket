@@ -17,18 +17,21 @@ import CountryDropdown from "../../reuseables/CountryList";
 import { countryObjectsArray } from "../../../config/CountryCodes";
 import CountryFlag from "react-country-flag";
 import AmountFormatter from "../../reuseables/AmountFormatter";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Rates,
   TodayRates,
   TodayRatesAgent,
   TodayRatesAgent2,
+  confirmKyc,
 } from "../../services/Dashboard";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import CustomInput from "../../reuseables/CustomInput";
 import Agentlayout from "../../reuseables/AgentLayout";
 import CountryListAgent from "../../reuseables/CountryListAgent";
 import WalletList from "../../reuseables/WalletList";
+import ReusableModal from "../../reuseables/ReusableModal";
+import Msg from "../../reuseables/Msg";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -38,6 +41,35 @@ function Dashboard() {
   const [getrates, setRates] = useState(null);
   const [currentRates, setcurrentRates] = useState(null);
   const [amount, setamount] = useState(0);
+  const [kyc, setKyc] = useState(false);
+
+  const [params] = useSearchParams();
+
+  const {
+    mutate,
+    data: confirmData,
+    isLoading: confirmLoading,
+  } = useMutation({
+    mutationFn: confirmKyc,
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onSuccess: (data) => {
+      setKyc(true);
+    },
+    onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+  const jId = params.get("journeyId");
+  useEffect(() => {
+    if (jId) {
+      mutate({
+        JourneyId: params.get("journeyId"),
+      });
+    }
+  }, [jId]);
 
   const getC = JSON.parse(localStorage.getItem("currencyList"));
   const c1 = getC
@@ -176,6 +208,14 @@ function Dashboard() {
           </p>
         )}
       </div> */}
+        <ReusableModal
+          isOpen={kyc}
+          onClose={() => {
+            setKyc(false);
+          }}
+        >
+          <Msg type={confirmData?.status}>{confirmData?.message}</Msg>
+        </ReusableModal>
 
         <SectionOne>
           <div className="sel1">

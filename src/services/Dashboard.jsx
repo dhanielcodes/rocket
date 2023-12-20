@@ -232,3 +232,8 @@ export const generateJourneyToken = async (body) => {
   const { data } = await Axios.post(`${baseurl}/GetGBGAccessToken`, body);
   return data;
 };
+
+export const confirmKyc = async (from) => {
+  const { data } = await Axios.post(`${baseurl}/GBGKYCWebHookHandler`, from);
+  return data;
+};

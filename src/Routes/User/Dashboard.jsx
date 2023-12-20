@@ -16,15 +16,16 @@ import { Select } from "@arco-design/web-react";
 import CountryDropdown from "../../reuseables/CountryList";
 import CountryFlag from "react-country-flag";
 import AmountFormatter from "../../reuseables/AmountFormatter";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   GetDetails,
   Rates,
   TodayRates,
   TodayRatesAgent2,
   TodayRatesType2,
+  confirmKyc,
 } from "../../services/Dashboard";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import CustomInput from "../../reuseables/CustomInput";
 import { countryObjectsArray } from "../../../config/CountryCodes";
 import ReusableModal from "../../reuseables/ReusableModal";
@@ -39,6 +40,9 @@ function Dashboard() {
   const [currencyDetails, setCurrencyDetails] = useState(null);
   const [getrates, setRates] = useState(null);
   const [currentRates, setcurrentRates] = useState(null);
+
+  const [kyc, setKyc] = useState(false);
+
   console.log(
     "🚀 ~ file: Dashboard.jsx:34 ~ Dashboard ~ currentRates:",
     currentRates
@@ -110,6 +114,36 @@ function Dashboard() {
       console.log(err);
     },
   });
+
+  const [params] = useSearchParams();
+
+  const {
+    mutate,
+    data: confirmData,
+    isLoading: confirmLoading,
+  } = useMutation({
+    mutationFn: confirmKyc,
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onSuccess: (data) => {
+      setKyc(true);
+    },
+    onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+  const jId = params.get("journeyId");
+  useEffect(() => {
+    if (jId) {
+      mutate({
+        JourneyId: params.get("journeyId"),
+      });
+    }
+  }, [jId]);
+
+  console.log(confirmData, "confirmData");
   console.log(
     "🚀 ~ file: Beneficiary.jsx:108 ~ Beneficiary ~ newDetails:",
     newDetails
@@ -196,7 +230,16 @@ function Dashboard() {
         )}
       </div> */}
 
-        {modal &&
+        <ReusableModal
+          isOpen={kyc}
+          onClose={() => {
+            setKyc(false);
+          }}
+        >
+          <Msg type={confirmData?.status}>{confirmData?.message}</Msg>
+        </ReusableModal>
+
+        {/*    {modal &&
           getLocals("kycStatus") &&
           newDetails?.data?.kycStatus === "Pending" && (
             <ReusableModal
@@ -211,7 +254,7 @@ function Dashboard() {
               )}
             </ReusableModal>
           )}
-
+ */}
         <SectionOne>
           <div className="sel1">
             <div className="container">
