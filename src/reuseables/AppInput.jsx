@@ -51,8 +51,10 @@ function AppInput({
           disabled={disabled}
           defaultValue={defaultValue}
           onKeyDown={(evt) => {
-            ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(evt.key) &&
-              evt.preventDefault();
+            if (type === "number") {
+              ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(evt.key) &&
+                evt.preventDefault();
+            }
           }}
         />
       </div>
