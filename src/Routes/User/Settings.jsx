@@ -120,7 +120,7 @@ const Settings = () => {
                   width: "100px",
                   height: "300px",
                 }}
-                src={Userdata?.data?.user?.idImageURL}
+                src={Userdata?.data?.user?.profileImageURL}
                 alt=""
               />
               <input
