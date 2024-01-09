@@ -7,18 +7,27 @@ import CountryDropdown from "../../../reuseables/CountryList";
 import Btn from "../../../reuseables/Btn";
 import visible from "../../../assets/view.png";
 import hide from "../../../assets/hide.png";
+import { useMutation } from "@tanstack/react-query";
+import { updatePassword } from "../../../services/Auth";
 const ChangePassord = () => {
-  const [selectedCountry, setSelectedCountry] = useState();
-
-  const handleCountryChange = (selectedOption) => {
-    setSelectedCountry(selectedOption);
-  };
-
+  const [old, setOld] = useState(true);
+  const [newP, setNewP] = useState(true);
+  const [confirm, setConfirm] = useState(true);
   const [type, setType] = useState(true);
 
   const togglePass = () => {
     setType(!type);
   };
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: updatePassword,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
   return (
     <Userlayout useBack={true}>
       <Centeredbox>
@@ -36,6 +45,9 @@ const ChangePassord = () => {
               <input
                 name="password"
                 type={type ? "text" : "password"}
+                onChange={(e) => {
+                  setOld(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -78,6 +90,9 @@ const ChangePassord = () => {
               <input
                 name="password"
                 type={type ? "text" : "password"}
+                onChange={(e) => {
+                  setNewP(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -120,6 +135,9 @@ const ChangePassord = () => {
               <input
                 name="password"
                 type={type ? "text" : "password"}
+                onChange={(e) => {
+                  setConfirm(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -170,6 +188,14 @@ const ChangePassord = () => {
         </button> */}
 
         <Btn
+          clicking={() => {
+            if (old && newP && confirm)
+              mutate({
+                oldPassword: old,
+                newPassword: newP,
+                confirmPassword: confirm,
+              });
+          }}
           styles={{
             width: "100%",
           }}

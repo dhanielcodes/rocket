@@ -15,6 +15,10 @@ export const createUser = async (body) => {
   const { data } = await Axios.post(`${baseurl}/signup`, body);
   return data;
 };
+export const updatePassword = async (body) => {
+  const { data } = await Axios.post(`${baseurl}/updateuserpassword`, body);
+  return data;
+};
 
 export const countries = async () => {
   const { data } = await Axios.get(`${baseurl}/getcountries`);

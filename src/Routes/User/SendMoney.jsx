@@ -722,7 +722,15 @@ function SendMoney() {
                     <div
                       key={d.id}
                       className="box"
-                      style={{ color: "#000", textDecoration: "none" }}
+                      style={{
+                        color: "#000",
+                        textDecoration: "none",
+                        border: `${
+                          isSelected
+                            ? "0.5px solid rgba(22, 157, 7, 1)"
+                            : "1px solid rgba(233, 237, 245, 1)"
+                        }`,
+                      }}
                       onClick={() =>
                         handleSelectBeneId(d?.id, d?.beneficiaryName, d)
                       }
