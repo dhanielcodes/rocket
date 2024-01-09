@@ -11,6 +11,7 @@ import carousel2 from "../../assets/carousel2.svg";
 import carousel3 from "../../assets/carousel3.svg";
 import progress from "../../assets/progress.svg";
 import { Link } from "react-router-dom";
+import OneLayout from "../../reuseables/OneLayout";
 
 // function CameraApp() {
 //   const videoRef = useRef(null);
@@ -72,7 +73,7 @@ const UploadId = () => {
     },
   };
   return (
-    <Userlayout>
+    <OneLayout>
       <Centeredbox>
         {/* carousel */}
         <UploadIdBox>
@@ -123,7 +124,7 @@ const UploadId = () => {
           )}
         </UploadIdBox>
       </Centeredbox>
-    </Userlayout>
+    </OneLayout>
   );
 };
 
