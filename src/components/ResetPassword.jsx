@@ -11,7 +11,12 @@ import Btn from "../reuseables/Btn";
 import { Switch, Timeline, Typography } from "@arco-design/web-react";
 import { DatePicker } from "@arco-design/web-react";
 import { Select } from "@arco-design/web-react";
-import { userLogin, checkEmail, getCurrencies } from "../services/Auth";
+import {
+  userLogin,
+  checkEmail,
+  getCurrencies,
+  forgotPassword,
+} from "../services/Auth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useNavigate } from "react-router-dom";
@@ -46,116 +51,21 @@ function ResetPassword() {
   const [type, setType] = useState(false);
   const [vis, setVis] = useState(false);
 
-  const [loginDetails, setloginDetails] = useState({
-    username: "",
-    password: "",
-    deviceId: "Tets",
-    source: "Web",
-  });
+  const [email, setEmail] = useState("");
 
   const handleLogin = async () => {
-    mutate(loginDetails);
+    mutate({ email: email });
   };
-  console.log(loginDetails);
-
-  const handleChange = (e, i) => {
-    const { name, value } = e.target;
-
-    if (name === "password" && loginDetails.password.length) {
-      const requestData = {
-        username: loginDetails.username,
-      };
-      //  moneybusiness.tm-dev.xyz/moneybusiness//auth
-      //   axios
-      //     // .get(`${baseurl}moneybusiness/checkUserExistByEmail`, requestData)
-      //     .get(`${baseurl}/auth`, requestData)
-      //     .then((response) => {
-      //       console.log(response.data);
-
-      //       setloginDetails((prev) => {
-      //         return { ...prev, [name]: value };
-      //       });
-      //     })
-      //     .catch((error) => {
-      //         seterr(error?.message)
-      //         setModal(true)
-      //       console.error(error);
-      //     });
-    }
-
-    setloginDetails((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
-
-  const {
-    data: rates,
-    isLoading: Ratesloading,
-    refetch: RatesnameEnq,
-  } = useQuery({
-    queryKey: [],
-    queryFn: countries,
-    onSuccess: (data) => {
-      localStorage.setItem(
-        "countryList",
-        JSON.stringify(
-          data?.data?.map((item) => {
-            return {
-              ...item,
-              slug: countryObjectsArray(item?.name),
-            };
-          })
-        )
-      );
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-  const { data: currenciess } = useQuery({
-    queryKey: ["jhj"],
-    queryFn: getCurrencies,
-    onSuccess: (data) => {
-      localStorage.setItem(
-        "currencyList",
-        JSON.stringify(
-          data?.data?.map((item) => {
-            return {
-              ...item,
-            };
-          })
-        )
-      );
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
 
   const { mutate, isLoading, isError, data } = useMutation({
-    mutationFn: userLogin,
+    mutationFn: forgotPassword,
     onSuccess: (data) => {
+      setModal(true);
       console.log(data);
-
-      if (data?.status) {
-        localStorage.setItem("userDetails", JSON.stringify(data));
-        if (data.data.user.kycStatus === "Completed") {
-          if (data?.data?.user?.role?.id === 6) {
-            //navigate("/user/dashboard");
-            window.location.pathname = "/user/dashboard";
-          } else {
-            //navigate("/agent/dashboard");
-            window.location.pathname = "/agent/dashboard";
-          }
-        } else {
-          setModal(true);
-          localStorage.setItem("kycStatus", true);
-        }
+      if (data.status) {
+        toast.success(data?.message);
       } else {
-        localStorage.setItem("userDetails", JSON.stringify(data));
-        toast.error(data?.message);
-        setModal(true);
-        localStorage.setItem("kycStatus", true);
+        return;
       }
     },
     onError: (data) => {
@@ -168,10 +78,6 @@ function ResetPassword() {
       return;
     },
   });
-
-  const togglePass = () => {
-    setType(!type);
-  };
 
   return (
     <LoginCotainer>
@@ -190,7 +96,7 @@ function ResetPassword() {
                   isOpen={modal}
                   onClose={() => setModal(false)}
                 >
-                  <Msg type={data?.status}>
+                  <Msg type={data?.transactionRef === "SUCCESS"}>
                     {/* {err} */}
                     <p
                       style={{
@@ -207,48 +113,20 @@ function ResetPassword() {
                         alignItems: "center",
                       }}
                     >
-                      {data?.data?.user?.kycStatus === "Not Started" && (
-                        <Btn
-                          styles={{
-                            width: "100%",
-                            marginRight: "10px",
-                            padding: "8px",
-                            fontWeight: "600",
-                          }}
-                          clicking={() => {
-                            window.location.pathname = "/upload";
-                          }}
-                          size={30}
-                        >
-                          CONTINUE WITH KYC{" "}
-                        </Btn>
-                      )}
-                      &nbsp; &nbsp;
-                      {data?.data?.user?.kycStatus === "Not Started" && (
-                        <Btn
-                          styles={{
-                            width: "100%",
-                            marginRight: "10px",
-                            padding: "8px",
-                            background: "#b0b0b0",
-
-                            fontWeight: "600",
-                          }}
-                          clicking={() => {
-                            // navigate("/upload")
-                            if (data?.data?.user?.role?.id === 6) {
-                              //navigate("/user/dashboard");
-                              window.location.pathname = "/user/dashboard";
-                            } else {
-                              //navigate("/agent/dashboard");
-                              window.location.pathname = "/agent/dashboard";
-                            }
-                          }}
-                          size={30}
-                        >
-                          SKIP FOR NOW{" "}
-                        </Btn>
-                      )}
+                      <Btn
+                        styles={{
+                          width: "100%",
+                          marginRight: "10px",
+                          padding: "8px",
+                          fontWeight: "600",
+                        }}
+                        clicking={() => {
+                          window.location.pathname = "/";
+                        }}
+                        size={30}
+                      >
+                        CONTINUE TO LOGIN{" "}
+                      </Btn>
                     </div>
                   </Msg>
                 </ReusableModal>
@@ -260,7 +138,9 @@ function ResetPassword() {
                 </InputStyle>
                 <input
                   name="username"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   type="email"
                   className="emailinput"
                 />
@@ -268,7 +148,7 @@ function ResetPassword() {
 
               <div>
                 <Btn
-                  disabled={loginDetails?.username === "" ? true : false}
+                  disabled={email === "" ? true : false}
                   clicking={handleLogin}
                   styles={{
                     width: "100%",
@@ -278,7 +158,7 @@ function ResetPassword() {
                     padding: "0.8em",
                   }}
                 >
-                  {isLoading ? <Spin dot /> : "Sign In"}
+                  {isLoading ? <Spin dot /> : "Send Mail"}
                 </Btn>
               </div>
               <CenterElement>

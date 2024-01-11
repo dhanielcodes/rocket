@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Userlayout from "../../../reuseables/Userlayout";
+import Agentlayout from "../../../reuseables/AgentLayout";
 import Centeredbox from "../../../reuseables/Centeredbox";
 import Box from "../../../reuseables/Box";
 import TextInput from "../../../styles/TextInput";
@@ -7,19 +7,28 @@ import CountryDropdown from "../../../reuseables/CountryList";
 import Btn from "../../../reuseables/Btn";
 import visible from "../../../assets/view.png";
 import hide from "../../../assets/hide.png";
-import Agentlayout from "../../../reuseables/AgentLayout";
-const ChangePassordAgent = () => {
-  const [selectedCountry, setSelectedCountry] = useState();
-
-  const handleCountryChange = (selectedOption) => {
-    setSelectedCountry(selectedOption);
-  };
-
+import { useMutation } from "@tanstack/react-query";
+import { updatePassword } from "../../../services/Auth";
+const ChangePassord = () => {
+  const [old, setOld] = useState(true);
+  const [newP, setNewP] = useState(true);
+  const [confirm, setConfirm] = useState(true);
   const [type, setType] = useState(true);
+  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
   const togglePass = () => {
     setType(!type);
   };
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: updatePassword,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
   return (
     <Agentlayout useBack={true}>
       <Centeredbox>
@@ -37,6 +46,9 @@ const ChangePassordAgent = () => {
               <input
                 name="password"
                 type={type ? "text" : "password"}
+                onChange={(e) => {
+                  setOld(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -79,6 +91,9 @@ const ChangePassordAgent = () => {
               <input
                 name="password"
                 type={type ? "text" : "password"}
+                onChange={(e) => {
+                  setNewP(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -121,6 +136,9 @@ const ChangePassordAgent = () => {
               <input
                 name="password"
                 type={type ? "text" : "password"}
+                onChange={(e) => {
+                  setConfirm(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -171,15 +189,25 @@ const ChangePassordAgent = () => {
         </button> */}
 
         <Btn
+          clicking={() => {
+            if (old && newP && confirm)
+              mutate({
+                userId: Userdata?.data?.user?.userId,
+                oldPassword: old,
+                newPassword: newP,
+                password: newP,
+                confirmPassword: confirm,
+              });
+          }}
           styles={{
             width: "100%",
           }}
         >
-          Save Changes
+          {isLoading ? "saving..." : "Save Changes"}
         </Btn>
       </Centeredbox>
     </Agentlayout>
   );
 };
 
-export default ChangePassordAgent;
+export default ChangePassord;

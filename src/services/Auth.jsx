@@ -10,6 +10,12 @@ export const userLogin = async (body) => {
   return data;
 };
 
+export const forgotPassword = async (body) => {
+  const { data } = await Axios.post(`${baseurl}/InitiateForgotPassword`, body);
+  console.log(body);
+  return data;
+};
+
 // create bank account
 export const createUser = async (body) => {
   const { data } = await Axios.post(`${baseurl}/signup`, body);
