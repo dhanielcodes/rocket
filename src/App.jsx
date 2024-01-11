@@ -55,6 +55,7 @@ import UpdateRate from "./Routes/Agent/UpdateRate";
 import DocumentUploadAgent from "./Routes/Agent/DocumentUpload";
 import TransactionDetailsAgent from "./Routes/Agent/TransactionDetails";
 import UpdateRateCustomer from "./Routes/Agent/UpdateRateCustomer";
+import ResetPassword from "./components/ResetPassword";
 //
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           {/* <Route element={<InActivityTimeOut />}> */}
           <Route>
             <Route path="/" element={<Login />} />
+            <Route path="/reset" element={<ResetPassword />} />
             <Route path="/signup" element={<Register />} />
 
             {/* Dashboard Routes */}

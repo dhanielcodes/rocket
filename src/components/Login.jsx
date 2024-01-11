@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Link as Lin } from "react";
 import { styled } from "styled-components";
 import { Input, Link, Space } from "@arco-design/web-react";
 import Logo from "../images/logo.svg";
@@ -289,7 +289,10 @@ function Login() {
               </div>
               <div className="flexjustify">
                 <Checkbox>Remember me</Checkbox>
-                <Link style={{ color: "var(--primary-color)" }}>
+                <Link
+                  onClick={() => navigate("/reset")}
+                  style={{ color: "var(--primary-color)" }}
+                >
                   Forgot password
                 </Link>
               </div>

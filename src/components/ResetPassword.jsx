@@ -37,7 +37,7 @@ const TextArea = Input.TextArea;
 
 const TimelineItem = Timeline.Item;
 
-function Login() {
+function ResetPassword() {
   const navigate = useNavigate();
   const [err, seterr] = useState(null);
   const [modal, setModal] = useState(false);
@@ -181,8 +181,7 @@ function Login() {
           <Center>
             <img src={Logo} />
             <div className="logintext">
-              <h1>Log in to your account</h1>
-              <p>Welcome back! </p>
+              <h1>Reset Password</h1>
             </div>
             <div className="inputform">
               {modal && (
@@ -266,41 +265,10 @@ function Login() {
                   className="emailinput"
                 />
               </div>
-              <div>
-                <span>Password</span>
-                {/* <InputStyle > */}
-                {/* <Input.Password style={{ width: '100%' }} className="input" defaultValue='' onChange={handleChange} name='password' placeholder='Enter your password' /> */}
-                {/* </InputStyle > */}
-                <div className="passwordcont">
-                  <input
-                    name="password"
-                    onChange={handleChange}
-                    type={type ? "text" : "password"}
-                    className="emailinput"
-                  />
-                  <div className="visibility">
-                    <img
-                      src={type ? visible : hide}
-                      height="20px"
-                      onClick={togglePass}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flexjustify">
-                <Checkbox>Remember me</Checkbox>
-                <Link style={{ color: "var(--primary-color)" }}>
-                  Forgot password
-                </Link>
-              </div>
+
               <div>
                 <Btn
-                  disabled={
-                    loginDetails?.username === "" &&
-                    loginDetails?.password === ""
-                      ? true
-                      : false
-                  }
+                  disabled={loginDetails?.username === "" ? true : false}
                   clicking={handleLogin}
                   styles={{
                     width: "100%",
@@ -509,4 +477,4 @@ const Center = styled.div`
   }
 `;
 
-export default Login;
+export default ResetPassword;
