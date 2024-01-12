@@ -15,6 +15,9 @@ import copy from "../../assets/copy.svg";
 //
 import Box from "../../reuseables/Box";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { updateProfilePicture } from "../../services/Auth";
+import toast from "react-hot-toast";
 
 const Settings = () => {
   const settingsMap = [
@@ -103,6 +106,22 @@ const Settings = () => {
     });
   };
 
+  const { mutate, isLoading } = useMutation({
+    mutationFn: updateProfilePicture,
+    onSuccess: (data) => {
+      console.log(data);
+      if (data?.status) {
+        toast.success(data?.message + " " + "re login to see changes");
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (data) => {
+      console.log(data);
+      toast.error(data?.message);
+    },
+  });
+
   // Usage: Call handleUploadImage() when your image is clicked
 
   // Usage: Call handleUploadImage() when your image is clicked
@@ -114,19 +133,24 @@ const Settings = () => {
       <Container>
         <InnerBox>
           <div className="user-info">
-            <div className="pro-photo" onClick={handleUploadImage}>
-              <img
-                style={{
-                  width: "100px",
-                  height: "300px",
-                }}
-                src={Userdata?.data?.user?.profileImageURL}
-                alt=""
-              />
+            <div
+              className="pro-photo"
+              style={{
+                opacity: isLoading ? "0.4" : "1",
+                pointerEvents: isLoading ? "none" : "all",
+              }}
+              onClick={handleUploadImage}
+            >
+              <img src={Userdata?.data?.user?.profileImageURL} alt="" />
               <input
                 type="file"
                 className="uploader"
                 style={{ display: "none" }}
+                onChange={(e) => {
+                  const formData = new FormData();
+                  formData.append("file", e?.target?.files[0]);
+                  mutate(formData);
+                }}
               />
             </div>
             <p
@@ -238,9 +262,6 @@ const InnerBox = styled.div`
     row-gap: 3px;
     margin: 25px 0 10px;
     .pro-photo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 100px;
       height: 100px;
       border-radius: 50%;

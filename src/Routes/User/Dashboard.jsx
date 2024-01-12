@@ -258,7 +258,7 @@ function Dashboard() {
         <SectionOne>
           <div className="sel1">
             <div className="container">
-              <img className="avatar" src={Userdata?.data?.user?.idImageURL} />
+              <img className="avatar" src={Userdata?.data?.user?.profileImageURL} />
               <FlexCol className="currencyselect">
                 {/* <Select></Select> */}
                 <WalletList

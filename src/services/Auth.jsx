@@ -2,6 +2,7 @@ import { Axios } from "../utils/Axios";
 import { BASE_URL } from "../../config/config";
 
 const baseurl = BASE_URL;
+const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
 
 // user login
 export const userLogin = async (body) => {
@@ -13,6 +14,14 @@ export const userLogin = async (body) => {
 export const forgotPassword = async (body) => {
   const { data } = await Axios.post(`${baseurl}/InitiateForgotPassword`, body);
   console.log(body);
+  return data;
+};
+
+export const updateProfilePicture = async (body) => {
+  const { data } = await Axios.post(
+    `${baseurl}/updateUserprofilepicture/${Userdata?.data?.user?.userId}`,
+    body
+  );
   return data;
 };
 

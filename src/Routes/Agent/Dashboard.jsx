@@ -220,7 +220,11 @@ function Dashboard() {
         <SectionOne>
           <div className="sel1">
             <div className="container">
-              <img src={User} height="50px" />
+              <img
+                src={Userdata?.data?.user?.profileImageURL}
+                height="50px"
+                className="avatar"
+              />
               <FlexCol className="currencyselect">
                 {/* <Select></Select> */}
                 <WalletList
@@ -628,7 +632,12 @@ const Content = styled.div`
 
 const SectionOne = styled.div`
   height: 90vh;
-
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #00a85a;
+  }
   .css-13cymwt-control {
     background: linear-gradient(
         94.71deg,
