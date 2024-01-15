@@ -727,7 +727,7 @@ function SendMoney() {
                         textDecoration: "none",
                         border: `${
                           isSelected
-                            ? "0.5px solid rgba(22, 157, 7, 1)"
+                            ? "2px solid rgba(22, 157, 7, 1)"
                             : "1px solid rgba(233, 237, 245, 1)"
                         }`,
                       }}
@@ -861,7 +861,7 @@ function SendMoney() {
                               textDecoration: "none",
                               border: `${
                                 isSelected
-                                  ? "0.5px solid rgba(22, 157, 7, 1)"
+                                  ? "2px solid rgba(22, 157, 7, 1)"
                                   : "1px solid rgba(233, 237, 245, 1)"
                               }`,
                             }}
@@ -1013,7 +1013,7 @@ function SendMoney() {
                           textDecoration: "none",
                           border: `${
                             isSelected
-                              ? "0.5px solid rgba(22, 157, 7, 1)"
+                              ? "2px solid rgba(22, 157, 7, 1)"
                               : "1px solid rgba(233, 237, 245, 1)"
                           }`,
                         }}

@@ -43,6 +43,7 @@ import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import { useNavigate } from "react-router-dom";
 import { countryObjectsArray } from "../../../config/CountryCodes";
+import CountryDropdownNormal from "../../reuseables/CountryListNormal";
 
 function CreateBeneficiary() {
   const [accNum, setAccNum] = useState(null);
@@ -106,12 +107,6 @@ function CreateBeneficiary() {
     // Add more countries as needed
   ];
 
-  const defaultCountry = {
-    label: "Nigeria",
-    value: "NG", // ISO country code for the UK
-    flag: "", // URL to the UK flag image
-  };
-
   const options = ["Beijing", "Shanghai", "Guangzhou", "Disabled"];
   const [Countries, setCountries] = useState();
 
@@ -120,7 +115,7 @@ function CreateBeneficiary() {
     isLoading: payoutloading,
     refetch: refetchpayout,
   } = useQuery({
-    // queryKey: ["nameEnq"],
+    queryKey: ["Payoutchanneldd"],
     queryFn: Payoutchannel,
     onSuccess: (data) => {
       console.log(
@@ -145,7 +140,7 @@ function CreateBeneficiary() {
     isLoading: countrylistloading,
     refetch: refetchcountrylist,
   } = useQuery({
-    queryKey: ["getCategories"],
+    queryKey: ["countridess"],
     queryFn: countries,
     onSuccess: (data) => {
       setCountries(data?.data);
@@ -157,6 +152,8 @@ function CreateBeneficiary() {
       console.log(err);
     },
   });
+
+  console.log(countrylist);
 
   const {
     data: nameEnq,
@@ -222,8 +219,8 @@ function CreateBeneficiary() {
   });
 
   //   const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
-  const [selectedCountry, setselectedCountry] = useState(defaultCountry);
-  const [type, setType] = useState({ name: "direct", label: "direct to bank" });
+  const [selectedCountry, setselectedCountry] = useState();
+  const [type, setType] = useState();
 
   const handleSelectCountry = (e) => {
     console.log(
@@ -327,7 +324,7 @@ function CreateBeneficiary() {
               <div className="text">
                 <p className="textheader">Select country</p>
 
-                <CountryDropdown
+                <CountryDropdownNormal
                   value={selectedCountry}
                   onChange={handleSelectCountry}
                   newOptions={countrylist?.data?.map((item) => {
@@ -346,17 +343,21 @@ function CreateBeneficiary() {
                   <CustomSelect
                     defaultValue={type}
                     onChange={collectionType}
-                    options={[
-                      { name: "direct", label: "direct to bank" },
-                      { name: "Pick Up", label: "Pick Up" },
-                    ]}
+                    options={payout?.data?.map((item) => {
+                      return {
+                        name: item?.name,
+                        label: item?.name,
+                        value: item?.name,
+                        ...item,
+                      };
+                    })}
                     styles={{ fontSize: "10px ! important" }}
                   />
                 </div>
               </div>
             </SectionThree>
             <SectionThree>
-              {type.label === "Pick Up" ? (
+              {type?.label === "Pick Up" ? (
                 <div className="text">
                   <p>Full Name</p>
                   <CustomInput
@@ -430,7 +431,7 @@ function CreateBeneficiary() {
                         setShow(false);
                       }}
                     >
-                      <Msg type={true}>{info?.message}</Msg>
+                      <Msg type={info?.status}>{info?.message}</Msg>
                     </ReusableModal>
                   )}
                   {accNum && accNum.length > 1 ? (
@@ -457,6 +458,9 @@ function CreateBeneficiary() {
             <button
               disabled={nameEnq?.data?.account_name ? false : true}
               onClick={createbeneficiary}
+              style={{
+                color: "white",
+              }}
             >
               {isLoading ? (
                 <Loader color="#fff" style={{ textAlign: "center" }} />

@@ -9,7 +9,7 @@ import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { getCurrencies } from "../services/Auth";
-const WalletList = ({
+const CountryDropdownNormal = ({
   value,
   onChange,
   style,
@@ -19,83 +19,24 @@ const WalletList = ({
   disabled,
   collectionStatus = false,
 }) => {
-  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
-
-  const wallets = Userdata?.data?.user?.wallet;
-
   const options = option || countryList().getData();
-  const { data: newOptions } = useQuery({
-    queryKey: ["getCurrenciesd"],
-    queryFn: getCurrencies,
-    onSuccess: (data) => {
-      //setCountries(data?.data);
-      setValue(
-        collectionStatus
-          ? data?.data
-              ?.map((item) => {
-                return {
-                  code: item?.currencyCode,
-                  value: item?.name,
-                  label: item?.name,
-                  id: item?.id,
-                  ...item,
-                };
-              })
-              ?.filter((item) => item.isReceiving)[0]
-          : data?.data
-              ?.map((item) => {
-                return {
-                  code: item?.currencyCode,
-                  value: item?.name,
-                  label: item?.name,
-                  id: item?.id,
-                  ...item,
-                };
-              })
-              ?.filter((item) => !item.isReceiving)[0]
-      );
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
 
   return (
     <CountyCont>
       <Select
         value={value}
         onChange={onChange}
-        options={wallets?.map((item) => {
-          return {
-            ...item,
-            value: item?.currency?.name,
-            label: item?.currency?.name,
-            code: item?.currency?.code,
-          };
-        })}
+        options={options}
         defaultValue={defaultValue}
         isDisabled={disabled}
         getOptionLabel={(country) => (
           <span
             className="countryName"
-            style={{ fontSize: "12px", display: "flex", alignItems: "center" }}
+            style={{ fontSize: "16px", display: "flex", alignItems: "center" }}
             onClick={() => {
               console.log(country?.code, country.currency);
             }}
           >
-            <ReactCountryFlag
-              countryCode={country?.code?.slice(0, 2)}
-              title={country.code}
-              style={{
-                marginRight: "10px",
-                borderRadius: "10000000px",
-              }}
-              svg
-            />{" "}
-            &nbsp;
             {country.label}
           </span>
         )}
@@ -157,4 +98,4 @@ const CountyCont = styled.div`
   }
 `;
 
-export default WalletList;
+export default CountryDropdownNormal;
