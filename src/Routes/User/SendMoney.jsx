@@ -202,6 +202,7 @@ function SendMoney() {
   const [currentTab, setCurrentTab] = useState(1);
   const [paymentlink, SetPaymentLink] = useState(false);
   const [currentArr, setCurrentArr] = useState([]);
+  const [amount, setAmount] = useState(0);
 
   const one = 1;
   const two = 2;
@@ -304,7 +305,8 @@ function SendMoney() {
   console.log("current:", pchannel);
 
   console.log(params.get("statusMessage"));
-
+  const [purposee, setPurpose] = useState();
+  const [notee, setNote] = useState();
   const handleStep = () => {
     localStorage.setItem(
       "paymentChannelId",
@@ -322,22 +324,38 @@ function SendMoney() {
           ?.name,
       })
     );
-    setCurrent((prev) => {
-      localStorage.setItem("steps", prev + 1);
-      return prev + 1;
-    });
-    // if (current === 4) {
-    //   setCurrent(4);
-    // } else {
-    // }
-
-    // setCurrentArr((prev) => {
-    //   if (prev.length < 4) {
-    //     return [...prev, current]; // Use the spread operator to create a new array
-    //   } else {
-    //     return prev;
-    //   }
-    // });
+    if (current === 2) {
+      if (amount) {
+        setCurrent((prev) => {
+          localStorage.setItem("steps", prev + 1);
+          return prev + 1;
+        });
+      }
+    } else if (current === 3) {
+      if (purposee && notee) {
+        setCurrent((prev) => {
+          localStorage.setItem("steps", prev + 1);
+          return prev + 1;
+        });
+      }
+    } else if (current === 4) {
+      setCurrent((prev) => {
+        localStorage.setItem("steps", prev + 1);
+        return prev + 1;
+      });
+    } else if (current === 1) {
+      if (benee) {
+        setCurrent((prev) => {
+          localStorage.setItem("steps", prev + 1);
+          return prev + 1;
+        });
+      }
+    } else {
+      setCurrent((prev) => {
+        localStorage.setItem("steps", prev + 1);
+        return prev + 1;
+      });
+    }
   };
 
   const navigate = useNavigate();
@@ -369,7 +387,6 @@ function SendMoney() {
 
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
-  const [selectedBene, setselectedBene] = useState();
   const [isSelected, setisSelected] = useState(false);
   const [promocode, setPromoCode] = useState("");
   const [selectedItems, setSelectedItems] = useState({
@@ -381,6 +398,7 @@ function SendMoney() {
     name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
   });
   const [selectedItems2, setSelectedItems2] = useState(null);
+  const [benee, setSelectedBene] = useState(null);
   const [selected3, setSelected3] = useState({
     id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
     name:
@@ -431,6 +449,7 @@ function SendMoney() {
   const handleSelectBeneId = (id, name, all) => {
     console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id, name);
     setSelectedItems(id);
+    setSelectedBene(name);
     localStorage.setItem(
       "userBeneficiaryId",
       JSON.stringify({ id, name: name, ...all })
@@ -731,9 +750,10 @@ function SendMoney() {
                             : "1px solid rgba(233, 237, 245, 1)"
                         }`,
                       }}
-                      onClick={() =>
-                        handleSelectBeneId(d?.id, d?.beneficiaryName, d)
-                      }
+                      onClick={() => {
+                        handleSelectBeneId(d?.id, d?.beneficiaryName, d);
+                        setSelectedBene(d?.beneficiaryName);
+                      }}
                     >
                       <Box>
                         <Avatar className="av">
@@ -838,7 +858,7 @@ function SendMoney() {
               {/* <BeneficiaryCont2> */}
               {/* </BeneficiaryCont2> */}
               <BeneficiaryCont>
-                <RateComponent />
+                <RateComponent amount={amount} setAmount={setAmount} />
                 {paymentchannelloading ? (
                   "Loading..."
                 ) : (
@@ -1171,9 +1191,10 @@ function SendMoney() {
                   <CustomSelect
                     options={mappedPurpose}
                     placeholder="Family support"
-                    onChange={(e) =>
-                      localStorage.setItem("purpose", JSON.stringify(e?.label))
-                    }
+                    onChange={(e) => {
+                      localStorage.setItem("purpose", JSON.stringify(e?.label));
+                      setPurpose(e);
+                    }}
                   />
                   <p>Transaction note</p>
                   <TextArea
@@ -1186,9 +1207,10 @@ function SendMoney() {
                       border: "1px solid #d8d8d8",
                       borderRadius: "8px",
                     }}
-                    onChange={(e) =>
-                      localStorage.setItem("note", JSON.stringify(e))
-                    }
+                    onChange={(e) => {
+                      localStorage.setItem("note", JSON.stringify(e));
+                      setNote(e);
+                    }}
                   />
                 </div>
                 {/* </BeneficiaryCont> */}
