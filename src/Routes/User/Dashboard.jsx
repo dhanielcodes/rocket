@@ -220,7 +220,11 @@ function Dashboard() {
 
   return (
     <Userlayout>
-      <Content>
+      <Content
+        style={{
+          height: window.innerHeight + "px",
+        }}
+      >
         {/* <div>
         {selectedCountry && (
           <p>
@@ -258,7 +262,10 @@ function Dashboard() {
         <SectionOne>
           <div className="sel1">
             <div className="container">
-              <img className="avatar" src={Userdata?.data?.user?.profileImageURL} />
+              <img
+                className="avatar"
+                src={Userdata?.data?.user?.profileImageURL}
+              />
               <FlexCol className="currencyselect">
                 {/* <Select></Select> */}
                 <WalletList
@@ -456,7 +463,6 @@ function Dashboard() {
 }
 
 const Content = styled.div`
-  height: 85vh;
   width: 100%;
   /* position: relative; */
   .dashboardamount h3 {
@@ -471,7 +477,6 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow-y: scroll;
   /* border: 1px solid red; */
 
   .avatar {
