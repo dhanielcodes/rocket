@@ -324,10 +324,10 @@ function CreateBeneficiary() {
               <div className="text">
                 <p className="textheader">Select country</p>
 
-                <CountryDropdownNormal
+                <Select
                   value={selectedCountry}
                   onChange={handleSelectCountry}
-                  newOptions={countrylist?.data?.map((item) => {
+                  options={countrylist?.data?.map((item) => {
                     return {
                       code: item?.currencyCode,
                       value: item?.name,
@@ -337,7 +337,53 @@ function CreateBeneficiary() {
                       ...item,
                     };
                   })}
+                  styles={{
+                    option: (styles) => ({
+                      ...styles,
+                      display: "flex",
+                      alignItems: "center",
+                      color: "#000",
+                      fontSize: "14px",
+                      //   border:"0.1px solid #d8d8d8",
+                      //   backgroundColor:"#e4e4e4",
+                      //   borerRadius:"18px"
+                    }),
+                    menuList: (styles) => ({
+                      ...styles,
+                      display: "flex",
+                      backgroundColor: "#FFF",
+                      flexDirection: "column",
+                      // gap:"10px",
+                      color: "#FFF",
+                      borerRadius: "18px",
+                      alignItems: "center",
+                    }),
+
+                    singleValue: (styles) => ({
+                      ...styles,
+                      display: "flex",
+                      color: "#000",
+                      alignItems: "center",
+                      "> svg": {
+                        marginRight: "8px",
+                        borderRadius: "50%",
+                      },
+                    }),
+                  }}
                 />
+                {/*    <Select
+                    name="countryId"
+                    styles={{
+                      padding: "0px !important",
+                      // You can add custom styles here if needed
+                    }}
+                    options={CountryOption}
+                    value={selectedCountry} // Pass the selected option to the value prop
+                    onChange={handleSelectCountry} // Handle option selection
+                    placeholder="Please select a Country"
+                    showSearch
+                    isClearable={true} // Allow clearing the selected option
+                  /> */}
                 <div className="type">
                   <p className="textheader">Select Collection Type</p>
                   <CustomSelect
@@ -408,20 +454,56 @@ function CreateBeneficiary() {
               ) : (
                 <div className="text">
                   <p>Bank Name</p>
-                  <CustomSelect
+                  <Select
                     options={banksSelection}
-                    styles={{ fontSize: "10px ! important" }}
                     placeholder="select your bank"
                     onChange={(e) => {
                       setBankCode(e);
                       setAccNum("");
+                    }}
+                    styles={{
+                      option: (styles) => ({
+                        ...styles,
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#000",
+                        fontSize: "14px",
+                        //   border:"0.1px solid #d8d8d8",
+                        //   backgroundColor:"#e4e4e4",
+                        //   borerRadius:"18px"
+                      }),
+                      menuList: (styles) => ({
+                        ...styles,
+                        display: "flex",
+                        backgroundColor: "#FFF",
+                        flexDirection: "column",
+                        // gap:"10px",
+                        color: "#FFF",
+                        borerRadius: "18px",
+                        alignItems: "center",
+                      }),
+
+                      singleValue: (styles) => ({
+                        ...styles,
+                        display: "flex",
+                        color: "#000",
+                        alignItems: "center",
+                        "> svg": {
+                          marginRight: "8px",
+                          borderRadius: "50%",
+                        },
+                      }),
                     }}
                   />
                   <p>Accont Number</p>
                   <CustomInput
                     placeholder="Enter account number"
                     readonly={false}
-                    onChange={(e) => setAccNum(e?.target?.value)}
+                    onChange={(e) => {
+                      if (e.target.value?.length === 10) {
+                        setAccNum(e?.target?.value);
+                      }
+                    }}
                   />
                   {info && (
                     <ReusableModal
