@@ -648,7 +648,6 @@ const BeneficiaryCont = styled.div`
     /* border: 0.3px solid green; */
     margin: 0 auto;
     width: 90%;
-    height: 350px !important;
 
     @media screen and (max-width: 40em) {
       width: 100%;

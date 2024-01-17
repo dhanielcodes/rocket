@@ -590,11 +590,11 @@ function SendMoney() {
   console.log(statusCode === "2", "statusCode");
 
   console.log(
-    newDetails?.data?.beneficiaries.find((d) => d?.id == params.get("id")),
+    newDetails?.data?.beneficiaries?.find((d) => d?.id == params.get("id")),
     "selsld"
   );
 
-  const userBene = newDetails?.data?.beneficiaries.find(
+  const userBene = newDetails?.data?.beneficiaries?.find(
     (d) => d?.id == params.get("id")
   );
 
