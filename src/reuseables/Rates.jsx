@@ -11,7 +11,7 @@ import { countryObjectsArray } from "../../config/CountryCodes";
 import InputNumber from "rc-input-number";
 import { CFormatter } from "../hooks/format";
 
-function Rates({ amount, setAmount }) {
+function Rates({ amount, setAmount, moneyData, setMoneyData }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata);
 
@@ -217,6 +217,7 @@ function Rates({ amount, setAmount }) {
         localStorage.setItem("amount", JSON.stringify({}));
       } else {
         localStorage.setItem("amount", JSON.stringify(data?.data));
+        setMoneyData(data?.data);
       }
       setcurrentRates(data?.data);
     },

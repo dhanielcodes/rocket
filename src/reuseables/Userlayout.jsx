@@ -37,12 +37,7 @@ function Userlayout({ children, current, useBack }) {
     <Layout>
       <div className="main">
         <Header current={current} useBack={useBack} />
-        <div className="cont">
-          <div className="space"></div>
-
-          {children}
-          <div className="space"></div>
-        </div>
+        <div className="cont">{children}</div>
 
         {window.location.pathname !== "/upload" && <Nav />}
       </div>
@@ -59,6 +54,9 @@ const Layout = styled.div`
   .main {
     max-width: 440px;
     width: 100%;
+    height: 90vh;
+    overflow: hidden;
+    overflow-y: scroll;
     margin: 0 auto;
     ::-webkit-scrollbar {
       width: 10px;
@@ -69,21 +67,8 @@ const Layout = styled.div`
       border-radius: 30px;
     }
   }
-
   .cont {
-    height: 80vh;
-    overflow-y: scroll;
-    ::-webkit-scrollbar {
-      width: 0px;
-    }
-    ::-webkit-scrollbar-thumb {
-      width: 10px;
-      background-color: #41ff8d9b;
-      border-radius: 30px;
-    }
-  }
-  .space {
-    height: 7vh;
+    padding-top: 20px;
   }
 `;
 

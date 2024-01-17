@@ -289,11 +289,13 @@ function SendMoney() {
     return data ? JSON.parse(data) : [];
   };
 
+  const [moneyData, setMoneyData] = useState();
+
   const getBeneF = getLocals("userBeneficiaryId") || [];
   const getNote = getLocals("note") || [];
   const payoutC = getLocals("payoutChannelId") || [];
   const paychannel = getLocals("paymentChannelId") || [];
-  const money = getLocals("amount") || [];
+  const money = moneyData || [];
   const pcode = getLocals("promoCode") || [];
   const purposes = getLocals("purpose") || [];
   const note = getLocals("note") || [];
@@ -858,7 +860,12 @@ function SendMoney() {
               {/* <BeneficiaryCont2> */}
               {/* </BeneficiaryCont2> */}
               <BeneficiaryCont>
-                <RateComponent amount={amount} setAmount={setAmount} />
+                <RateComponent
+                  amount={amount}
+                  setAmount={setAmount}
+                  moneyData={moneyData}
+                  setMoneyData={setMoneyData}
+                />
                 {paymentchannelloading ? (
                   "Loading..."
                 ) : (
@@ -1725,7 +1732,6 @@ const BeneficiaryCont2 = styled.div`
 
 const Details = styled.div`
   /* height: 85%; */
-  overflow-y: scroll;
 
   display: flex;
   flex-direction: column;
@@ -1794,7 +1800,6 @@ const Details = styled.div`
 `;
 
 const BeneficiaryCont = styled.div`
-  overflow-y: scroll;
   padding-inline: 1em;
   /* border: 1px solid red; */
   /* height: 90%; */
