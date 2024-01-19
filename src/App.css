@@ -36,6 +36,9 @@ span{
 h1,h2,h3{
   color: #101828;
 }
+body{
+  background-color: #F2F2F2;
+}
 
 a{
   text-decoration: none;

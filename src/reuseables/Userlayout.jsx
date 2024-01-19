@@ -37,11 +37,7 @@ function Userlayout({ children, current, useBack }) {
   const layo = window.innerHeight - 100;
 
   return (
-    <Layout
-      style={{
-        height: layo + 100 + "px",
-      }}
-    >
+    <Layout>
       <div
         className="main"
         style={{
@@ -50,7 +46,6 @@ function Userlayout({ children, current, useBack }) {
       >
         <Header current={current} useBack={useBack} />
         <div className="cont">{children}</div>
-
         {window.location.pathname !== "/upload" && <Nav />}
       </div>
     </Layout>
