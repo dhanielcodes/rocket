@@ -2,12 +2,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import Header from "./Header";
 import Nav from "./Nav";
 import { useNavigate } from "react-router-dom";
-import { innerH } from "../hooks/format";
 
 function Userlayout({ children, current, useBack }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -34,25 +33,17 @@ function Userlayout({ children, current, useBack }) {
     localStorage.removeItem("country2");
     //eslint-disable-next-line
   }, [window.location.pathname]);
-
-  const [height, setHeight] = useState(innerH);
   return (
-    <Layout
-      onClick={() => {
-        setHeight(innerH + 100);
-      }}
-    >
-      <div className="main">
+    <Layout>
+      <div
+        className="main"
+        style={{
+          height: window.innerHeight - 100 + "px",
+        }}
+      >
         <Header current={current} useBack={useBack} />
+        <div className="cont">{children}</div>
 
-        <div
-          className="cont"
-          style={{
-            height: height - 100 + "px",
-          }}
-        >
-          {children}
-        </div>
         {window.location.pathname !== "/upload" && <Nav />}
       </div>
     </Layout>
@@ -60,6 +51,7 @@ function Userlayout({ children, current, useBack }) {
 }
 
 const Layout = styled.div`
+  height: 100vh;
   background: #f2f2f2;
   padding: 0;
   margin: 0;
@@ -67,13 +59,10 @@ const Layout = styled.div`
   .main {
     max-width: 440px;
     width: 100%;
-    margin: 0 auto;
     // height: 90vh;
-  }
-  .cont {
     overflow: hidden;
     overflow-y: scroll;
-    padding-top: 9vh;
+    margin: 0 auto;
     ::-webkit-scrollbar {
       width: 10px;
     }
@@ -82,6 +71,9 @@ const Layout = styled.div`
       background-color: #41ff8d9b;
       border-radius: 30px;
     }
+  }
+  .cont {
+    padding-top: 20px;
   }
 `;
 
