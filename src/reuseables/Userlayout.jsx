@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 import Header from "./Header";
 import Nav from "./Nav";
 import { useNavigate } from "react-router-dom";
+import { innerH } from "../hooks/format";
 
 function Userlayout({ children, current, useBack }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -34,17 +35,15 @@ function Userlayout({ children, current, useBack }) {
     //eslint-disable-next-line
   }, [window.location.pathname]);
 
-  const layo = window.innerHeight;
-
   return (
     <Layout>
-      <div
-        className="main"
-        style={{
-          height: "100vh",
-        }}
-      >
+      <div className="main">
         <Header current={current} useBack={useBack} />
+        <div
+          style={{
+            height: "9vh",
+          }}
+        ></div>
         <div className="cont">{children}</div>
         {window.location.pathname !== "/upload" && <Nav />}
       </div>
@@ -64,7 +63,7 @@ const Layout = styled.div`
     // height: 90vh;
   }
   .cont {
-    height: 86vh;
+    height: 82vh;
     overflow: hidden;
     overflow-y: scroll;
     ::-webkit-scrollbar {

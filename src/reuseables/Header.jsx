@@ -70,8 +70,11 @@ function Header({ current, useBack }) {
 
 const HeaderCont = styled.div`
   height: 7vh;
+  position: fixed;
   background-color: #ffffff;
+  top: 0;
   left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   max-width: 440px;
   display: flex;

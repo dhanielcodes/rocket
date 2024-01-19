@@ -37,3 +37,6 @@ export const CFormatter = (num) => {
       }, 0);
     }
   };
+
+
+  export const innerH = window.innerHeight;
