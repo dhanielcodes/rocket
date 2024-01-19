@@ -34,15 +34,14 @@ function Userlayout({ children, current, useBack }) {
     //eslint-disable-next-line
   }, [window.location.pathname]);
 
-  const [height, setHeight] = useState(window.innerHeight);
+  const layo = window.innerHeight - 100;
 
-  useEffect(() => {
-    setHeight(window.innerHeight - 100);
-  }, [window.innerHeight, window.location]);
-
-  const layo = height;
   return (
-    <Layout>
+    <Layout
+      style={{
+        height: layo + 100 + "px",
+      }}
+    >
       <div
         className="main"
         style={{
@@ -59,7 +58,6 @@ function Userlayout({ children, current, useBack }) {
 }
 
 const Layout = styled.div`
-  height: 100vh;
   background: #f2f2f2;
   padding: 0;
   margin: 0;
