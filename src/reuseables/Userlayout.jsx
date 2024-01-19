@@ -38,7 +38,7 @@ function Userlayout({ children, current, useBack }) {
 
   useEffect(() => {
     setHeight(window.innerHeight - 100);
-  }, [window.innerHeight]);
+  }, [window.innerHeight, window.location]);
 
   const layo = height;
   return (
