@@ -35,15 +35,20 @@ function Userlayout({ children, current, useBack }) {
     //eslint-disable-next-line
   }, [window.location.pathname]);
 
+  const [height, setHeight] = useState(innerH);
   return (
-    <Layout>
+    <Layout
+      onClick={() => {
+        setHeight(innerH + 100);
+      }}
+    >
       <div className="main">
         <Header current={current} useBack={useBack} />
 
         <div
           className="cont"
           style={{
-            height: innerH - 100 + "px",
+            height: height - 100 + "px",
           }}
         >
           {children}
