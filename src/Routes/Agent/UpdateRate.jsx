@@ -465,9 +465,9 @@ function UpdateRate() {
                     <AmountFormatter
                       currency={countrySelected?.toCurrency?.code}
                       value={
-                        countrySelected?.conversionRate === 0
+                        countrySelected?.agentRate === 0
                           ? 0
-                          : countrySelected?.conversionRate ||
+                          : countrySelected?.agentRate ||
                             rates?.data[0]?.conversionRate ||
                             countrySelected?.rateUpdateValue ||
                             rates?.data[0]?.rateUpdateValue ||

@@ -13,37 +13,25 @@ function Agentlayout({ children, current, useBack }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   const navigate = useNavigate();
 
-  const [windowSize, setWindowSize] = useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
-
-  useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowSize([window.innerWidth, window.innerHeight]);
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
   useEffect(() => {
     if (Userdata?.data?.user?.role?.id === 6) {
       navigate("/user/dashboard");
     }
     //eslint-disable-next-line
   }, []);
+  const [height, setHeight] = useState(window.innerHeight);
 
-  const layo = window.innerHeight - 100;
+  useEffect(() => {
+    setHeight(window.innerHeight - 100);
+  }, [window.innerHeight]);
+
+  const layo = height;
   return (
     <Layout>
       <div
         className="main"
         style={{
-          height: windowSize[1] + "px",
+          height: layo + "px",
         }}
       >
         <Header current={current} useBack={useBack} />

@@ -34,31 +34,19 @@ function Userlayout({ children, current, useBack }) {
     //eslint-disable-next-line
   }, [window.location.pathname]);
 
-  const layo = window.innerHeight - 100;
-
-  const [windowSize, setWindowSize] = useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
+  const [height, setHeight] = useState(window.innerHeight);
 
   useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowSize([window.innerWidth, window.innerHeight]);
-    };
+    setHeight(window.innerHeight - 100);
+  }, [window.innerHeight]);
 
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
+  const layo = height;
   return (
     <Layout>
       <div
         className="main"
         style={{
-          height: windowSize[1] + "px",
+          height: layo + "px",
         }}
       >
         <Header current={current} useBack={useBack} />
