@@ -70,16 +70,14 @@ function Header({ current, useBack }) {
 
 const HeaderCont = styled.div`
   height: 7vh;
-  position: sticky;
-  /* top: 20px; */
-  z-index: 9999;
-  left: 0;
-  right: 0;
-  // border: 1px solid red;
-  background: #ffffff;
+  background-color: #ffffff;
+  left: 50%;
+  width: 100%;
+  max-width: 440px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 
   .headercont {
     width: 100%;

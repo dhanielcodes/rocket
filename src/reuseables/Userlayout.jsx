@@ -34,14 +34,14 @@ function Userlayout({ children, current, useBack }) {
     //eslint-disable-next-line
   }, [window.location.pathname]);
 
-  const layo = window.innerHeight - 100;
+  const layo = window.innerHeight;
 
   return (
     <Layout>
       <div
         className="main"
         style={{
-          height: layo + "px",
+          height: "100vh",
         }}
       >
         <Header current={current} useBack={useBack} />
@@ -60,10 +60,13 @@ const Layout = styled.div`
   .main {
     max-width: 440px;
     width: 100%;
+    margin: 0 auto;
     // height: 90vh;
+  }
+  .cont {
+    height: 86vh;
     overflow: hidden;
     overflow-y: scroll;
-    margin: 0 auto;
     ::-webkit-scrollbar {
       width: 10px;
     }
@@ -72,9 +75,6 @@ const Layout = styled.div`
       background-color: #41ff8d9b;
       border-radius: 30px;
     }
-  }
-  .cont {
-    padding-top: 20px;
   }
 `;
 

@@ -218,7 +218,7 @@ function Nav() {
 
 const NavCont = styled.div`
   background-color: #ffffff;
-  height: 80px;
+  height: 7vh;
   position: fixed;
   bottom: 0;
   left: 50%;
