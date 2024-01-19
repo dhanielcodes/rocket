@@ -8,6 +8,7 @@ import Header from "./Header";
 import Nav from "./Nav";
 import AgentNav from "./AgentNav";
 import { useNavigate } from "react-router-dom";
+import useScreenSize from "../hooks/useScreenSize";
 
 function Agentlayout({ children, current, useBack }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -19,19 +20,15 @@ function Agentlayout({ children, current, useBack }) {
     }
     //eslint-disable-next-line
   }, []);
-  const [height, setHeight] = useState(window.innerHeight);
 
-  useEffect(() => {
-    setHeight(window.innerHeight - 100);
-  }, [window.innerHeight]);
+  const { height } = useScreenSize();
 
-  const layo = height;
   return (
     <Layout>
       <div
         className="main"
         style={{
-          height: layo + "px",
+          height: height - 100 + "px",
         }}
       >
         <Header current={current} useBack={useBack} />

@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 import Header from "./Header";
 import Nav from "./Nav";
 import { useNavigate } from "react-router-dom";
+import useScreenSize from "../hooks/useScreenSize";
 
 function Userlayout({ children, current, useBack }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -33,12 +34,15 @@ function Userlayout({ children, current, useBack }) {
     localStorage.removeItem("country2");
     //eslint-disable-next-line
   }, [window.location.pathname]);
+
+  const { height } = useScreenSize();
+
   return (
     <Layout>
       <div
         className="main"
         style={{
-          height: window.innerHeight - 100 + "px",
+          height: height - 100 + "px",
         }}
       >
         <Header current={current} useBack={useBack} />
@@ -60,7 +64,6 @@ const Layout = styled.div`
     max-width: 440px;
     width: 100%;
     // height: 90vh;
-    overflow: hidden;
     overflow-y: scroll;
     margin: 0 auto;
     ::-webkit-scrollbar {
