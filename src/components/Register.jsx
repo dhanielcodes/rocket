@@ -953,7 +953,7 @@ function Register() {
                       onChange={handleChange}
                       className="input"
                       style={{ borderRadius: "8px;" }}
-                      placeholder="Enter your Last Name"
+                      placeholder="Enter your Company Name"
                     />
                   </InputStyle>
                 </div>

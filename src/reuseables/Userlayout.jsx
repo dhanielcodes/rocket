@@ -33,12 +33,15 @@ function Userlayout({ children, current, useBack }) {
     localStorage.removeItem("country2");
     //eslint-disable-next-line
   }, [window.location.pathname]);
+
+  const layo = window.innerHeight - 100;
+
   return (
     <Layout>
       <div
         className="main"
         style={{
-          height: window.innerHeight - 100 + "px",
+          height: layo + "px",
         }}
       >
         <Header current={current} useBack={useBack} />

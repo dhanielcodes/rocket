@@ -19,9 +19,16 @@ function Agentlayout({ children, current, useBack }) {
     }
     //eslint-disable-next-line
   }, []);
+
+  const layo = window.innerHeight - 100;
   return (
     <Layout>
-      <div className="main">
+      <div
+        className="main"
+        style={{
+          height: layo + "px",
+        }}
+      >
         <Header current={current} useBack={useBack} />
         <div className="cont">{children}</div>
         <AgentNav />
@@ -39,7 +46,7 @@ const Layout = styled.div`
   .main {
     max-width: 440px;
     width: 100%;
-    height: 90vh;
+    // height: 90vh;
     overflow: hidden;
     overflow-y: scroll;
     margin: 0 auto;
