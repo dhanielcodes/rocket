@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import Header from "./Header";
 import Nav from "./Nav";
@@ -12,6 +12,23 @@ import { useNavigate } from "react-router-dom";
 function Agentlayout({ children, current, useBack }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   const navigate = useNavigate();
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (Userdata?.data?.user?.role?.id === 6) {
@@ -26,7 +43,7 @@ function Agentlayout({ children, current, useBack }) {
       <div
         className="main"
         style={{
-          height: layo + "px",
+          height: windowSize[1] + "px",
         }}
       >
         <Header current={current} useBack={useBack} />
