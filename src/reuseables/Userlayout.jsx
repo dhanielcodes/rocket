@@ -39,12 +39,15 @@ function Userlayout({ children, current, useBack }) {
     <Layout>
       <div className="main">
         <Header current={current} useBack={useBack} />
+
         <div
+          className="cont"
           style={{
-            height: "9vh",
+            height: innerH - 100 + "px",
           }}
-        ></div>
-        <div className="cont">{children}</div>
+        >
+          {children}
+        </div>
         {window.location.pathname !== "/upload" && <Nav />}
       </div>
     </Layout>
@@ -63,9 +66,9 @@ const Layout = styled.div`
     // height: 90vh;
   }
   .cont {
-    height: 82vh;
     overflow: hidden;
     overflow-y: scroll;
+    padding-top: 9vh;
     ::-webkit-scrollbar {
       width: 10px;
     }
