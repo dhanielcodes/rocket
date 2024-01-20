@@ -62,6 +62,7 @@ const Layout = styled.div`
     }
   }
   .cont {
+    height: 100vh;
     padding-top: 20px;
   }
 `;

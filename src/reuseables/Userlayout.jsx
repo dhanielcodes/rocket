@@ -55,10 +55,10 @@ function Userlayout({ children, current, useBack }) {
 }
 
 const Layout = styled.div`
-  height: 100vh;
   background: #f2f2f2;
   padding: 0;
   margin: 0;
+  height: 100vh;
 
   .main {
     max-width: 440px;
@@ -77,6 +77,7 @@ const Layout = styled.div`
   }
   .cont {
     padding-top: 20px;
+    height: 100vh;
   }
 `;
 
