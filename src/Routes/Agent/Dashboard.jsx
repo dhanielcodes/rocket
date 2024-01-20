@@ -328,11 +328,7 @@ function Dashboard() {
                 </svg>
                 <div className="dashboardamount">
                   <p>Total Earnings </p>
-                  <h3>
-                    {dashboardDetails?.totalSuccessful ||
-                      dashboardDetails?.depositedAmount ||
-                      0}
-                  </h3>
+                  <h3>{dashboardDetails?.agentAgentCommissionEarned || 0}</h3>
                 </div>
               </div>
               <div className="dbox dbox2">
@@ -371,12 +367,8 @@ function Dashboard() {
                   />
                 </svg>
                 <div className="dashboardamount">
-                  <p>Available Balance</p>
-                  <h3>
-                    {dashboardDetails?.totalPendingAmount ||
-                      dashboardDetails?.pendingAmount ||
-                      0}
-                  </h3>
+                  <p>Pending Balance</p>
+                  <h3>{dashboardDetails?.pendingCommissionEarning || 0}</h3>
                 </div>
               </div>
               <div className="dbox dbox3">
