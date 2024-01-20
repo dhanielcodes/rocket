@@ -208,7 +208,7 @@ function Login() {
                         alignItems: "center",
                       }}
                     >
-                      {data?.data?.user?.kycStatus === "Not Started" && (
+                      {(data?.data?.user?.kycStatus === "Completed" && "") || (
                         <Btn
                           styles={{
                             width: "100%",
@@ -225,7 +225,7 @@ function Login() {
                         </Btn>
                       )}
                       &nbsp; &nbsp;
-                      {data?.data?.user?.kycStatus === "Not Started" && (
+                      {(data?.data?.user?.kycStatus === "Completed" && "") || (
                         <Btn
                           styles={{
                             width: "100%",
