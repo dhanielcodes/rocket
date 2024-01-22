@@ -282,7 +282,7 @@ function AgentCustomer() {
                   <Box>
                     <Avatar className="av">
                       {`${d?.firstName?.split(" ")[0][0]} ${
-                        d?.firstName?.split(" ")[1][0]
+                        d?.surName?.split(" ")?.[0]?.[0]
                       }`}
                     </Avatar>
 
