@@ -56,6 +56,7 @@ import DocumentUploadAgent from "./Routes/Agent/DocumentUpload";
 import TransactionDetailsAgent from "./Routes/Agent/TransactionDetails";
 import UpdateRateCustomer from "./Routes/Agent/UpdateRateCustomer";
 import ResetPassword from "./components/ResetPassword";
+import Notifications from "./Routes/User/Notifications";
 //
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
               element={<CreateBeneficiary />}
             />
             <Route path="/user/transactions/" element={<History />} />
+            <Route path="/user/notifications/" element={<Notifications />} />
             <Route
               path="/user/transactions/details"
               element={<TransactionDetails />}

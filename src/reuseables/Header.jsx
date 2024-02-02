@@ -54,6 +54,9 @@ function Header({ current, useBack }) {
         <div className="notifi">
           <Badge count={3} offset={[1, -1]}>
             <IconNotification
+              onClick={() => {
+                navigate("/user/notifications");
+              }}
               style={{
                 color: "#00A85A",
                 fill: "#00A85A",

@@ -64,6 +64,16 @@ export const Tranx2 = async (userId) => {
   );
   return data;
 };
+export const notifs = async (userId) => {
+  const { data } = await Axios.get(`${baseurl}/getnotifications/${userId}`);
+  return data;
+};
+export const updateNotif = async (body) => {
+  console.log("🚀 ~ file: Dashboard.jsx:32 ~ createBeneficiary ~ body:", body);
+  const { data } = await Axios.post(`${baseurl}/updatenotification`, body);
+  return data;
+};
+
 export const TransferPurpose = async () => {
   const { data } = await Axios.get(`${baseurl}/gettransferpurpose`);
   return data;
