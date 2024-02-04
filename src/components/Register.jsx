@@ -19,14 +19,7 @@ import {
   employment,
   profession,
 } from "../services/Auth";
-import {
-  countries as testCountries,
-  stateTest as testState,
-  cityTest as cityTest,
-  employment as employmentTest,
-  profession as professionTest,
-  newProfessions,
-} from "../../config/Test";
+import { newProfessions } from "../../config/Test";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Kyc from "../reuseables/Kyc";
@@ -97,6 +90,27 @@ function Register() {
     },
   });
 
+  const { data: professionList, isLoading: professionIsLoading } = useQuery({
+    queryKey: ["getProfession"],
+    queryFn: profession,
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  const listProf = professionList?.data?.map((item) =>
+    item?.name?.toLocaleUpperCase()
+  );
+
+  const profId = professionList?.data.find(
+    (d) => d?.name === user?.profession?.toLocaleLowerCase()
+  );
+
+  console.log(profId, user, "lol");
+
   const {
     data: statelist,
     isLoading: statelistloading,
@@ -141,20 +155,6 @@ function Register() {
       setEmployment(data);
     },
 
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-    },
-  });
-
-  const {
-    data: professionlist,
-    isLoading: professionlistloading,
-    refetch: refetchprofessionlist,
-  } = useQuery({
-    //   queryKey: [countryDetails?.id,0],
-    queryFn: profession,
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
       //   setMessage(err.response.data.detail || err.message);
@@ -350,7 +350,10 @@ function Register() {
           address: newAddress?.description,
           postcode: user?.postcode,
           employmentStatusId: user?.employmentStatusId,
-          profession: user?.profession,
+          profession: {
+            id: profId?.id,
+            name: profId?.name,
+          },
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
           agentId: params.get("aid") ? Number(params.get("aid")) : 0,
@@ -936,7 +939,7 @@ function Register() {
                       padding: "0px !important",
                       // You can add custom styles here if needed
                     }}
-                    options={ProffessionOption}
+                    options={listProf || []}
                     value={prof} // Pass the selected option to the value prop
                     // onChange={handleSelectCity} // Handle option selection
                     onChange={handleSelectProf}
