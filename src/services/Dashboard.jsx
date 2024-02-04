@@ -70,7 +70,7 @@ export const notifs = async (userId) => {
 };
 export const updateNotif = async (body) => {
   console.log("🚀 ~ file: Dashboard.jsx:32 ~ createBeneficiary ~ body:", body);
-  const { data } = await Axios.post(`${baseurl}/updatenotification`, body);
+  const { data } = await Axios.post(`${baseurl}/updatenotiifcation`, body);
   return data;
 };
 
