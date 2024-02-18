@@ -17,6 +17,7 @@ import Btn from "../../reuseables/Btn";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import CanvasDraw from "react-canvas-draw";
+import toast from "react-hot-toast";
 
 function ConfirmTransactionPage() {
   const navigate = useNavigate();
@@ -257,6 +258,12 @@ function ConfirmTransactionPage() {
                 {transactionList?.paymentRef}
                 <span>
                   <svg
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        transactionList?.paymentRef
+                      );
+                      toast.success("Ref Copied!");
+                    }}
                     width="20"
                     height="20"
                     viewBox="0 0 20 20"
