@@ -324,8 +324,6 @@ const Content = styled.div`
   /* background-color: #fff; */
   padding: 30px;
   margin: 0 auto;
-  height: 100vh;
-  overflow: hidden;
 
   @media screen and (max-width: 40em) {
     width: 100%;
@@ -333,7 +331,6 @@ const Content = styled.div`
 
   .cont {
     height: 100%;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -350,7 +347,6 @@ const Header = styled.div`
   flex-direction: column;
   /* padding-block: 10px; */
   gap: 10px;
-  height: 35%;
 
   .av {
     background: rgba(0, 168, 90, 1);
