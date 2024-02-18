@@ -287,7 +287,7 @@ function ConfirmTransactionPage() {
             </div>
           </div>
 
-          <div>Signature</div>
+          {/*  <div>Signature</div>
           <CanvasDraw
             ref={canvasDraw}
             canvasWidth={"100%"}
@@ -303,7 +303,7 @@ function ConfirmTransactionPage() {
             }}
           >
             Erase
-          </button>
+          </button> */}
           <div className="actionbtn">
             <Btn
               clicking={() => {
@@ -324,7 +324,7 @@ const Content = styled.div`
   /* background-color: #fff; */
   padding: 30px;
   margin: 0 auto;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 
   @media screen and (max-width: 40em) {
