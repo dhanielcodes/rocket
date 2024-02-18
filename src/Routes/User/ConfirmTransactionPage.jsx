@@ -361,7 +361,6 @@ const Header = styled.div`
 
 const Details = styled.div`
   height: 85%;
-  overflow-y: scroll;
 
   display: flex;
   flex-direction: column;
