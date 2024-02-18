@@ -57,6 +57,7 @@ import TransactionDetailsAgent from "./Routes/Agent/TransactionDetails";
 import UpdateRateCustomer from "./Routes/Agent/UpdateRateCustomer";
 import ResetPassword from "./components/ResetPassword";
 import Notifications from "./Routes/User/Notifications";
+import ConfirmTransactionPage from "./Routes/User/ConfirmTransactionPage";
 //
 
 function App() {
@@ -91,6 +92,11 @@ function App() {
             <Route
               path="/user/transactions/details"
               element={<TransactionDetails />}
+            />
+
+            <Route
+              path="/confirm-transaction"
+              element={<ConfirmTransactionPage />}
             />
             <Route
               path="/agent/transactions/details"

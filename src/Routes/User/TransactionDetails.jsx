@@ -128,20 +128,13 @@ function TransactionDetails() {
             <div className="detailscont">
               <div className="details">
                 <h5>AccontName</h5>
-                <p>Bada Sulaimon</p>
+                <p>{transactionList?.beneficiaryName}</p>
               </div>
-              <div className="details">
-                <h5>AccontNumber</h5>
-                <p>000153835252</p>
-              </div>
-              <div className="details">
-                <h5>Bank Name</h5>
-                <p>Unity Bank</p>
-              </div>
+
               <div className="details">
                 <h5>RefrenceNo</h5>
                 <p>
-                  555525
+                  {transactionList?.paymentRef}
                   <span>
                     <svg
                       width="20"

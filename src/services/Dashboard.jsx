@@ -74,6 +74,12 @@ export const updateNotif = async (body) => {
   return data;
 };
 
+export const confirmPayment = async (body) => {
+  console.log("🚀 ~ file: Dashboard.jsx:32 ~ createBeneficiary ~ body:", body);
+  const { data } = await Axios.post(`${baseurl}/bosmcc/${body}`);
+  return data;
+};
+
 export const TransferPurpose = async () => {
   const { data } = await Axios.get(`${baseurl}/gettransferpurpose`);
   return data;
