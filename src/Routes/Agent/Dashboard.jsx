@@ -562,7 +562,7 @@ function Dashboard() {
             </div>
           </div>
         </SectionThree>
-        <SectionFour>
+        {/*     <SectionFour>
           <div className="container">
             <img src={microphone} height="150px" />
             <div className="text">
@@ -600,7 +600,7 @@ function Dashboard() {
               <p>Code:N5EF720</p>
             </div>
           </div>
-        </SectionFour>
+        </SectionFour> */}
       </Content>
     </Agentlayout>
   );
