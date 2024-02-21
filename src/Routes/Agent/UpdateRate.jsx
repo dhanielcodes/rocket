@@ -420,309 +420,186 @@ function UpdateRate() {
           </div>
         </AppModal>
       )}
-      <Content>
-        <div className="dashboardcontent">
-          <SectionThree>
-            <div className="text">
-              <p>Select Rates</p>
-              <CountryListAgent
-                value={countrySelected}
-                setValue={setSelectedCountry}
-                onChange={handleRates}
-                agentRates={agentRates}
-              />
-              {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
+      <div className="dashboardcontent">
+        <SectionThree>
+          <div className="text">
+            <p>Select Rates</p>
+            <CountryListAgent
+              value={countrySelected}
+              setValue={setSelectedCountry}
+              onChange={handleRates}
+              agentRates={agentRates}
+            />
+            {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
 
-              {selectedCountry && (
-                <div className="rates">
-                  <div className="pri">
-                    <CountryFlag
-                      countryCode={countrySelected?.fromCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                      }}
-                      svg
-                    />
-                    <AmountFormatter
-                      currency={countrySelected?.fromCurrency?.code}
-                      value={1}
-                    />
-                    {/* <p>{rates?.data?.fromAmount}</p> */}
-                  </div>
-                  <div style={{ color: "#000" }}>=</div>
-                  <div className="sec">
-                    <CountryFlag
-                      countryCode={countrySelected?.toCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
-                      svg
-                    />
-                    <AmountFormatter
-                      currency={countrySelected?.toCurrency?.code}
-                      value={
-                        countrySelected?.agentRate === 0
-                          ? 0
-                          : countrySelected?.agentRate ||
-                            rates?.data[0]?.conversionRate ||
-                            countrySelected?.rateUpdateValue ||
-                            rates?.data[0]?.rateUpdateValue ||
-                            0
-                      }
-                    />
-                    {/* <p>920.000 NGN</p> */}
-                  </div>
-                </div>
-              )}
-              {countrySelected?.rateUpdateValue ? (
-                <div>
-                  <span>My Updated Rate</span>
-                  <div
+            {selectedCountry && (
+              <div className="rates">
+                <div className="pri">
+                  <CountryFlag
+                    countryCode={countrySelected?.fromCurrency?.code?.slice(
+                      0,
+                      2
+                    )}
                     style={{
-                      position: "relative",
+                      width: "40px",
+                      height: "40px",
                     }}
-                  >
+                    svg
+                  />
+                  <AmountFormatter
+                    currency={countrySelected?.fromCurrency?.code}
+                    value={1}
+                  />
+                  {/* <p>{rates?.data?.fromAmount}</p> */}
+                </div>
+                <div style={{ color: "#000" }}>=</div>
+                <div className="sec">
+                  <CountryFlag
+                    countryCode={countrySelected?.toCurrency?.code?.slice(0, 2)}
+                    svg
+                  />
+                  <AmountFormatter
+                    currency={countrySelected?.toCurrency?.code}
+                    value={
+                      countrySelected?.agentRate === 0
+                        ? 0
+                        : countrySelected?.agentRate ||
+                          rates?.data[0]?.conversionRate ||
+                          countrySelected?.rateUpdateValue ||
+                          rates?.data[0]?.rateUpdateValue ||
+                          0
+                    }
+                  />
+                  {/* <p>920.000 NGN</p> */}
+                </div>
+              </div>
+            )}
+            {countrySelected?.rateUpdateValue ? (
+              <div>
+                <span>My Updated Rate</span>
+                <div
+                  style={{
+                    position: "relative",
+                  }}
+                >
+                  <input
+                    type={"number"}
+                    disabled={true}
+                    value={countrySelected?.rateUpdateValue}
+                    onKeyDown={(evt) => {
+                      ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                        evt.key
+                      ) && evt.preventDefault();
+                    }}
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      backgroundColor: "inherit",
+                      lineHeight: 1,
+                      border: "1px solid #D0D5DD",
+                      borderRadius: "6px",
+                      color: "#000",
+                      fontWeight: 300,
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </SectionThree>
+        <br />
+        {selectedCountry && (
+          <SectionThree>
+            <div className="text" style={{ fontSize: "13px" }}>
+              <div>
+                <span>New Rate</span>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "grid",
+                    gridTemplateColumns: "2fr 5.8fr",
+                  }}
+                >
+                  <div>
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "16px",
+                          display: "flex",
+                          alignItems: "center",
+                          border: "1px solid #b3b3b3",
+                          padding: "10.5px",
+                          borderRadius: "10px 0px 0px 10px",
+                        }}
+                      >
+                        <ReactCountryFlag
+                          countryCode={selectedCountry?.toCurrency?.code?.slice(
+                            0,
+                            2
+                          )}
+                          title={selectedCountry?.toCurrency.code}
+                          style={{
+                            marginRight: "6px",
+                            borderRadius: "10000000px",
+                          }}
+                          svg
+                        />{" "}
+                        {selectedCountry?.toCurrency.code}
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{ position: "relative" }}>
                     <input
-                      type={"number"}
-                      disabled={true}
-                      value={countrySelected?.rateUpdateValue}
+                      className="input"
+                      onWheel={numberInputOnWheelPreventChange}
+                      type="number"
                       onKeyDown={(evt) => {
                         ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
                           evt.key
                         ) && evt.preventDefault();
                       }}
-                      style={{
-                        width: "100%",
-                        padding: "10px",
-                        backgroundColor: "inherit",
-                        lineHeight: 1,
-                        border: "1px solid #D0D5DD",
-                        borderRadius: "6px",
-                        color: "#000",
-                        fontWeight: 300,
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-          </SectionThree>
-          {selectedCountry && (
-            <SectionThree>
-              <div className="text" style={{ fontSize: "13px" }}>
-                <div>
-                  <span>New Rate</span>
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "grid",
-                      gridTemplateColumns: "2fr 5.8fr",
-                    }}
-                  >
-                    <div>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: "16px",
-                            display: "flex",
-                            alignItems: "center",
-                            border: "1px solid #b3b3b3",
-                            padding: "10.5px",
-                            borderRadius: "10px 0px 0px 10px",
-                          }}
-                        >
-                          <ReactCountryFlag
-                            countryCode={selectedCountry?.toCurrency?.code?.slice(
-                              0,
-                              2
-                            )}
-                            title={selectedCountry?.toCurrency.code}
-                            style={{
-                              marginRight: "6px",
-                              borderRadius: "10000000px",
-                            }}
-                            svg
-                          />{" "}
-                          {selectedCountry?.toCurrency.code}
-                        </span>
-                      </div>
-                    </div>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        className="input"
-                        onWheel={numberInputOnWheelPreventChange}
-                        type="number"
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(newValue) => {
-                          setAmount(newValue.target.value);
-                        }}
-                        style={{
-                          borderSize: "0.5px",
-                          fontSize: "6px",
-                          borderRadius: "0px 8px 8px 0px",
-                          padding: "13px",
-                          borderTop: "1px solid #b3b3b3",
-                          borderBottom: "1px solid #b3b3b3",
-                          borderRight: "1px solid #b3b3b3",
-                          borderLeft: "0px solid",
-                          width: "100%",
-                          background: "#ffffff",
-                          color: "#000000",
-                        }}
-                      />
-                      {amount && (
-                        <InputNumber
-                          className="input"
-                          ref={inputElem}
-                          onWheel={numberInputOnWheelPreventChange}
-                          disabled
-                          value={amount}
-                          style={{
-                            borderSize: "0.5px",
-                            fontSize: "6px",
-                            borderRadius: "0px 8px 8px 0px",
-                            padding: "13px",
-                            borderTop: "1px solid #b3b3b3",
-                            borderBottom: "1px solid #b3b3b3",
-                            borderRight: "1px solid #b3b3b3",
-                            width: "100%",
-                            background: "#ffffff",
-                            color: "#000000",
-                            pointerEvents: "none",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                          }}
-                          onKeyDown={(evt) => {
-                            [
-                              "e",
-                              "E",
-                              "+",
-                              "-",
-                              "=",
-                              "(",
-                              ")",
-                              "*",
-                              "&",
-                            ].includes(evt.key) && evt.preventDefault();
-                          }}
-                          onChange={(newValue) => {
-                            console.log("Change:", `${newValue}`);
-                            setAmount(newValue);
-                          }}
-                          formatter={(value) => {
-                            return `${value}`.replace(
-                              /\B(?=(\d{3})+(?!\d))/g,
-                              ","
-                            );
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <span>Charge Percentage</span>
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "grid",
-                      gridTemplateColumns: "0.5fr 5.8fr",
-                    }}
-                  >
-                    <div>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: "16px",
-                            display: "flex",
-                            alignItems: "center",
-                            borderLeft: "1px solid #b3b3b3",
-                            borderTop: "1px solid #b3b3b3",
-                            borderBottom: "1px solid #b3b3b3",
-                            padding: "9px",
-                            borderRadius: "10px 0px 0px 10px",
-                          }}
-                        >
-                          %
-                        </span>
-                      </div>
-                    </div>
-                    <AppInput
-                      type="number"
-                      name="username"
-                      padding="12px"
-                      cut
-                      removeCutBorder
                       onChange={(newValue) => {
-                        console.log("Change:", `${newValue.target.value}`);
-                        setFee(newValue.target.value);
+                        setAmount(newValue.target.value);
+                      }}
+                      style={{
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "0px 8px 8px 0px",
+                        padding: "13px",
+                        borderTop: "1px solid #b3b3b3",
+                        borderBottom: "1px solid #b3b3b3",
+                        borderRight: "1px solid #b3b3b3",
+                        borderLeft: "0px solid",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
                       }}
                     />
-                  </div>
-                </div>
-
-                <div>
-                  <span>Charge Threshold</span>
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "grid",
-                      gridTemplateColumns: "2fr 5.8fr",
-                    }}
-                  >
-                    <div>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: "16px",
-                            display: "flex",
-                            alignItems: "center",
-                            border: "1px solid #b3b3b3",
-                            padding: "10.4px",
-                            borderRadius: "10px 0px 0px 10px",
-                          }}
-                        >
-                          <ReactCountryFlag
-                            countryCode={selectedCountry?.fromCurrency?.code?.slice(
-                              0,
-                              2
-                            )}
-                            title={selectedCountry?.fromCurrency.code}
-                            style={{
-                              marginRight: "6px",
-                              borderRadius: "10000000px",
-                            }}
-                            svg
-                          />{" "}
-                          {selectedCountry?.fromCurrency.code}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div style={{ position: "relative" }}>
-                      <input
+                    {amount && (
+                      <InputNumber
                         className="input"
+                        ref={inputElem}
                         onWheel={numberInputOnWheelPreventChange}
+                        disabled
+                        value={amount}
+                        style={{
+                          borderSize: "0.5px",
+                          fontSize: "6px",
+                          borderRadius: "0px 8px 8px 0px",
+                          padding: "13px",
+                          borderTop: "1px solid #b3b3b3",
+                          borderBottom: "1px solid #b3b3b3",
+                          borderRight: "1px solid #b3b3b3",
+                          width: "100%",
+                          background: "#ffffff",
+                          color: "#000000",
+                          pointerEvents: "none",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                        }}
                         onKeyDown={(evt) => {
                           [
                             "e",
@@ -737,163 +614,262 @@ function UpdateRate() {
                           ].includes(evt.key) && evt.preventDefault();
                         }}
                         onChange={(newValue) => {
-                          setThresh(newValue.target.value);
+                          console.log("Change:", `${newValue}`);
+                          setAmount(newValue);
                         }}
-                        style={{
-                          borderSize: "0.5px",
-                          fontSize: "6px",
-                          borderRadius: "0px 8px 8px 0px",
-                          padding: "13px",
-                          borderTop: "1px solid #b3b3b3",
-                          borderBottom: "1px solid #b3b3b3",
-                          borderRight: "1px solid #b3b3b3",
-                          borderLeft: "0px solid",
-                          width: "100%",
-                          background: "#ffffff",
-                          color: "#000000",
+                        formatter={(value) => {
+                          return `${value}`.replace(
+                            /\B(?=(\d{3})+(?!\d))/g,
+                            ","
+                          );
                         }}
                       />
-                      {thresh && (
-                        <InputNumber
-                          className="input"
-                          ref={inputElem}
-                          onWheel={numberInputOnWheelPreventChange}
-                          disabled
-                          value={thresh}
-                          style={{
-                            borderSize: "0.5px",
-                            fontSize: "6px",
-                            borderRadius: "0px 8px 8px 0px",
-                            padding: "13px",
-                            borderTop: "1px solid #b3b3b3",
-                            borderBottom: "1px solid #b3b3b3",
-                            borderRight: "1px solid #b3b3b3",
-                            width: "100%",
-                            background: "#ffffff",
-                            color: "#000000",
-                            pointerEvents: "none",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                          }}
-                          onKeyDown={(evt) => {
-                            [
-                              "e",
-                              "E",
-                              "+",
-                              "-",
-                              "=",
-                              "(",
-                              ")",
-                              "*",
-                              "&",
-                            ].includes(evt.key) && evt.preventDefault();
-                          }}
-                          onChange={(newValue) => {
-                            console.log("Change:", `${newValue}`);
-                            setThresh(newValue);
-                          }}
-                          formatter={(value) => {
-                            return `${value}`.replace(
-                              /\B(?=(\d{3})+(?!\d))/g,
-                              ","
-                            );
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rates">
-                  <div className="pri">
-                    <CountryFlag
-                      countryCode={selectedCountry?.fromCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                      }}
-                      svg
-                    />
-                    <AmountFormatter
-                      currency={selectedCountry?.fromCurrency?.code}
-                      value={1}
-                    />
-                    {/* <p>{rates?.data?.fromAmount}</p> */}
-                  </div>
-                  <div style={{ color: "#000" }}>=</div>
-                  <div className="sec">
-                    <CountryFlag
-                      countryCode={selectedCountry?.toCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
-                      svg
-                    />
-                    <AmountFormatter
-                      currency={selectedCountry?.toCurrency?.code}
-                      value={amount || 0}
-                    />
-                    {/* <p>920.000 NGN</p> */}
+                    )}
                   </div>
                 </div>
               </div>
-              <CustomTable
-                Apidata={newRatesTable}
-                noData={rateBands?.length}
-                tableColumns={columns}
-              />
-              {amount && thresh && fee && (
-                <Btn
-                  disabled={isLoading}
-                  clicking={() => {
-                    mutate({
-                      agentId:
-                        Userdata?.data?.user?.agentId ||
-                        Userdata?.data?.user?.userId,
-                      agentCurrentRate: {
-                        id: selectedCountry?.id,
-                        agentRate: amount, //Agent new rate
-                        agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
-                        agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
-                        rateBands: [...rateBands],
-                      },
-                    });
-                    console.log({
-                      agentId:
-                        Userdata?.data?.user?.agentId ||
-                        Userdata?.data?.user?.userId,
-                      agentCurrentRate: {
-                        id: selectedCountry?.id,
-                        agentRate: amount, //Agent new rate
-                        agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
-                        agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
-                      },
-                      rateBands: [...rateBands],
-                    });
-                  }}
-                  styles={{
-                    width: "100%",
-                    marginTop: "14px",
+
+              <div>
+                <span>Charge Percentage</span>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "grid",
+                    gridTemplateColumns: "0.5fr 5.8fr",
                   }}
                 >
-                  {isLoading ? "Updating..." : " Save Changes"}
-                </Btn>
-              )}
-            </SectionThree>
-          )}
-        </div>
-      </Content>
+                  <div>
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "16px",
+                          display: "flex",
+                          alignItems: "center",
+                          borderLeft: "1px solid #b3b3b3",
+                          borderTop: "1px solid #b3b3b3",
+                          borderBottom: "1px solid #b3b3b3",
+                          padding: "9px",
+                          borderRadius: "10px 0px 0px 10px",
+                        }}
+                      >
+                        %
+                      </span>
+                    </div>
+                  </div>
+                  <AppInput
+                    type="number"
+                    name="username"
+                    padding="12px"
+                    cut
+                    removeCutBorder
+                    onChange={(newValue) => {
+                      console.log("Change:", `${newValue.target.value}`);
+                      setFee(newValue.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <span>Charge Threshold</span>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "grid",
+                    gridTemplateColumns: "2fr 5.8fr",
+                  }}
+                >
+                  <div>
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "16px",
+                          display: "flex",
+                          alignItems: "center",
+                          border: "1px solid #b3b3b3",
+                          padding: "10.4px",
+                          borderRadius: "10px 0px 0px 10px",
+                        }}
+                      >
+                        <ReactCountryFlag
+                          countryCode={selectedCountry?.fromCurrency?.code?.slice(
+                            0,
+                            2
+                          )}
+                          title={selectedCountry?.fromCurrency.code}
+                          style={{
+                            marginRight: "6px",
+                            borderRadius: "10000000px",
+                          }}
+                          svg
+                        />{" "}
+                        {selectedCountry?.fromCurrency.code}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style={{ position: "relative" }}>
+                    <input
+                      className="input"
+                      onWheel={numberInputOnWheelPreventChange}
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        setThresh(newValue.target.value);
+                      }}
+                      style={{
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "0px 8px 8px 0px",
+                        padding: "13px",
+                        borderTop: "1px solid #b3b3b3",
+                        borderBottom: "1px solid #b3b3b3",
+                        borderRight: "1px solid #b3b3b3",
+                        borderLeft: "0px solid",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
+                      }}
+                    />
+                    {thresh && (
+                      <InputNumber
+                        className="input"
+                        ref={inputElem}
+                        onWheel={numberInputOnWheelPreventChange}
+                        disabled
+                        value={thresh}
+                        style={{
+                          borderSize: "0.5px",
+                          fontSize: "6px",
+                          borderRadius: "0px 8px 8px 0px",
+                          padding: "13px",
+                          borderTop: "1px solid #b3b3b3",
+                          borderBottom: "1px solid #b3b3b3",
+                          borderRight: "1px solid #b3b3b3",
+                          width: "100%",
+                          background: "#ffffff",
+                          color: "#000000",
+                          pointerEvents: "none",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                        }}
+                        onKeyDown={(evt) => {
+                          [
+                            "e",
+                            "E",
+                            "+",
+                            "-",
+                            "=",
+                            "(",
+                            ")",
+                            "*",
+                            "&",
+                          ].includes(evt.key) && evt.preventDefault();
+                        }}
+                        onChange={(newValue) => {
+                          console.log("Change:", `${newValue}`);
+                          setThresh(newValue);
+                        }}
+                        formatter={(value) => {
+                          return `${value}`.replace(
+                            /\B(?=(\d{3})+(?!\d))/g,
+                            ","
+                          );
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rates">
+                <div className="pri">
+                  <CountryFlag
+                    countryCode={selectedCountry?.fromCurrency?.code?.slice(
+                      0,
+                      2
+                    )}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                    }}
+                    svg
+                  />
+                  <AmountFormatter
+                    currency={selectedCountry?.fromCurrency?.code}
+                    value={1}
+                  />
+                  {/* <p>{rates?.data?.fromAmount}</p> */}
+                </div>
+                <div style={{ color: "#000" }}>=</div>
+                <div className="sec">
+                  <CountryFlag
+                    countryCode={selectedCountry?.toCurrency?.code?.slice(0, 2)}
+                    svg
+                  />
+                  <AmountFormatter
+                    currency={selectedCountry?.toCurrency?.code}
+                    value={amount || 0}
+                  />
+                  {/* <p>920.000 NGN</p> */}
+                </div>
+              </div>
+            </div>
+            <CustomTable
+              Apidata={newRatesTable}
+              noData={rateBands?.length}
+              tableColumns={columns}
+            />
+            {amount && thresh && fee && (
+              <Btn
+                disabled={isLoading}
+                clicking={() => {
+                  mutate({
+                    agentId:
+                      Userdata?.data?.user?.agentId ||
+                      Userdata?.data?.user?.userId,
+                    agentCurrentRate: {
+                      id: selectedCountry?.id,
+                      agentRate: amount, //Agent new rate
+                      agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
+                      agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
+                      rateBands: [...rateBands],
+                    },
+                  });
+                  console.log({
+                    agentId:
+                      Userdata?.data?.user?.agentId ||
+                      Userdata?.data?.user?.userId,
+                    agentCurrentRate: {
+                      id: selectedCountry?.id,
+                      agentRate: amount, //Agent new rate
+                      agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
+                      agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
+                    },
+                    rateBands: [...rateBands],
+                  });
+                }}
+                styles={{
+                  width: "100%",
+                  marginTop: "14px",
+                }}
+              >
+                {isLoading ? "Updating..." : " Save Changes"}
+              </Btn>
+            )}
+          </SectionThree>
+        )}
+      </div>
     </Agentlayout>
   );
 }
 const SectionThree = styled.div`
   border-radius: 10px;
   color: var(--grey-400, #98a2b3);
-  margin-top: 10vh;
   border-radius: 10px;
 
   .gridLay {
@@ -1048,7 +1024,7 @@ const SectionThree = styled.div`
   }
 `;
 const Content = styled.div`
-  height: 85vh;
+  height: 100%;
   width: 100%;
 
   .dashboardcontent {
@@ -1059,12 +1035,6 @@ const Content = styled.div`
     margin: 0 auto;
     margin-top: -62px;
     font-weight: 300;
-    .dashboard {
-      padding: 1rem;
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
 
     .dbox {
       padding: 10px;

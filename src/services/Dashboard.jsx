@@ -58,6 +58,17 @@ export const Tranx = async (userId) => {
   return data;
 };
 
+export const TranxId = async (userId) => {
+  console.log(
+    "🚀 ~ file: Dashboard.jsx:31 ~ Tranx ~ userId:",
+    userId?.queryKey[0]
+  );
+  const { data } = await Axios.get(
+    `${baseurl}/getuserlog/${userId?.queryKey[0]}`
+  );
+  return data;
+};
+
 export const Tranx2 = async (userId) => {
   const { data } = await Axios.get(
     `${baseurl}/getusertransactionlog/${userId}`

@@ -10,7 +10,7 @@ import Checktrnx from "../../images/checktnx.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tranx, confirmPayment } from "../../services/Dashboard";
+import { Tranx, TranxId, confirmPayment } from "../../services/Dashboard";
 import moment from "moment";
 import AmountFormatter from "../../reuseables/AmountFormatter";
 import Btn from "../../reuseables/Btn";
@@ -18,6 +18,7 @@ import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import CanvasDraw from "react-canvas-draw";
 import toast from "react-hot-toast";
+import Logo from "../../images/logotext.svg";
 
 function ConfirmTransactionPage() {
   const navigate = useNavigate();
@@ -34,8 +35,8 @@ function ConfirmTransactionPage() {
     isLoading: nameEnqLoading,
     refetch: refetchNameEnq,
   } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
-    queryFn: Tranx,
+    queryKey: [id],
+    queryFn: TranxId,
     onSuccess: (data) => {
       setTransactionList(
         data?.data?.find((d) => id.toString() === d?.paymentRef?.toString())
@@ -47,7 +48,7 @@ function ConfirmTransactionPage() {
       console.error(err);
     },
   });
-
+  console.log(nameEnq);
   const [open, setOpen] = useState(false);
   const [getmsg, setmsg] = useState("");
   const [getlink, setlink] = useState("");
@@ -107,6 +108,8 @@ function ConfirmTransactionPage() {
     <Content>
       <div className="cont">
         <Header>
+          <img src={Logo} />
+
           <p>
             {moment(transactionList?.collectionDate).format(
               "DD MMM YYYY: hh:mm a"

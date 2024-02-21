@@ -30,7 +30,7 @@ function Agentlayout({ children, current, useBack }) {
       <div className="cont">{children}</div>
       <div
         style={{
-          height: "7vh",
+          height: "10vh",
           marginTop: "30px",
           background: "#F2F2F2",
         }}

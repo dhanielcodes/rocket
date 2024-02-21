@@ -207,6 +207,7 @@ const NavCont = styled.div`
   transform: translateX(-50%);
   width: 100%;
   max-width: 440px;
+  z-index: 20;
 
   > ::-webkit-scrollbar {
     display: none !important ;
