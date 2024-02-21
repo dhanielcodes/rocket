@@ -1668,8 +1668,8 @@ const Content = styled.div`
 
   .cont {
     height: 100%;
-    /* overflow-y: scroll; */
     overflow: hidden;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     gap: 10px;
