@@ -28,19 +28,16 @@ function ConfirmTransactionPage() {
   // Access the 'id' query parameter
   const id = queryParams.get("tfId");
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
-  const [transactionList, setTransactionList] = useState(null);
 
   const {
-    data: nameEnq,
+    data,
     isLoading: nameEnqLoading,
     refetch: refetchNameEnq,
   } = useQuery({
     queryKey: [id],
     queryFn: TranxId,
     onSuccess: (data) => {
-      setTransactionList(
-        data?.data?.find((d) => id.toString() === d?.paymentRef?.toString())
-      );
+      return;
     },
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
@@ -48,7 +45,8 @@ function ConfirmTransactionPage() {
       console.error(err);
     },
   });
-  console.log(nameEnq);
+  const transactionList = data?.data;
+  console.log(transactionList);
   const [open, setOpen] = useState(false);
   const [getmsg, setmsg] = useState("");
   const [getlink, setlink] = useState("");
@@ -99,10 +97,6 @@ function ConfirmTransactionPage() {
     // Fetch data when the component mounts or 'id' changes
     refetchNameEnq();
   }, [id, refetchNameEnq]);
-
-  if (nameEnqLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Content>

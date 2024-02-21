@@ -10,7 +10,7 @@ import Checktrnx from "../../images/checktnx.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tranx } from "../../services/Dashboard";
+import { Tranx, TranxId } from "../../services/Dashboard";
 import moment from "moment";
 import AmountFormatter from "../../reuseables/AmountFormatter";
 
@@ -22,19 +22,15 @@ function TransactionDetails() {
   // Access the 'id' query parameter
   const id = queryParams.get("id");
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
-  const [transactionList, setTransactionList] = useState(null);
-
   const {
-    data: nameEnq,
+    data,
     isLoading: nameEnqLoading,
     refetch: refetchNameEnq,
   } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
-    queryFn: Tranx,
+    queryKey: [id],
+    queryFn: TranxId,
     onSuccess: (data) => {
-      setTransactionList(
-        data?.data?.find((d) => id.toString() === d?.sn?.toString())
-      );
+      return;
     },
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
@@ -42,16 +38,14 @@ function TransactionDetails() {
       console.error(err);
     },
   });
+  const transactionList = data?.data;
+  console.log(transactionList);
 
   // useEffect to run when the component mounts
   useEffect(() => {
     // Fetch data when the component mounts or 'id' changes
     refetchNameEnq();
   }, [id, refetchNameEnq]);
-
-  if (nameEnqLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Userlayout current="Transactions Details" useBack={true}>
