@@ -58,12 +58,14 @@ import UpdateRateCustomer from "./Routes/Agent/UpdateRateCustomer";
 import ResetPassword from "./components/ResetPassword";
 import Notifications from "./Routes/User/Notifications";
 import ConfirmTransactionPage from "./Routes/User/ConfirmTransactionPage";
+import ScrollToTop from "./utils/ScrollToTop";
 //
 
 function App() {
   return (
     <>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* <Route element={<InActivityTimeOut />}> */}
           <Route>

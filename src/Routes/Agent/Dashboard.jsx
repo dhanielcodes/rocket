@@ -476,7 +476,12 @@ function Dashboard() {
           <Box>
             <div
               className="action"
-              style={{ background: `url(${chooseplan})` }}
+              style={{
+                background: `url(${chooseplan})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "10px",
+              }}
               onClick={() => navigate("/agent/settings/wallet")}
             >
               <span>Wallet</span>
@@ -490,7 +495,12 @@ function Dashboard() {
           >
             <div
               className="action"
-              style={{ background: `url(${withdrawfunds})` }}
+              style={{
+                background: `url(${withdrawfunds})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "10px",
+              }}
             >
               <span>Update Rate</span>
               <p>Update already set currency rates</p>
@@ -604,12 +614,7 @@ const Content = styled.div`
   @media screen and (max-width: 40em) {
     width: 100%;
   }
-  margin: 0 auto;
-  padding: 0 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y: scroll;
+
   /* border: 1px solid red; */
 
   .dashboardamount {
@@ -623,7 +628,6 @@ const Content = styled.div`
 `;
 
 const SectionOne = styled.div`
-  height: 90vh;
   .avatar {
     width: 50px;
     height: 50px;
@@ -797,6 +801,7 @@ const SectionOne = styled.div`
 `;
 const SectionTwo = styled.div`
   display: flex;
+  margin: 10px 0;
   gap: 10px;
   /* width: 100%; */
   padding-inline: 1em;
@@ -812,13 +817,15 @@ const SectionTwo = styled.div`
   }
 `;
 const SectionThree = styled.div`
-  border-radius: 10px;
-  /* border: 1px solid red; */
+  /* border-radius: 10px;
   padding-inline: 1em;
   color: var(--grey-400, #98a2b3);
+  border-radius: 10px; */
+  /* border: 1px solid red; */
   /* padding: 1em; */
-  border-radius: 10px;
   /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
+  padding-inline: 1em;
+  margin-bottom: 10px;
   .text {
     font-weight: bold;
     background-color: #fff;
@@ -826,8 +833,7 @@ const SectionThree = styled.div`
     font-size: 20px;
     border-radius: 10px;
     font-weight: 500;
-    display: flex;
-    flex-direction: column;
+
     gap: 18px;
 
     > p {
@@ -961,9 +967,10 @@ const SectionFour = styled.div`
     padding-block: 20px;
     border-radius: 10px;
   }
+
   .text {
     text-align: center;
-    padding: 2.5em;
+    margin: 12px 0px;
   }
   .copy {
     display: flex;
@@ -971,9 +978,7 @@ const SectionFour = styled.div`
     align-items: center;
     border-radius: 18px;
     border: 3px dotted grey;
-    padding-inline: 20px;
-    gap: 20px;
-    padding-block: 1em;
+    padding: 10px;
   }
 `;
 const FlexRow = styled.div`

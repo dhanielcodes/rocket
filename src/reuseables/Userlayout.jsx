@@ -39,46 +39,36 @@ function Userlayout({ children, current, useBack }) {
 
   return (
     <Layout>
+      <Header current={current} useBack={useBack} />
+      <br />
+      <div className="cont">{children}</div>
       <div
-        className="main"
         style={{
-          height: height - 100 + "px",
+          height: "7vh",
+          marginTop: "30px",
+          background: "#F2F2F2",
         }}
-      >
-        <Header current={current} useBack={useBack} />
-        <div className="cont">{children}</div>
-
-        {window.location.pathname !== "/upload" && <Nav />}
-      </div>
+      ></div>
+      {window.location.pathname !== "/upload" && <Nav />}
     </Layout>
   );
 }
 
 const Layout = styled.div`
   background: #f2f2f2;
-  padding: 0;
-  margin: 0;
-  height: 100vh;
-
-  .main {
-    max-width: 440px;
-    width: 100%;
-    // height: 90vh;
-    overflow-y: scroll;
-    margin: 0 auto;
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      width: 10px;
-      background-color: #41ff8d9b;
-      border-radius: 30px;
-    }
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  /*  ::-webkit-scrollbar {
+    width: 10px;
   }
-  .cont {
-    padding-top: 20px;
-    height: 100vh;
-  }
+  ::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #41ff8d9b;
+    border-radius: 30px;
+  } */
 `;
 
 export default Userlayout;

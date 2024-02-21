@@ -32,6 +32,7 @@ import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import { getLocals } from "../../hooks/useSessionStorage";
 import WalletList from "../../reuseables/WalletList";
+import useScreenSize from "../../hooks/useScreenSize";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ function Dashboard() {
   const [getrates, setRates] = useState(null);
   const [currentRates, setcurrentRates] = useState(null);
 
+  const { height } = useScreenSize();
   const [kyc, setKyc] = useState(false);
 
   console.log(
@@ -398,7 +400,12 @@ function Dashboard() {
           <Box>
             <div
               className="action"
-              style={{ background: `url(${chooseplan})` }}
+              style={{
+                background: `url(${chooseplan})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "10px",
+              }}
               onClick={() => navigate("/user/settings/wallet")}
             >
               <span>Wallet</span>
@@ -406,10 +413,16 @@ function Dashboard() {
               {/* <img src={Wallet} height="50px"/> */}
             </div>
           </Box>
-          <Box className="boxtwo" onClick={() => navigate("/user/sendmoney")}>
+          <Box>
             <div
               className="action"
-              style={{ background: `url(${withdrawfunds})` }}
+              style={{
+                background: `url(${withdrawfunds})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "10px",
+              }}
+              onClick={() => navigate("/user/sendmoney")}
             >
               <span>Send Money</span>
               <p>Quickly send money to your loved ones</p>
@@ -469,14 +482,6 @@ const Content = styled.div`
     font-weight: 400 !important;
   }
 
-  @media screen and (max-width: 40em) {
-    width: 100%;
-  }
-  margin: 0 auto;
-  padding: 0 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   /* border: 1px solid red; */
 
   .avatar {
@@ -488,8 +493,6 @@ const Content = styled.div`
 `;
 
 const SectionOne = styled.div`
-  height: 90vh;
-
   .css-13cymwt-control {
     background: linear-gradient(
         94.71deg,
@@ -652,8 +655,8 @@ const SectionOne = styled.div`
 `;
 const SectionTwo = styled.div`
   display: flex;
-  gap: 10px;
   /* width: 100%; */
+  margin: 10px 0;
   padding-inline: 1em;
   border-radius: 10px;
   /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
@@ -819,7 +822,7 @@ const SectionFour = styled.div`
 
   .text {
     text-align: center;
-    padding: 2.5em;
+    margin: 12px 0px;
   }
   .copy {
     display: flex;
@@ -827,9 +830,7 @@ const SectionFour = styled.div`
     align-items: center;
     border-radius: 18px;
     border: 3px dotted grey;
-    padding-inline: 20px;
-    gap: 20px;
-    padding-block: 1em;
+    padding: 10px;
   }
 `;
 const FlexRow = styled.div`

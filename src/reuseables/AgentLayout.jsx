@@ -25,46 +25,36 @@ function Agentlayout({ children, current, useBack }) {
 
   return (
     <Layout>
+      <Header current={current} useBack={useBack} />
+      <br />
+      <div className="cont">{children}</div>
       <div
-        className="main"
         style={{
-          height: height - 100 + "px",
+          height: "7vh",
+          marginTop: "30px",
+          background: "#F2F2F2",
         }}
-      >
-        <Header current={current} useBack={useBack} />
-        <div className="cont">{children}</div>
-        <AgentNav />
-      </div>
+      ></div>
+      <AgentNav />
     </Layout>
   );
 }
 
 const Layout = styled.div`
-  height: 100vh;
   background: #f2f2f2;
-  padding: 0;
-  margin: 0;
-
-  .main {
-    max-width: 440px;
-    width: 100%;
-    // height: 90vh;
-    overflow: hidden;
-    overflow-y: scroll;
-    margin: 0 auto;
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      width: 10px;
-      background-color: #41ff8d9b;
-      border-radius: 30px;
-    }
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  /*  ::-webkit-scrollbar {
+    width: 10px;
   }
-  .cont {
-    height: 100vh;
-    padding-top: 20px;
-  }
+  ::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #41ff8d9b;
+    border-radius: 30px;
+  } */
 `;
 
 export default Agentlayout;
