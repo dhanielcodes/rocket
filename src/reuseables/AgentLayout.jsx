@@ -47,6 +47,8 @@ const Layout = styled.div`
   width: 100%;
   max-width: 420px;
   margin: auto;
+  padding: 0 10px;
+
   /*  ::-webkit-scrollbar {
     width: 10px;
   }
