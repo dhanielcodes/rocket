@@ -379,7 +379,10 @@ function Register() {
           address: newAddress?.description,
           postcode: user?.postcode,
           employmentStatusId: user?.employmentStatusId,
-          profession: user?.profession,
+          profession: {
+            id: profId?.id,
+            name: profId?.name,
+          },
           companyName: user?.companyName,
           onboardingSource: user?.onboardingSource,
           agentInvite: agentInvite ? agentInvite : "",
