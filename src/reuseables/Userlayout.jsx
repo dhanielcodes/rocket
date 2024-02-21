@@ -49,7 +49,12 @@ function Userlayout({ children, current, useBack }) {
           background: "#F2F2F2",
         }}
       ></div>
-      {window.location.pathname !== "/upload" && <Nav />}
+      {window.location.pathname !== "/upload" &&
+      window.location.pathname !== "/user/notifications" ? (
+        <Nav />
+      ) : (
+        ""
+      )}
     </Layout>
   );
 }
