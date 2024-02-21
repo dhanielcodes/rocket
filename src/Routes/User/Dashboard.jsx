@@ -477,13 +477,6 @@ const Content = styled.div`
   }
 
   /* border: 1px solid red; */
-
-  .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid #00a85a;
-  }
 `;
 
 const SectionOne = styled.div`
@@ -500,7 +493,12 @@ const SectionOne = styled.div`
     color: #ffffff !important;
     border-color: hsl(0deg 0% 1.66% / 0%) !important;
   }
-
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #00a85a;
+  }
   .css-tj5bde-Svg {
     color: #fff !important;
   }
