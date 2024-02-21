@@ -201,56 +201,62 @@ function Login() {
                       {data?.message}
                     </p>
                     <br />
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      {(data?.data?.user?.kycStatus === "Completed" && "") || (
-                        <Btn
-                          styles={{
-                            width: "100%",
-                            marginRight: "10px",
-                            padding: "8px",
-                            fontWeight: "600",
-                          }}
-                          clicking={() => {
-                            window.location.pathname = "/upload";
-                          }}
-                          size={30}
-                        >
-                          CONTINUE WITH KYC{" "}
-                        </Btn>
-                      )}
-                      &nbsp; &nbsp;
-                      {(data?.data?.user?.kycStatus === "Completed" && "") || (
-                        <Btn
-                          styles={{
-                            width: "100%",
-                            marginRight: "10px",
-                            padding: "8px",
-                            background: "#b0b0b0",
+                    {data?.status ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        {(data?.data?.user?.kycStatus === "Completed" &&
+                          "") || (
+                          <Btn
+                            styles={{
+                              width: "100%",
+                              marginRight: "10px",
+                              padding: "8px",
+                              fontWeight: "600",
+                            }}
+                            clicking={() => {
+                              window.location.pathname = "/upload";
+                            }}
+                            size={30}
+                          >
+                            CONTINUE WITH KYC{" "}
+                          </Btn>
+                        )}
+                        &nbsp; &nbsp;
+                        {(data?.data?.user?.kycStatus === "Completed" &&
+                          "") || (
+                          <Btn
+                            styles={{
+                              width: "100%",
+                              marginRight: "10px",
+                              padding: "8px",
+                              background: "#b0b0b0",
 
-                            fontWeight: "600",
-                          }}
-                          clicking={() => {
-                            // navigate("/upload")
-                            if (data?.data?.user?.role?.id === 6) {
-                              //navigate("/user/dashboard");
-                              window.location.pathname = "/user/dashboard";
-                            } else {
-                              //navigate("/agent/dashboard");
-                              window.location.pathname = "/agent/dashboard";
-                            }
-                          }}
-                          size={30}
-                        >
-                          SKIP FOR NOW{" "}
-                        </Btn>
-                      )}
-                    </div>
+                              fontWeight: "600",
+                            }}
+                            clicking={() => {
+                              // navigate("/upload")
+                              if (data?.data?.user?.role?.id === 6) {
+                                //navigate("/user/dashboard");
+                                window.location.pathname = "/user/dashboard";
+                              } else {
+                                //navigate("/agent/dashboard");
+                                window.location.pathname = "/agent/dashboard";
+                              }
+                            }}
+                            size={30}
+                          >
+                            SKIP FOR NOW{" "}
+                          </Btn>
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </Msg>
                 </ReusableModal>
               )}
