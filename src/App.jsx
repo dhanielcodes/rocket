@@ -59,6 +59,7 @@ import ResetPassword from "./components/ResetPassword";
 import Notifications from "./Routes/User/Notifications";
 import ConfirmTransactionPage from "./Routes/User/ConfirmTransactionPage";
 import ScrollToTop from "./utils/ScrollToTop";
+import ViewBarDetails from "./Routes/User/ViewBarDetails";
 //
 
 function App() {
@@ -96,6 +97,7 @@ function App() {
               element={<TransactionDetails />}
             />
 
+            <Route path="/view-transaction" element={<ViewBarDetails />} />
             <Route
               path="/confirm-transaction"
               element={<ConfirmTransactionPage />}
