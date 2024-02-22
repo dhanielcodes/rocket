@@ -8,7 +8,7 @@ import { styled } from "styled-components";
 import { Avatar, Typography } from "@arco-design/web-react";
 import Checktrnx from "../../images/checktnx.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Tranx, TranxId, confirmPayment } from "../../services/Dashboard";
 import moment from "moment";
@@ -24,9 +24,12 @@ function ConfirmTransactionPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [params] = useSearchParams();
 
   // Access the 'id' query parameter
+
   const id = queryParams.get("tid");
+
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
   const {
@@ -91,7 +94,9 @@ function ConfirmTransactionPage() {
   });
 
   const canvasDraw = useRef();
+  const statusCode = params.get("statusCode");
 
+  console.log(statusCode === "2", "statusCode");
   // useEffect to run when the component mounts
   useEffect(() => {
     // Fetch data when the component mounts or 'id' changes
@@ -189,6 +194,19 @@ function ConfirmTransactionPage() {
                 )}
               </>
             )}
+          </ReusableModal>
+        )}
+        {statusCode && (
+          <ReusableModal
+            isOpen={statusCode}
+            onClose={() => {
+              navigate("/");
+              localStorage.removeItem("amount");
+            }}
+          >
+            <Msg type={statusCode === "0" ? true : false}>
+              {params.get("statusMessage")}
+            </Msg>
           </ReusableModal>
         )}
         <Details>
