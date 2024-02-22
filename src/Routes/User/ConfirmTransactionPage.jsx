@@ -26,7 +26,7 @@ function ConfirmTransactionPage() {
   const queryParams = new URLSearchParams(location.search);
 
   // Access the 'id' query parameter
-  const id = queryParams.get("tfId");
+  const id = queryParams.get("tid");
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
   const {
