@@ -140,7 +140,11 @@ const AgentSettings = () => {
               onClick={handleUploadImage}
             >
               <img
-                src={Userdata?.data?.user?.profileImageURL || Profile}
+                src={
+                  Userdata?.data?.user?.profileImageURL?.includes("cloudinary")
+                    ? Userdata?.data?.user?.profileImageURL
+                    : Profile
+                }
                 alt=""
               />
               <input

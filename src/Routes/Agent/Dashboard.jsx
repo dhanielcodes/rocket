@@ -221,7 +221,11 @@ function Dashboard() {
         <div className="sel1">
           <div className="container">
             <img
-              src={Userdata?.data?.user?.profileImageURL || Profile}
+              src={
+                Userdata?.data?.user?.profileImageURL?.includes("cloudinary")
+                  ? Userdata?.data?.user?.profileImageURL
+                  : Profile
+              }
               height="50px"
               className="avatar"
             />

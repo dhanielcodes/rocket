@@ -262,7 +262,11 @@ function Dashboard() {
           <div className="container">
             <img
               className="avatar"
-              src={Userdata?.data?.user?.profileImageURL || Profile}
+              src={
+                Userdata?.data?.user?.profileImageURL?.includes("cloudinary")
+                  ? Userdata?.data?.user?.profileImageURL
+                  : Profile
+              }
             />
             <FlexCol className="currencyselect">
               {/* <Select></Select> */}
