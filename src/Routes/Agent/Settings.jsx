@@ -1,5 +1,3 @@
-import React, { useRef } from "react";
-import Userlayout from "../../reuseables/Userlayout";
 import styled from "styled-components";
 //
 import contact from "../../assets/contact.svg";
@@ -19,6 +17,7 @@ import Agentlayout from "../../reuseables/AgentLayout";
 import toast from "react-hot-toast";
 import { updateProfilePicture } from "../../services/Auth";
 import { useMutation } from "@tanstack/react-query";
+import Profile from "../../assets/profile.png";
 
 const AgentSettings = () => {
   const settingsMap = [
@@ -140,7 +139,10 @@ const AgentSettings = () => {
               }}
               onClick={handleUploadImage}
             >
-              <img src={Userdata?.data?.user?.profileImageURL} alt="" />
+              <img
+                src={Userdata?.data?.user?.profileImageURL || Profile}
+                alt=""
+              />
               <input
                 type="file"
                 className="uploader"

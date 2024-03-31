@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import Userlayout from "../../reuseables/Userlayout";
 import styled from "styled-components";
 //
@@ -11,13 +10,13 @@ import document from "../../assets/documents.png";
 import faqs from "../../assets/faqs.png";
 import logout from "../../assets/logout.png";
 import greaterthan from "../../assets/greaterthan.svg";
-import copy from "../../assets/copy.svg";
 //
 import Box from "../../reuseables/Box";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { updateProfilePicture } from "../../services/Auth";
 import toast from "react-hot-toast";
+import Profile from "../../assets/profile.png";
 
 const Settings = () => {
   const settingsMap = [
@@ -141,7 +140,10 @@ const Settings = () => {
               }}
               onClick={handleUploadImage}
             >
-              <img src={Userdata?.data?.user?.profileImageURL} alt="" />
+              <img
+                src={Userdata?.data?.user?.profileImageURL || Profile}
+                alt=""
+              />
               <input
                 type="file"
                 className="uploader"

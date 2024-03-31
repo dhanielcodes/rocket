@@ -33,6 +33,7 @@ import Msg from "../../reuseables/Msg";
 import { getLocals } from "../../hooks/useSessionStorage";
 import WalletList from "../../reuseables/WalletList";
 import useScreenSize from "../../hooks/useScreenSize";
+import Profile from "../../assets/profile.png";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -261,7 +262,7 @@ function Dashboard() {
           <div className="container">
             <img
               className="avatar"
-              src={Userdata?.data?.user?.profileImageURL}
+              src={Userdata?.data?.user?.profileImageURL || Profile}
             />
             <FlexCol className="currencyselect">
               {/* <Select></Select> */}

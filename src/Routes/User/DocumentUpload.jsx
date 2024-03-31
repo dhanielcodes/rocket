@@ -126,9 +126,7 @@ function DocumentUploadAgent() {
 const Content = styled.div`
   width: 100%;
   /* background-color: #fff; */
-  margin: 0 auto;
-  height: 100%;
-  overflow: hidden;
+
 
   > * p {
     font-weight: 300;

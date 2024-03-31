@@ -32,6 +32,7 @@ import CountryListAgent from "../../reuseables/CountryListAgent";
 import WalletList from "../../reuseables/WalletList";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
+import Profile from "../../assets/profile.png";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -220,7 +221,7 @@ function Dashboard() {
         <div className="sel1">
           <div className="container">
             <img
-              src={Userdata?.data?.user?.profileImageURL}
+              src={Userdata?.data?.user?.profileImageURL || Profile}
               height="50px"
               className="avatar"
             />
@@ -453,8 +454,8 @@ function Dashboard() {
                   height="32"
                   rx="16"
                   stroke="#F04438"
-                  stroke-opacity="0.1"
-                  stroke-width="5"
+                  strokeOpacity="0.1"
+                  strokeWidth="5"
                 />
               </svg>
 
