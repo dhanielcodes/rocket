@@ -2,16 +2,34 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import Logo from "../images/logotext.svg";
 import { IconNotification } from "@arco-design/web-react/icon";
 import { Badge, Space } from "@arco-design/web-react";
 import { useNavigate } from "react-router-dom";
+import { notifs } from "../services/Dashboard";
 
 function Header({ current, useBack }) {
   const navigate = useNavigate();
 
+  const UserData = JSON.parse(localStorage.getItem("userDetails"));
+
+  const [transactionsList, setTransactionsList] = useState();
+
+  const getTransactions = async () => {
+    try {
+      const data = await notifs(UserData?.data?.user?.userId);
+      console.log(data, "freoms");
+      setTransactionsList(data?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getTransactions();
+  }, []);
   const goBack = () => {
     navigate(-1); // This navigates back to the previous page in the navigation stack.
   };
@@ -52,7 +70,7 @@ function Header({ current, useBack }) {
         </div>
         {current && <h4 className="headercurrent">{current}</h4>}
         <div className="notifi">
-          <Badge count={3} offset={[1, -1]}>
+          <Badge count={transactionsList?.length || 0} offset={[1, -1]}>
             <IconNotification
               onClick={() => {
                 navigate("/user/notifications");
