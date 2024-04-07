@@ -263,7 +263,7 @@ function Dashboard() {
             <img
               className="avatar"
               src={
-                Userdata?.data?.user?.profileImageURL?.includes("cloudinary")
+                Userdata?.data?.user?.profileImageURL
                   ? Userdata?.data?.user?.profileImageURL
                   : Profile
               }

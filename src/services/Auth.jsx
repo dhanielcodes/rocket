@@ -25,6 +25,13 @@ export const updateProfilePicture = async (body) => {
   return data;
 };
 
+export const uploadFile = async (body) => {
+  const { data } = await Axios.post(
+    `${baseurl}/FileUploadAPI/${body.id}`,
+    body.file
+  );
+  return data;
+};
 // create bank account
 export const createUser = async (body) => {
   const { data } = await Axios.post(`${baseurl}/signup`, body);

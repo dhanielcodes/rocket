@@ -28,6 +28,7 @@ import {
   getBanks,
   Payoutchannel,
   generateJourneyToken,
+  processKyc,
 } from "../../services/Dashboard";
 import {
   countries as testCountries,
@@ -42,20 +43,27 @@ import CustomInput from "../../reuseables/CustomInput";
 import Loader from "../../reuseables/Loader";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Agentlayout from "../../reuseables/AgentLayout";
 import toast from "react-hot-toast";
+import FileUpload from "../../reuseables/FileUpload";
 
-function DocumentUploadAgent({ typee }) {
+function ManualUpload({ typee }) {
+  const UserData = JSON.parse(localStorage.getItem("userDetails"));
+
   const { mutate, isLoading } = useMutation({
-    mutationFn: generateJourneyToken,
+    mutationFn: processKyc,
     onSuccess: (data) => {
       //navigates("/agent/dashboard");
       // toast.error(data?.message);
       console.log(data);
-      toast.success("Loading Journey Interface");
-      localStorage.setItem("journeyToken", data);
-      window.location.replace(window.location.origin + "/idscan.html");
+      if (data?.status) {
+        toast.success(data?.message);
+        setImage();
+        setImage2();
+      } else {
+        toast.error(data?.message);
+      }
     },
     onError: (data) => {
       console.log(data?.response?.data?.error);
@@ -68,71 +76,47 @@ function DocumentUploadAgent({ typee }) {
   const collectionType = (e) => {
     setType(e);
   };
+
+  const [image, setImage] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const [image2, setImage2] = useState();
+  const [loading2, setLoading2] = useState(true);
   const Lay = typee === "Agent" ? Agentlayout : Userlayout;
-  const navigate = useNavigate();
+
   return (
-    <Lay current="ID Upload" useBack={true}>
+    <Lay current="Upload Document" useBack={true}>
       <Content>
         <div className="cont">
           <div className="sec">
             <SectionThree>
-              <div className="text">
-                <div className="type">
-                  <p className="textheader">Document Type</p>
-                  <CustomSelect
-                    defaultValue={{
-                      id: 1,
-                      label: "Drivers Licence",
-                    }}
-                    onChange={collectionType}
-                    options={[
-                      {
-                        id: 1,
-                        label: "Drivers Licence",
-                      },
-                      {
-                        id: 3,
-                        label: "National ID",
-                      },
-                      {
-                        id: 2,
-                        label: "Passport",
-                      },
-                    ]}
-                    styles={{ fontSize: "10px ! important" }}
-                  />
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
+              <p className="textheader">DOCUMENT FILE</p>
+              <FileUpload
+                setValue={setImage}
+                value={image}
+                placeholder="Click to upload DOCUMENT FILE"
+                setLoading={setLoading}
+              />
+              <br></br>
+              <p className="textheader">PASSPORT SELFIE</p>
+              <FileUpload
+                setValue={setImage2}
+                value={image2}
+                placeholder="Click to upload PASSPORT SELFIE"
+                setLoading={setLoading2}
+              />
+              &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                onClick={() => {
+                  mutate({
+                    userId: UserData?.data?.user?.userId,
+                    idURL: image?.secure_url,
+                    selfieURL: image2?.secure_url,
+                  });
                 }}
               >
-                <button
-                  onClick={() => {
-                    navigate(
-                      typee === "Agent"
-                        ? "/agent/manual-upload"
-                        : "/user/manual-upload"
-                    );
-                  }}
-                >
-                  Manual Upload
-                </button>
-                &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                <button
-                  onClick={() => {
-                    mutate({
-                      grant_type: "password",
-                      UserName: "TRpoc_admin",
-                      Password: "0RlWo7BZ4dx7KzSy",
-                      area: "area",
-                    });
-                  }}
-                >
-                  {isLoading ? "Generating Token..." : "Scan Document"}
-                </button>
-              </div>
+                {isLoading ? "Is Scanning..." : "Scan Document"}
+              </button>
             </SectionThree>
           </div>
         </div>
@@ -356,4 +340,4 @@ const SectionThree = styled.div`
   }
 `;
 
-export default DocumentUploadAgent;
+export default ManualUpload;

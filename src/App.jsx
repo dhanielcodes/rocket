@@ -60,6 +60,7 @@ import Notifications from "./Routes/User/Notifications";
 import ConfirmTransactionPage from "./Routes/User/ConfirmTransactionPage";
 import ScrollToTop from "./utils/ScrollToTop";
 import ViewBarDetails from "./Routes/User/ViewBarDetails";
+import ManualUpload from "./Routes/User/ManualUpload";
 //
 
 function App() {
@@ -159,7 +160,15 @@ function App() {
               element={<WalletsDetailsAgent />}
             />
             <Route path="/user/upload" element={<DocumentUpload />} />
-            <Route path="/agent/upload" element={<DocumentUploadAgent />} />
+            <Route path="/user/manual-upload" element={<ManualUpload />} />
+            <Route
+              path="/agent/manual-upload"
+              element={<ManualUpload typee="Agent" />}
+            />
+            <Route
+              path="/agent/upload"
+              element={<DocumentUpload typee="Agent" />}
+            />
             <Route path="/upload" element={<UploadId />} />
             <Route
               path="/idscan"

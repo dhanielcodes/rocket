@@ -222,7 +222,7 @@ function Dashboard() {
           <div className="container">
             <img
               src={
-                Userdata?.data?.user?.profileImageURL?.includes("cloudinary")
+                Userdata?.data?.user?.profileImageURL
                   ? Userdata?.data?.user?.profileImageURL
                   : Profile
               }
