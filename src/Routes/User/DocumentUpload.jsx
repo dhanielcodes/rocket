@@ -67,6 +67,7 @@ function DocumentUploadAgent({ typee }) {
 
   const collectionType = (e) => {
     setType(e);
+    localStorage.setItem("docType", e?.label);
   };
   const Lay = typee === "Agent" ? Agentlayout : Userlayout;
   const navigate = useNavigate();
@@ -80,10 +81,6 @@ function DocumentUploadAgent({ typee }) {
                 <div className="type">
                   <p className="textheader">Document Type</p>
                   <CustomSelect
-                    defaultValue={{
-                      id: 1,
-                      label: "Drivers Licence",
-                    }}
                     onChange={collectionType}
                     options={[
                       {
@@ -109,6 +106,7 @@ function DocumentUploadAgent({ typee }) {
                 }}
               >
                 <button
+                  disabled={!type}
                   onClick={() => {
                     navigate(
                       typee === "Agent"
@@ -129,6 +127,7 @@ function DocumentUploadAgent({ typee }) {
                       area: "area",
                     });
                   }}
+                  disabled={!type}
                 >
                   {isLoading ? "Generating Token..." : "Scan Document"}
                 </button>

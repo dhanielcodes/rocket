@@ -62,7 +62,7 @@ function ManualUpload({ typee }) {
         setImage();
         setImage2();
       } else {
-        toast.error(data?.message);
+        toast.error(data?.transactionRef);
       }
     },
     onError: (data) => {
@@ -90,23 +90,29 @@ function ManualUpload({ typee }) {
         <div className="cont">
           <div className="sec">
             <SectionThree>
-              <p className="textheader">DOCUMENT FILE</p>
+              <p className="textheader">
+                SELECT YOUR {localStorage.getItem("docType")?.toUpperCase()}{" "}
+                FILE
+              </p>
               <FileUpload
                 setValue={setImage}
                 value={image}
-                placeholder="Click to upload DOCUMENT FILE"
+                placeholder={`Click to upload ${localStorage
+                  .getItem("docType")
+                  ?.toUpperCase()} FILE`}
                 setLoading={setLoading}
               />
               <br></br>
-              <p className="textheader">PASSPORT SELFIE</p>
+              <p className="textheader">PASSPORT POTOGRAPH</p>
               <FileUpload
                 setValue={setImage2}
                 value={image2}
-                placeholder="Click to upload PASSPORT SELFIE"
+                placeholder="Click to upload PASSPORT POTOGRAPH"
                 setLoading={setLoading2}
               />
               &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
               <button
+                disabled={isLoading || !image2 || !image}
                 onClick={() => {
                   mutate({
                     userId: UserData?.data?.user?.userId,
@@ -115,7 +121,9 @@ function ManualUpload({ typee }) {
                   });
                 }}
               >
-                {isLoading ? "Is Scanning..." : "Scan Document"}
+                {isLoading
+                  ? "Please wait while your ID is being processed. This may take few minutes..."
+                  : "Scan Document"}
               </button>
             </SectionThree>
           </div>
