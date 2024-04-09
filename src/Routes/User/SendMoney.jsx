@@ -334,7 +334,7 @@ function SendMoney() {
         });
       }
     } else if (current === 3) {
-      if (purposee && notee) {
+      if (purposee) {
         setCurrent((prev) => {
           localStorage.setItem("steps", prev + 1);
           return prev + 1;

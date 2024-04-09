@@ -50,6 +50,7 @@ import FileUpload from "../../reuseables/FileUpload";
 
 function ManualUpload({ typee }) {
   const UserData = JSON.parse(localStorage.getItem("userDetails"));
+  const navigate = useNavigate();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: processKyc,
@@ -61,6 +62,11 @@ function ManualUpload({ typee }) {
         toast.success(data?.message);
         setImage();
         setImage2();
+        if (typee === "Agent") {
+          navigate("/agent/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       } else {
         toast.error(data?.transactionRef);
       }
