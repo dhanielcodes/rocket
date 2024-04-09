@@ -289,6 +289,12 @@ function SendMoney() {
     return data ? JSON.parse(data) : [];
   };
 
+  const getLocalsN = (name) => {
+    console.log(name, "localsss");
+    const data = localStorage.getItem(name);
+    return data ? JSON.parse(data) : "";
+  };
+
   const [moneyData, setMoneyData] = useState();
 
   const getBeneF = getLocals("userBeneficiaryId") || [];
@@ -298,7 +304,7 @@ function SendMoney() {
   const money = moneyData || [];
   const pcode = getLocals("promoCode") || [];
   const purposes = getLocals("purpose") || [];
-  const note = getLocals("note") || [];
+  const note = getLocalsN("note") || "";
 
   const country1 = getLocals("country1") || [];
   const country2 = getLocals("country2") || [];
