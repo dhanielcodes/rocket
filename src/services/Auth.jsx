@@ -52,7 +52,7 @@ export const getCurrencies = async () => {
 };
 export const getUserCurrencies = async () => {
   const { data } = await Axios.get(
-    `${baseurl}/getusercurrency?currencyCode=${Userdata?.data?.user?.country?.currencyCode}`
+    `${baseurl}/getusercurrency/${Userdata?.data?.user?.userId}`
   );
   return data;
 };
