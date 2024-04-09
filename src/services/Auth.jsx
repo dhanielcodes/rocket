@@ -47,7 +47,9 @@ export const countries = async () => {
   return data;
 };
 export const getCurrencies = async () => {
-  const { data } = await Axios.get(`${baseurl}/getcurrency`);
+  const { data } = await Axios.get(
+    `${baseurl}/getcurrency?userId=${Userdata?.data?.user?.userId}`
+  );
   return data;
 };
 export const checkEmail = async (body) => {
