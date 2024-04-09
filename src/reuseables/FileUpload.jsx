@@ -149,7 +149,7 @@ export default function FileUpload({
               mutate({ file: formData, id: userDetails?.data?.user?.userId });
             }}
             placeholder="placeholder"
-            accept=".jpeg, .png, jpg"
+            accept=".jpeg, .png, jpg, .heic"
           />
         </label>
       ) : (
