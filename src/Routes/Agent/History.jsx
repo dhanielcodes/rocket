@@ -320,7 +320,7 @@ function AgentHistory() {
                             stroke-linejoin="round"
                           />
                         </svg>
-                      ) : (
+                      ) : item?.paymentStatus === "Pending" ? (
                         <svg
                           width="52"
                           height="52"
@@ -334,6 +334,36 @@ function AgentHistory() {
                             r="25"
                             transform="rotate(-74.6597 26 26)"
                             fill="#F2994A"
+                          />
+                          <path
+                            d="M22.4409 31.1983L31.2167 19.0333"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          width="52"
+                          height="52"
+                          viewBox="0 0 52 52"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="26"
+                            cy="26"
+                            r="25"
+                            transform="rotate(-74.6597 26 26)"
+                            fill="#f24a4a"
                           />
                           <path
                             d="M22.4409 31.1983L31.2167 19.0333"
