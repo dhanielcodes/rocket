@@ -352,32 +352,36 @@ function AgentHistory() {
                         </svg>
                       ) : (
                         <svg
-                          width="52"
-                          height="52"
-                          viewBox="0 0 52 52"
+                          width="70"
+                          height="70"
+                          viewBox="0 0 70 70"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <circle
-                            cx="26"
-                            cy="26"
-                            r="25"
-                            transform="rotate(-74.6597 26 26)"
-                            fill="#f24a4a"
+                            cx="34.6484"
+                            cy="34.6482"
+                            r="24.5"
+                            transform="rotate(45 34.6484 34.6482)"
+                            fill="#FF0000"
                           />
-                          <path
-                            d="M22.4409 31.1983L31.2167 19.0333"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                          <rect
+                            x="46.6689"
+                            y="43.1335"
+                            width="4"
+                            height="28"
+                            rx="2"
+                            transform="rotate(135 46.6689 43.1335)"
+                            fill="white"
                           />
-                          <path
-                            d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                          <rect
+                            x="26.8701"
+                            y="45.9619"
+                            width="4"
+                            height="28"
+                            rx="2"
+                            transform="rotate(-135 26.8701 45.9619)"
+                            fill="white"
                           />
                         </svg>
                       )}
