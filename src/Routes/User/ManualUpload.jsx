@@ -43,7 +43,7 @@ import CustomInput from "../../reuseables/CustomInput";
 import Loader from "../../reuseables/Loader";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Agentlayout from "../../reuseables/AgentLayout";
 import toast from "react-hot-toast";
 import FileUpload from "../../reuseables/FileUpload";
