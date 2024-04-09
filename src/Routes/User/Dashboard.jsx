@@ -53,7 +53,8 @@ function Dashboard() {
   const [amount, setamount] = useState(0);
 
   const getC = JSON.parse(localStorage.getItem("currencyList"));
-  const c1 = getC
+  const getC2 = JSON.parse(localStorage.getItem("userCurrencyList"));
+  const c1 = getC2
     ?.filter((item) => item?.isSending)
     ?.map((item) => {
       return {

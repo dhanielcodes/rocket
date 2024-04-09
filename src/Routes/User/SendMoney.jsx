@@ -565,7 +565,7 @@ function SendMoney() {
     walletId: 0,
     payoutChannelId: payoutC?.id,
     purpose: purposes,
-    note: note,
+    note: note || "",
     transactionSource: "Web",
     promoCode: "",
     redirectURL: `${window.location.origin}/user/sendmoney`,

@@ -21,7 +21,7 @@ const CountryDropdown = ({
 }) => {
   const options = option || countryList().getData();
   const { data: newOptions } = useQuery({
-    queryKey: ["getCurrenciesd"],
+    queryKey: [],
     queryFn: getUserCurrencies,
     onSuccess: (data) => {
       //setCountries(data?.data);

@@ -43,6 +43,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
     };
   });
   const getC = JSON.parse(localStorage.getItem("currencyList"));
+  const getC2 = JSON.parse(localStorage.getItem("userCurrencyList"));
 
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedCountry2, setSelectedCountry2] = useState();
@@ -58,7 +59,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
     "country1",
     JSON.stringify(
       selectedCountry ||
-        getC
+        getC2
           ?.filter((item) => item?.isSending)
           ?.map((item) => {
             return {
@@ -86,7 +87,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
   );
 
   const handleCountryChange = (selectedOption) => {
-    const getC = JSON.parse(localStorage.getItem("currenyList"));
+    const getC = JSON.parse(localStorage.getItem("userCurrencyList"));
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
     );
@@ -179,7 +180,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
   });
   console.log("🚀 ~ file: Rates.jsx:104 ~ Rates ~ dataObject2:", dataObject2);
 
-  const c1 = getC
+  const c1 = getC2
     ?.filter((item) => item?.isSending)
     ?.map((item) => {
       return {
@@ -245,7 +246,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
           <CountryDropdown
             value={
               selectedCountry ||
-              getC
+              getC2
                 ?.filter((item) => item?.isSending)
                 ?.map((item) => {
                   return {
@@ -258,7 +259,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
                 })?.[0]
             }
             onChange={handleCountryChange}
-            newOptions={getC?.map((item) => {
+            newOptions={getC2?.map((item) => {
               return {
                 code: item?.currencyCode,
                 value: item?.name,
@@ -417,7 +418,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
                 <AmountFormatter
                   currency={
                     selectedCountry?.code ||
-                    getC
+                    getC2
                       ?.filter((item) => item?.isSending)
                       ?.map((item) => {
                         return {
@@ -438,7 +439,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
                 <AmountFormatter
                   currency={
                     selectedCountry?.code ||
-                    getC
+                    getC2
                       ?.filter((item) => item?.isSending)
                       ?.map((item) => {
                         return {

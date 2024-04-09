@@ -50,6 +50,7 @@ function Login() {
   const [isKyc, setIsKyc] = useState(false);
   const [type, setType] = useState(false);
   const [vis, setVis] = useState(false);
+  const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
 
   const [loginDetails, setloginDetails] = useState({
     username: "",
@@ -117,12 +118,30 @@ function Login() {
       console.log(err);
     },
   });
-  const { data: currenciess } = useQuery({
-    queryKey: ["jhj"],
+  const [op, setOp] = useState();
+  console.log(op);
+  const {
+    data: currenciess,
+    refetch,
+    isFetching: isLoading2,
+  } = useQuery({
+    queryKey: [op?.data?.user?.userId],
     queryFn: getUserCurrencies,
+    enabled: false,
     onSuccess: (data) => {
+      if (data?.status) {
+        if (op?.data?.user?.role?.id === 6) {
+          //navigate("/user/dashboard");
+          window.location.pathname = "/user/dashboard";
+        } else {
+          //navigate("/agent/dashboard");
+          window.location.pathname = "/agent/dashboard";
+        }
+      } else {
+        toast.error(data?.message);
+      }
       localStorage.setItem(
-        "currencyList",
+        "userCurrencyList",
         JSON.stringify(
           data?.data?.map((item) => {
             return {
@@ -137,6 +156,38 @@ function Login() {
     },
   });
 
+  const { data: newOptions } = useQuery({
+    queryKey: ["hjhj"],
+    queryFn: getCurrencies,
+
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "currencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  useEffect(() => {
+    refetch([op?.data?.user?.userId]);
+    //eslint-disable-next-line
+  }, [op]);
+
   const { mutate, isLoading, isError, data } = useMutation({
     mutationFn: userLogin,
     onSuccess: (data) => {
@@ -144,14 +195,9 @@ function Login() {
 
       if (data?.status) {
         localStorage.setItem("userDetails", JSON.stringify(data));
+        setOp(data);
         if (data.data.user.kycStatus === "Completed") {
-          if (data?.data?.user?.role?.id === 6) {
-            //navigate("/user/dashboard");
-            window.location.pathname = "/user/dashboard";
-          } else {
-            //navigate("/agent/dashboard");
-            window.location.pathname = "/agent/dashboard";
-          }
+          return;
         } else {
           setModal(true);
           localStorage.setItem("kycStatus", true);
@@ -324,7 +370,7 @@ function Login() {
                     padding: "0.8em",
                   }}
                 >
-                  {isLoading ? <Spin dot /> : "Sign In"}
+                  {isLoading || (op && isLoading2) ? <Spin dot /> : "Sign In"}
                 </Btn>
               </div>
               <CenterElement>

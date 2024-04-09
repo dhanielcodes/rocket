@@ -210,7 +210,7 @@ const Settings = () => {
             <div
               onClick={() => {
                 localStorage.clear();
-                navigate("/");
+                window.location.pathname = "/";
               }}
               className="wrapper"
             >

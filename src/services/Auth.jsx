@@ -50,9 +50,11 @@ export const getCurrencies = async () => {
   const { data } = await Axios.get(`${baseurl}/getcurrency`);
   return data;
 };
-export const getUserCurrencies = async () => {
+export const getUserCurrencies = async (userId) => {
   const { data } = await Axios.get(
-    `${baseurl}/getusercurrency/${Userdata?.data?.user?.userId}`
+    `${baseurl}/getusercurrency/${
+      userId?.queryKey[0] || Userdata?.data?.user?.userId
+    }`
   );
   return data;
 };
