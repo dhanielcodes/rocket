@@ -333,7 +333,7 @@ function SendMoney() {
       })
     );
     if (current === 2) {
-      if (amount) {
+      if (amount !== "null") {
         setCurrent((prev) => {
           localStorage.setItem("steps", prev + 1);
           return prev + 1;
