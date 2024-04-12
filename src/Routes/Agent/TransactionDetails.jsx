@@ -60,7 +60,7 @@ function TransactionDetailsAgent() {
         <div className="cont">
           <Header>
             <p>
-              {moment(transactionList?.collectionDate).format(
+              {moment(transactionList?.paymentDate).format(
                 "DD MMM YYYY: hh:mm a"
               )}
             </p>
@@ -150,8 +150,16 @@ function TransactionDetailsAgent() {
                 <p>{transactionList?.beneficiaryName}</p>
               </div>
               <div className="details">
-                <h5>beneficiary Country</h5>
+                <h5>Beneficiary Country</h5>
                 <p>{transactionList?.beneficiaryCountry}</p>
+              </div>
+              <div className="details">
+                <h5>Beneficiary Bank</h5>
+                <p>{transactionList?.beneficiaryBankName}</p>
+              </div>
+              <div className="details">
+                <h5>Beneficiary Account Number</h5>
+                <p>{transactionList?.beneficiaryBankAccountNumber}</p>
               </div>
               <div className="details">
                 <h5>Amount</h5>
