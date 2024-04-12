@@ -129,17 +129,6 @@ function Login() {
     queryFn: getUserCurrencies,
     enabled: false,
     onSuccess: (data) => {
-      if (data?.status) {
-        if (op?.data?.user?.role?.id === 6) {
-          //navigate("/user/dashboard");
-          window.location.pathname = "/user/dashboard";
-        } else {
-          //navigate("/agent/dashboard");
-          window.location.pathname = "/agent/dashboard";
-        }
-      } else {
-        toast.error(data?.message);
-      }
       localStorage.setItem(
         "userCurrencyList",
         JSON.stringify(
@@ -150,6 +139,21 @@ function Login() {
           })
         )
       );
+      if (data?.status) {
+        if (op?.data?.user?.kycStatus === "Completed") {
+          if (op?.data?.user?.role?.id === 6) {
+            //navigate("/user/dashboard");
+            window.location.pathname = "/user/dashboard";
+          } else {
+            //navigate("/agent/dashboard");
+            window.location.pathname = "/agent/dashboard";
+          }
+        } else {
+          return;
+        }
+      } else {
+        toast.error(data?.message);
+      }
     },
     onError: (err) => {
       console.log(err);
