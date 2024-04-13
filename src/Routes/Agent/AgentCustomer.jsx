@@ -334,9 +334,7 @@ function AgentCustomer() {
                 >
                   <Box>
                     <Avatar className="av">
-                      {`${d?.firstName?.split(" ")[0][0]} ${
-                        d?.surName?.split(" ")?.[0]?.[0]
-                      }`}
+                      {`${d?.firstName?.split(" ")[0][0]} `}
                     </Avatar>
 
                     <div>
@@ -531,9 +529,6 @@ const Box = styled.div`
   width: 100%;
   .av {
     background: rgba(0, 168, 90, 1);
-
-    /* width: 50%;
-        height: 50%; */
   }
 `;
 
