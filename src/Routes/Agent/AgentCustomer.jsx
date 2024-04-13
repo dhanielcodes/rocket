@@ -14,10 +14,24 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import FormattedDate from "../../reuseables/FormattedDate";
-import { GetCustomers } from "../../services/Dashboard";
+import {
+  GetCustomers,
+  allowusermulticurrency,
+  disallowusermulticurrency,
+} from "../../services/Dashboard";
 import Agentlayout from "../../reuseables/AgentLayout";
 
-const Droplist = ({ id, name, onNavigate }) => (
+import { Switch } from "@arco-design/web-react";
+
+const Droplist = ({
+  id,
+  name,
+  onNavigate,
+  /*   toggleMultiCurrency,
+  currencyState,
+  disallowusermulticurrencyLoading,
+  allowMultiCurrencyLoading, */
+}) => (
   //   <Menu.Item key='1' onClick={() => onNavigate(id)}>
   <Menu
     style={{
@@ -204,14 +218,53 @@ function AgentCustomer() {
 
   // },[Userdata])
 
-  const { data: customersList, isLoading } = useQuery({
+  const {
+    data: customersList,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [Userdata?.data?.user?.userId],
     queryFn: GetCustomers,
     onSuccess: (data) => {
-      console.log(data);
+      console.log(data, "dfdf");
     },
     onError: (err) => {
       console.error(err);
+    },
+  });
+
+  const {
+    mutate: allowMultiCurrencyMutation,
+    isLoading: allowMultiCurrencyLoading,
+  } = useMutation({
+    mutationFn: allowusermulticurrency,
+    onSuccess: (data) => {
+      refetch();
+    },
+    onError: (data) => {
+      //setModal(true);
+
+      setTimeout(() => {
+        //  seterr("")
+      }, 2000);
+      return;
+    },
+  });
+  const {
+    mutate: disallowusermulticurrencyMutation,
+    isLoading: disallowusermulticurrencyLoading,
+  } = useMutation({
+    mutationFn: disallowusermulticurrency,
+    onSuccess: (data) => {
+      refetch();
+    },
+    onError: (data) => {
+      //setModal(true);
+
+      setTimeout(() => {
+        //  seterr("")
+      }, 2000);
+      return;
     },
   });
 
@@ -286,14 +339,57 @@ function AgentCustomer() {
                       }`}
                     </Avatar>
 
-                    <div className="text">
-                      <h5>{d?.firstName}</h5>
-                      <p>{d?.phone}</p>
+                    <div>
+                      <div className="text">
+                        <h5>{d?.firstName}</h5>
+                        <p>{d?.phone}</p>
 
-                      <p>
-                        createOn : <FormattedDate dateString={d?.dateCreated} />
-                      </p>
+                        <p>
+                          createOn :{" "}
+                          <FormattedDate dateString={d?.dateCreated} />
+                        </p>
+                      </div>
+                      <br />
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          width: "100%",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: "11px !important",
+                          }}
+                          className="cur"
+                        >
+                          {d?.allowMultiCurrencyTrading
+                            ? "Disallow Multi Currency Trading"
+                            : "Allow Multi Currency Trading"}
+                        </div>
+                        &nbsp; &nbsp;
+                        <Switch
+                          loading={
+                            disallowusermulticurrencyLoading ||
+                            allowMultiCurrencyLoading
+                          }
+                          onClick={() => {
+                            if (d?.allowMultiCurrencyTrading) {
+                              disallowusermulticurrencyMutation(d?.userId);
+                            } else {
+                              allowMultiCurrencyMutation(d?.userId);
+                            }
+                          }}
+                          style={{
+                            width: "fit-content",
+                          }}
+                          checked={d?.allowMultiCurrencyTrading}
+                        />
+                      </div>
                     </div>
+
                     <div className="options">
                       {/* <Dropdown droplist={Droplist} position='bl' on>
                                     <Link style={{ marginRight: 40 }}>
@@ -307,6 +403,20 @@ function AgentCustomer() {
                             id={d.userId}
                             name={d?.firstName + " " + d?.surName}
                             onNavigate={handleNavigate}
+                            currencyState={d?.allowMultiCurrencyTrading}
+                            toggleMultiCurrency={() => {
+                              if (d?.allowMultiCurrencyTrading) {
+                                disallowusermulticurrencyMutation(d?.userId);
+                              } else {
+                                allowMultiCurrencyMutation(d?.userId);
+                              }
+                            }}
+                            disallowusermulticurrencyLoading={
+                              disallowusermulticurrencyLoading
+                            }
+                            allowMultiCurrencyLoading={
+                              allowMultiCurrencyLoading
+                            }
                           />
                         }
                         position="bl"
@@ -343,6 +453,10 @@ const Content = styled.div`
   margin: 0 auto;
   height: 100%;
 
+  .cur {
+    font-size: 9px;
+  }
+
   @media screen and (max-width: 40em) {
     width: 100%;
   }
@@ -371,23 +485,20 @@ const Header = styled.div`
 
 const BeneficiaryCont = styled.div`
   overflow-y: scroll;
-  padding-inline: 1em;
   /* border: 1px solid red; */
-  height: 90%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 20px;
 
   .box {
-    padding-inline: 3em;
     background-color: #fff;
-    padding: 1em;
+    padding: 10px;
     border-radius: 8px;
     display: flex;
     gap: 20px;
-    width: 90%;
-    margin: 0 auto;
+    width: 100%;
 
     .text {
       display: inline-flex;

@@ -85,6 +85,19 @@ export const updateNotif = async (body) => {
   return data;
 };
 
+export const disallowusermulticurrency = async (body) => {
+  const { data } = await Axios.post(
+    `${baseurl}/disallowusermulticurrency/${body}`
+  );
+  return data;
+};
+export const allowusermulticurrency = async (body) => {
+  const { data } = await Axios.post(
+    `${baseurl}/allowusermulticurrency/${body}`
+  );
+  return data;
+};
+
 export const confirmPayment = async (body) => {
   console.log("🚀 ~ file: Dashboard.jsx:32 ~ createBeneficiary ~ body:", body);
   const { data } = await Axios.post(`${baseurl}/bosmcc/${body}`);

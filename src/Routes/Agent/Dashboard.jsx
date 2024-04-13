@@ -73,7 +73,9 @@ function Dashboard() {
   }, [jId]);
 
   const getC = JSON.parse(localStorage.getItem("currencyList"));
-  const getC2 = JSON.parse(localStorage.getItem("userCurrencyList"));
+  const getC2 = Userdata?.data?.user?.allowMultiCurrencyTrading
+    ? JSON.parse(localStorage.getItem("currencyList"))
+    : JSON.parse(localStorage.getItem("userCurrencyList"));
 
   const c1 = getC2
     ?.filter((item) => item?.isSending)

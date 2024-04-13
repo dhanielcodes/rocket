@@ -43,7 +43,9 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
     };
   });
   const getC = JSON.parse(localStorage.getItem("currencyList"));
-  const getC2 = JSON.parse(localStorage.getItem("userCurrencyList"));
+  const getC2 = Userdata?.data?.user?.allowMultiCurrencyTrading
+    ? JSON.parse(localStorage.getItem("currencyList"))
+    : JSON.parse(localStorage.getItem("userCurrencyList"));
 
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedCountry2, setSelectedCountry2] = useState();
@@ -87,7 +89,9 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
   );
 
   const handleCountryChange = (selectedOption) => {
-    const getC = JSON.parse(localStorage.getItem("userCurrencyList"));
+    const getC = Userdata?.data?.user?.allowMultiCurrencyTrading
+      ? JSON.parse(localStorage.getItem("currencyList"))
+      : JSON.parse(localStorage.getItem("userCurrencyList"));
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
     );
