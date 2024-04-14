@@ -8,7 +8,7 @@ import CountryFlag from "react-country-flag";
 import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { countryObjectsArray } from "../../config/CountryCodes";
-import { getUserCurrencies } from "../services/Auth";
+import { getCurrencies, getUserCurrencies } from "../services/Auth";
 const CountryDropdown = ({
   value,
   onChange,
@@ -20,9 +20,13 @@ const CountryDropdown = ({
   collectionStatus = false,
 }) => {
   const options = option || countryList().getData();
+  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
+
   const { data: newOptions } = useQuery({
     queryKey: [],
-    queryFn: getUserCurrencies,
+    queryFn: Userdata?.data?.user?.allowMultiCurrencyTrading
+      ? getCurrencies
+      : getUserCurrencies,
     onSuccess: (data) => {
       //setCountries(data?.data);
     },

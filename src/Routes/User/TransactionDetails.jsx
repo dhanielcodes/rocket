@@ -10,9 +10,12 @@ import Checktrnx from "../../images/checktnx.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tranx, TranxId } from "../../services/Dashboard";
+import { Tranx, TranxId, confirmPayment } from "../../services/Dashboard";
 import moment from "moment";
 import AmountFormatter from "../../reuseables/AmountFormatter";
+import Btn from "../../reuseables/Btn";
+import ReusableModal from "../../reuseables/ReusableModal";
+import Msg from "../../reuseables/Msg";
 
 function TransactionDetails() {
   const navigate = useNavigate();
@@ -47,9 +50,126 @@ function TransactionDetails() {
     refetchNameEnq();
   }, [id, refetchNameEnq]);
 
+  const [open, setOpen] = useState(false);
+  const [getmsg, setmsg] = useState("");
+  const [getlink, setlink] = useState("");
+  const [status, setStatus] = useState("");
+
+  const [showBtn, setShowBtn] = useState(false);
+
+  const { mutate, isLoading, isError } = useMutation({
+    mutationFn: confirmPayment,
+    onSuccess: (data) => {
+      console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data?.data);
+      if (!data.status) {
+        setOpen(true);
+        setmsg(data?.message);
+      } else {
+        setlink(data?.data);
+        setOpen(true);
+        setmsg(data?.message);
+
+        if (
+          new RegExp(
+            "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
+          ).test(data?.data)
+        ) {
+          setShowBtn(true);
+        } else {
+          setShowBtn(false);
+        }
+
+        setStatus(true);
+      }
+    },
+    onError: (data) => {
+      console.log("🚀 ~ file: SendMoney.jsx:286 ~ SendMoney ~ data:", data);
+
+      // setShow(true)
+      // setInfo(data)
+      // setTimeout(() => {
+      //     //  seterr("")
+      // }, 2000)
+      return;
+    },
+  });
+
   return (
     <Userlayout current="Transactions Details" useBack={true}>
       <Content>
+        {open && (
+          <ReusableModal
+            isOpen={open}
+            onClose={() => {
+              setOpen(!open);
+              setShowBtn(false);
+            }}
+          >
+            {status === true ? (
+              <>
+                <Msg type={true}>{getmsg}</Msg>
+
+                {showBtn && (
+                  <Btn
+                    clicking={() => {
+                      window.location.replace(getlink);
+                    }}
+                    styles={{
+                      width: "100%",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Proceed to Paymennt
+                  </Btn>
+                )}
+              </>
+            ) : (
+              <>
+                <Msg>{getmsg}</Msg>
+                {getmsg === "You are yet to complete your KYC." ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Btn
+                      styles={{
+                        width: "100%",
+                        marginRight: "10px",
+                        padding: "8px",
+                        fontWeight: "600",
+                      }}
+                      clicking={() => navigate("/upload")}
+                      size={30}
+                    >
+                      CONTINUE TO KYC{" "}
+                    </Btn>
+                    &nbsp; &nbsp;
+                    <Btn
+                      styles={{
+                        width: "100%",
+                        marginRight: "10px",
+                        padding: "8px",
+                        fontWeight: "600",
+                        background: "#b0b0b0",
+                      }}
+                      clicking={() => {
+                        navigate("/user/dashboard");
+                      }}
+                      size={30}
+                    >
+                      CANCEL{" "}
+                    </Btn>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </>
+            )}
+          </ReusableModal>
+        )}
         <div className="cont">
           <Header>
             <p>
@@ -238,10 +358,15 @@ function TransactionDetails() {
               </div>
             </div>
 
-            {/* <div className='actionbtn'>
-                     <button>Upload Id</button>
-                     <button>Send Money</button>
-                </div> */}
+            {transactionList?.paymentLink && (
+              <Btn
+                clicking={() => {
+                  mutate(transactionList?.paymentRef);
+                }}
+              >
+                {isLoading ? "submitting..." : "Submit"}
+              </Btn>
+            )}
           </Details>
         </div>
       </Content>

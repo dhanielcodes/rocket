@@ -326,10 +326,10 @@ function AgentCustomer() {
           <BeneficiaryCont>
             {customersList?.data?.map((d) => {
               return (
-                <div
-                  key={d.id}
+                <Link
+                  key={d.userId}
                   className="box"
-                  to={`/user/beneficiary/details?id=${d.id}`}
+                  to={`/customer-details?id=${d.userId}`}
                   style={{ color: "#000", textDecoration: "none" }}
                 >
                   <Box>
@@ -430,7 +430,7 @@ function AgentCustomer() {
                       </Dropdown>
                     </div>
                   </Box>
-                </div>
+                </Link>
               );
             })}
           </BeneficiaryCont>

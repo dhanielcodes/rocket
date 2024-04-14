@@ -61,6 +61,7 @@ import ConfirmTransactionPage from "./Routes/User/ConfirmTransactionPage";
 import ScrollToTop from "./utils/ScrollToTop";
 import ViewBarDetails from "./Routes/User/ViewBarDetails";
 import ManualUpload from "./Routes/User/ManualUpload";
+import CustomerDetails from "./Routes/Agent/CustomerDetails";
 //
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
             />
 
             <Route path="/view-transaction" element={<ViewBarDetails />} />
+            <Route path="/customer-details" element={<CustomerDetails />} />
             <Route
               path="/confirm-transaction"
               element={<ConfirmTransactionPage />}
