@@ -363,9 +363,7 @@ function AgentCustomer() {
                           }}
                           className="cur"
                         >
-                          {d?.allowMultiCurrencyTrading
-                            ? "Disallow Multi Currency Trading"
-                            : "Allow Multi Currency Trading"}
+                          Multi Currency Trading
                         </div>
                         &nbsp; &nbsp;
                         <Switch
