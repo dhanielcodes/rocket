@@ -326,11 +326,17 @@ function AgentCustomer() {
           <BeneficiaryCont>
             {customersList?.data?.map((d) => {
               return (
-                <Link
+                <div
                   key={d.userId}
                   className="box"
-                  to={`/customer-details?id=${d.userId}`}
-                  style={{ color: "#000", textDecoration: "none" }}
+                  style={{
+                    color: "#000",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    navigate(`/customer-details?id=${d.userId}`);
+                  }}
                 >
                   <Box>
                     <Avatar className="av">
@@ -371,7 +377,8 @@ function AgentCustomer() {
                             disallowusermulticurrencyLoading ||
                             allowMultiCurrencyLoading
                           }
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             if (d?.allowMultiCurrencyTrading) {
                               disallowusermulticurrencyMutation(d?.userId);
                             } else {
@@ -430,7 +437,7 @@ function AgentCustomer() {
                       </Dropdown>
                     </div>
                   </Box>
-                </Link>
+                </div>
               );
             })}
           </BeneficiaryCont>
