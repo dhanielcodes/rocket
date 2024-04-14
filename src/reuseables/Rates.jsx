@@ -6,7 +6,11 @@ import CustomInput from "./CustomInput";
 import styled from "styled-components";
 import AmountFormatter from "../reuseables/AmountFormatter";
 import { useQuery } from "@tanstack/react-query";
-import { Rates as Ratess, agentCustomerGetRate } from "../services/Dashboard";
+import {
+  GetDetails,
+  Rates as Ratess,
+  agentCustomerGetRate,
+} from "../services/Dashboard";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import InputNumber from "rc-input-number";
 import { CFormatter } from "../hooks/format";
@@ -42,8 +46,24 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
       flag: "",
     };
   });
+  const {
+    data,
+    isLoading: nameEnqLoading,
+    refetch: refetchNameEnq,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    onSuccess: (data) => {
+      return;
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // Handle error logic
+      console.error(err);
+    },
+  });
   const getC = JSON.parse(localStorage.getItem("currencyList"));
-  const getC2 = Userdata?.data?.user?.allowMultiCurrencyTrading
+  const getC2 = data?.data?.allowMultiCurrencyTrading
     ? JSON.parse(localStorage.getItem("currencyList"))
     : JSON.parse(localStorage.getItem("userCurrencyList"));
 
@@ -89,7 +109,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
   );
 
   const handleCountryChange = (selectedOption) => {
-    const getC = Userdata?.data?.user?.allowMultiCurrencyTrading
+    const getC = data?.data?.allowMultiCurrencyTrading
       ? JSON.parse(localStorage.getItem("currencyList"))
       : JSON.parse(localStorage.getItem("userCurrencyList"));
     const newC = getC?.find(

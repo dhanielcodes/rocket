@@ -9,6 +9,7 @@ import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { getCurrencies, getUserCurrencies } from "../services/Auth";
+import { GetDetails } from "../services/Dashboard";
 const CountryDropdown = ({
   value,
   onChange,
@@ -22,11 +23,30 @@ const CountryDropdown = ({
   const options = option || countryList().getData();
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
+  const {
+    data,
+    isLoading: nameEnqLoading,
+    refetch: refetchNameEnq,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    onSuccess: (data) => {
+      return;
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // Handle error logic
+      console.error(err);
+    },
+  });
+  console.log(data?.data?.allowMultiCurrencyTrading, "dkld");
+
   const { data: newOptions } = useQuery({
     queryKey: [],
-    queryFn: Userdata?.data?.user?.allowMultiCurrencyTrading
+    queryFn: data?.data?.allowMultiCurrencyTrading
       ? getCurrencies
       : getUserCurrencies,
+    enabled: data ? true : false,
     onSuccess: (data) => {
       //setCountries(data?.data);
     },

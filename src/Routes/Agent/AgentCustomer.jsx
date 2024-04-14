@@ -16,6 +16,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import FormattedDate from "../../reuseables/FormattedDate";
 import {
   GetCustomers,
+  GetDetailes,
   allowusermulticurrency,
   disallowusermulticurrency,
 } from "../../services/Dashboard";
@@ -208,6 +209,7 @@ const InputSearch = Input.Search;
 
 function AgentCustomer() {
   const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
+  const usersds = JSON.parse(localStorage?.getItem("userDetails"));
   const BeneList = Userdata?.data.user.beneficiaries;
 
   const navigate = useNavigate();
@@ -268,7 +270,24 @@ function AgentCustomer() {
     },
   });
 
-  console.log(customersList, "newDeteree");
+  const idd = usersds?.data?.user?.userId;
+
+  console.log(idd, "ffd");
+
+  const { data } = useQuery({
+    queryKey: ["GetDetailes"],
+    queryFn: GetDetailes,
+    onSuccess: (data) => {
+      return;
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // Handle error logic
+      console.error(err);
+    },
+  });
+
+  console.log(data?.data?.allowMultiCurrencyTrading, "newDeteree");
 
   // const goBack = () => {
   //   navigate(-1); // This navigates back to the previous page in the navigation stack.
@@ -354,43 +373,47 @@ function AgentCustomer() {
                         </p>
                       </div>
                       <br />
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          width: "100%",
-                          marginTop: "10px",
-                        }}
-                      >
+                      {data?.data?.allowMultiCurrencyTrading ? (
                         <div
                           style={{
-                            fontSize: "11px !important",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            marginTop: "10px",
                           }}
-                          className="cur"
                         >
-                          Multi Currency Trading
-                        </div>
-                        &nbsp; &nbsp;
-                        <Switch
-                          loading={
-                            disallowusermulticurrencyLoading ||
-                            allowMultiCurrencyLoading
-                          }
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (d?.allowMultiCurrencyTrading) {
-                              disallowusermulticurrencyMutation(d?.userId);
-                            } else {
-                              allowMultiCurrencyMutation(d?.userId);
+                          <div
+                            style={{
+                              fontSize: "11px !important",
+                            }}
+                            className="cur"
+                          >
+                            Multi Currency Trading
+                          </div>
+                          &nbsp; &nbsp;
+                          <Switch
+                            loading={
+                              disallowusermulticurrencyLoading ||
+                              allowMultiCurrencyLoading
                             }
-                          }}
-                          style={{
-                            width: "fit-content",
-                          }}
-                          checked={d?.allowMultiCurrencyTrading}
-                        />
-                      </div>
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (d?.allowMultiCurrencyTrading) {
+                                disallowusermulticurrencyMutation(d?.userId);
+                              } else {
+                                allowMultiCurrencyMutation(d?.userId);
+                              }
+                            }}
+                            style={{
+                              width: "fit-content",
+                            }}
+                            checked={d?.allowMultiCurrencyTrading}
+                          />
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <div className="options">

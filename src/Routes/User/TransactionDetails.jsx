@@ -250,11 +250,6 @@ function TransactionDetails() {
 
             <p>Transaction {transactionList?.paymentStatus}</p>
             <small>{transactionList?.sn}</small>
-            <small>
-              {moment(transactionList?.paymentDate).format(
-                "DD MMM YYYY: hh:mm a"
-              )}
-            </small>
           </Header>
           <Details>
             <h3 className="detailsinfo">Personal Details</h3>

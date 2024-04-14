@@ -51,9 +51,24 @@ function Dashboard() {
     currentRates
   );
   const [amount, setamount] = useState(0);
-
+  const {
+    data,
+    isLoading: nameEnqLoading,
+    refetch: refetchNameEnq,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    onSuccess: (data) => {
+      return;
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // Handle error logic
+      console.error(err);
+    },
+  });
   const getC = JSON.parse(localStorage.getItem("currencyList"));
-  const getC2 = Userdata?.data?.user?.allowMultiCurrencyTrading
+  const getC2 = data?.data?.allowMultiCurrencyTrading
     ? JSON.parse(localStorage.getItem("currencyList"))
     : JSON.parse(localStorage.getItem("userCurrencyList"));
   const c1 = getC2

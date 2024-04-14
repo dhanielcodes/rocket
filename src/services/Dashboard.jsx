@@ -130,6 +130,14 @@ export const GetDetails = async (id) => {
   return data;
 };
 
+export const GetDetailes = async () => {
+  console.log("🚀 ~ file: Dashboard.jsx:57 ~ GetDetails ~ id:");
+  const { data } = await Axios.get(
+    `${baseurl}/getuserdashboard/${Userdata?.data?.user?.userId}`
+  );
+  return data;
+};
+
 export const GetUserWalletsTransactions = async (query) => {
   const q = query?.queryKey;
   console.log(q);
