@@ -129,12 +129,6 @@ function Login() {
     queryFn: getUserCurrencies,
     enabled: false,
     onSuccess: (data) => {
-      if (data.data.user.kycStatus === "Completed") {
-        return;
-      } else {
-        setModal(true);
-        localStorage.setItem("kycStatus", true);
-      }
       localStorage.setItem(
         "userCurrencyList",
         JSON.stringify(
@@ -155,7 +149,8 @@ function Login() {
             window.location.pathname = "/agent/dashboard";
           }
         } else {
-          return;
+          setModal(true);
+          localStorage.setItem("kycStatus", true);
         }
       } else {
         toast.error(data?.message);
