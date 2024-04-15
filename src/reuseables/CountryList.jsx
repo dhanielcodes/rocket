@@ -20,7 +20,7 @@ const CountryDropdown = ({
   disabled,
   collectionStatus = false,
 }) => {
-  const options = option || countryList().getData();
+  const options = option || [];
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
   const {
