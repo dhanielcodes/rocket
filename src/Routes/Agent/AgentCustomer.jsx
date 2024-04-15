@@ -312,7 +312,7 @@ function AgentCustomer() {
 
     setFilteredBeneList(filteredList);
   };
-
+  const [cus, setCus] = useState();
   return (
     <Agentlayout current="Customers">
       <Content>
@@ -394,11 +394,12 @@ function AgentCustomer() {
                           &nbsp; &nbsp;
                           <Switch
                             loading={
-                              disallowusermulticurrencyLoading ||
-                              allowMultiCurrencyLoading
+                              (d === cus && disallowusermulticurrencyLoading) ||
+                              (d === cus && allowMultiCurrencyLoading)
                             }
                             onClick={(e) => {
                               e.stopPropagation();
+                              setCus(d);
                               if (d?.allowMultiCurrencyTrading) {
                                 disallowusermulticurrencyMutation(d?.userId);
                               } else {
