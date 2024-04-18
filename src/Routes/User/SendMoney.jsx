@@ -401,6 +401,7 @@ function SendMoney() {
     id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
     name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
   });
+  const [active, setActive] = useState();
   const [pre1, setPre1] = useState({
     id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id || 1,
     name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
@@ -761,6 +762,7 @@ function SendMoney() {
                       onClick={() => {
                         handleSelectBeneId(d?.id, d?.beneficiaryName, d);
                         setSelectedBene(d?.beneficiaryName);
+                        setActive(d);
                       }}
                     >
                       <Box>
@@ -847,13 +849,13 @@ function SendMoney() {
                 })}
               </BeneficiaryCont>
 
-              <div className="btn">
-                {selectedItems && (
+              {active && (
+                <div className="btn">
                   <Btn disabled={!selectedItems && true} clicking={handleStep}>
                     Continue
                   </Btn>
-                )}
-              </div>
+                </div>
+              )}
             </>
           )}
           {current === 2 && (
@@ -1186,7 +1188,6 @@ function SendMoney() {
                   {getLocals("userBeneficiaryId") && selectedItems && (
                     <Btn clicking={handleStep}>Continue</Btn>
                   )}
-                  {/* <Btn clicking={handleStep}>Continue</Btn> */}
                 </div>
               </BeneficiaryCont>
             </>

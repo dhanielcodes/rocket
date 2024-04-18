@@ -280,6 +280,10 @@ export const processKyc = async (body) => {
   const { data } = await Axios.post(`${baseurl}/processkyc`, body);
   return data;
 };
+export const processKycBene = async (body) => {
+  const { data } = await Axios.post(`${baseurl}/processbeneficiarykyc`, body);
+  return data;
+};
 export const generateJourneyToken = async (body) => {
   const { data } = await Axios.post(`${baseurl}/GetGBGAccessToken`, body);
   return data;

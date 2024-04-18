@@ -28,6 +28,8 @@ import {
   getBanks,
   Payoutchannel,
   generateJourneyToken,
+  processKyc,
+  processKycBene,
 } from "../../services/Dashboard";
 import {
   countries as testCountries,
@@ -45,17 +47,32 @@ import Msg from "../../reuseables/Msg";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Agentlayout from "../../reuseables/AgentLayout";
 import toast from "react-hot-toast";
+import FileUpload from "../../reuseables/FileUpload";
 
-function DocumentUploadBene({ typee }) {
+function ManualUploadBene({ typee }) {
+  const UserData = JSON.parse(localStorage.getItem("userDetails"));
+  const navigate = useNavigate();
+
+  const [params] = useSearchParams();
+
   const { mutate, isLoading } = useMutation({
-    mutationFn: generateJourneyToken,
+    mutationFn: processKycBene,
     onSuccess: (data) => {
       //navigates("/agent/dashboard");
       // toast.error(data?.message);
       console.log(data);
-      toast.success("Loading Journey Interface");
-      localStorage.setItem("journeyToken", data);
-      window.location.replace(window.location.origin + "/idscan.html");
+      if (data?.status) {
+        toast.success(data?.message);
+        setImage();
+        setImage2();
+        if (typee === "Agent") {
+          navigate("/agent/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
+      } else {
+        toast.error(data?.transactionRef);
+      }
     },
     onError: (data) => {
       console.log(data?.response?.data?.error);
@@ -64,57 +81,59 @@ function DocumentUploadBene({ typee }) {
   });
 
   const [type, setType] = useState();
-  const [params] = useSearchParams();
 
   const collectionType = (e) => {
     setType(e);
-    localStorage.setItem("docType", e?.label);
   };
+
+  const [image, setImage] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const [image2, setImage2] = useState();
+  const [loading2, setLoading2] = useState(true);
   const Lay = typee === "Agent" ? Agentlayout : Userlayout;
-  const navigate = useNavigate();
+
   return (
-    <Lay current="ID Upload" useBack={true}>
+    <Lay current="Upload Beneficiary Document" useBack={true}>
       <Content>
         <div className="cont">
           <div className="sec">
             <SectionThree>
-              <div className="text">
-                <div className="type">
-                  <p className="textheader">Document Type</p>
-                  <CustomSelect
-                    onChange={collectionType}
-                    options={[
-                      {
-                        id: 1,
-                        label: "Drivers Licence",
-                      },
-                      {
-                        id: 3,
-                        label: "National ID",
-                      },
-                      {
-                        id: 2,
-                        label: "Passport",
-                      },
-                    ]}
-                    styles={{ fontSize: "10px ! important" }}
-                  />
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
+              <p className="textheader">
+                SELECT YOUR {localStorage.getItem("docType")?.toUpperCase()}{" "}
+                FILE
+              </p>
+              <FileUpload
+                setValue={setImage}
+                value={image}
+                placeholder={`Click to upload ${localStorage
+                  .getItem("docType")
+                  ?.toUpperCase()} FILE`}
+                setLoading={setLoading}
+              />
+              <br></br>
+              <p className="textheader">PASSPORT POTOGRAPH</p>
+              <FileUpload
+                setValue={setImage2}
+                value={image2}
+                placeholder="Click to upload PASSPORT POTOGRAPH"
+                setLoading={setLoading2}
+              />
+              &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                disabled={isLoading || !image2 || !image}
+                onClick={() => {
+                  mutate({
+                    userId: params.get("id"),
+                    idURL: image?.secure_url,
+                    selfieURL: image2?.secure_url,
+                  });
                 }}
               >
-                <button
-                  disabled={!type}
-                  onClick={() => {
-                    navigate(`/user/bene-manual-upload?id=${params.get("id")}`);
-                  }}
-                >
-                  Manual Upload
-                </button>
-              </div>
+                {isLoading
+                  ? "Please wait while your ID is being processed. This may take few minutes..."
+                  : "Scan Document"}
+              </button>
             </SectionThree>
           </div>
         </div>
@@ -338,4 +357,4 @@ const SectionThree = styled.div`
   }
 `;
 
-export default DocumentUploadBene;
+export default ManualUploadBene;

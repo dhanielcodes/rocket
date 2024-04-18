@@ -62,6 +62,7 @@ import ScrollToTop from "./utils/ScrollToTop";
 import ViewBarDetails from "./Routes/User/ViewBarDetails";
 import ManualUpload from "./Routes/User/ManualUpload";
 import CustomerDetails from "./Routes/Agent/CustomerDetails";
+import ManualUploadBene from "./Routes/User/ManualUploadBene";
 //
 
 function App() {
@@ -163,6 +164,10 @@ function App() {
             />
             <Route path="/user/upload" element={<DocumentUpload />} />
             <Route path="/user/manual-upload" element={<ManualUpload />} />
+            <Route
+              path="/user/bene-manual-upload"
+              element={<ManualUploadBene />}
+            />
             <Route
               path="/agent/manual-upload"
               element={<ManualUpload typee="Agent" />}
