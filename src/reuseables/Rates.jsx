@@ -427,6 +427,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData }) {
                       })?.[0]?.code
                   }
                   value={
+                    currentRates?.agentRate ||
                     currentRates?.conversionRate ||
                     currencyDetails[0]?.balance ||
                     0
