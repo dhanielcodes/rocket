@@ -235,7 +235,7 @@ function UpdateRate() {
     },
     {
       title: "RATE",
-      width: "100%",
+      width: "130%",
       dataIndex: "rate",
     },
     {
