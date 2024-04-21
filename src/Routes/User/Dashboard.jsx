@@ -306,7 +306,7 @@ function Dashboard() {
                 <h5>
                   {showbalance ? (
                     <AmountFormatter
-                      currency={wallet?.code || 0}
+                      //currency={wallet?.code || 0}
                       value={wallet?.balance || 0}
                     />
                   ) : (
