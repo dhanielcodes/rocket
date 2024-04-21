@@ -15,7 +15,7 @@ import {
 } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Tranx } from "../../../services/Dashboard";
+import { Tranx, fundWallet } from "../../../services/Dashboard";
 import { Transactions as Trnx } from "../../../../config/Test";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import AmountFormatter from "../../../reuseables/AmountFormatter";
@@ -34,6 +34,12 @@ import "swiper/css/scrollbar";
 import CountryFlag from "react-country-flag";
 import { kFormatter, kFormatter2 } from "../../../reuseables/format";
 import Btn from "../../../reuseables/Btn";
+import { getLocals } from "../../../hooks/useSessionStorage";
+import ReusableModal from "../../../reuseables/ReusableModal";
+import toast from "react-hot-toast";
+import Centeredbox from "../../../reuseables/Centeredbox";
+import Boxes from "../../../reuseables/Box";
+import moment from "moment";
 import Agentlayout from "../../../reuseables/AgentLayout";
 
 const Droplist = (
@@ -161,8 +167,12 @@ const Droplist = (
 
 const InputSearch = Input.Search;
 
-function WalletsDetailsAgent() {
+function WalletsDetails() {
   const [userData, setUserData] = useState(null);
+  const walletDetails = getLocals("walletID") || [];
+
+  console.log(walletDetails);
+
   const {
     data: nameEnq,
     isLoading: namEnqloading,
@@ -229,134 +239,251 @@ function WalletsDetailsAgent() {
     setFilteredData(sortedData);
   };
 
+  const navigate = useNavigate();
+
+  const { mutate, isLoading, isError } = useMutation({
+    mutationFn: fundWallet,
+    onSuccess: (data) => {
+      console.log(data);
+      if (data?.status) {
+        toast.success(data.message);
+        navigate("/user/settings/wallet");
+      } else {
+        toast.error(data.message);
+      }
+    },
+    onError: (data) => {
+      setTimeout(() => {
+        //  seterr("")
+      }, 2000);
+      return;
+    },
+  });
+
+  const [open, setOpen] = useState(false);
+
+  const [amount, setAmount] = useState();
+  const [note, setNote] = useState();
+
   return (
-    <Agentlayout current="Wallets" useBack={true}>
-      <Content>
-        <div
-          style={{
-            margin: "20px 0",
-            width: "100%",
-            padding: "0 20px",
-          }}
-        >
-          <div
-            style={{
-              padding: "20px",
-              borderRadius: "10px",
-              background: "#121212",
-              width: "100%",
-              height: "18vh",
-              position: "relative",
-            }}
-          >
-            <div>
+    <Agentlayout current="Wallets" useBack={open ? false : true}>
+      {open ? (
+        <Centeredbox>
+          <Boxes radius="15px" width="100%" flexDirection="column">
+            <div
+              style={{
+                width: "100%",
+              }}
+            >
+              <span>Amount</span>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
+                  width: "100%",
+                  position: "relative",
                 }}
               >
-                <CountryFlag
-                  countryCode={"NGN"}
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "2000px",
+                <input
+                  name="amount"
+                  type={"number"}
+                  onChange={(e) => {
+                    setAmount(e.target.value);
                   }}
-                  svg
+                  onKeyDown={(evt) => {
+                    ["e", "E", "+", "-"].includes(evt.key) &&
+                      evt.preventDefault();
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    backgroundColor: "inherit",
+                    lineHeight: 1,
+                    border: "1px solid #D0D5DD",
+                    borderRadius: "6px",
+                    color: "#000",
+                    fontWeight: 300,
+                  }}
                 />
+              </div>
+            </div>
+
+            <br />
+            <div
+              style={{
+                width: "100%",
+              }}
+            >
+              {" "}
+              <span>Note</span>
+              <div
+                style={{
+                  width: "100%",
+                  position: "relative",
+                }}
+              >
+                <input
+                  name="note"
+                  type={"text"}
+                  onChange={(e) => {
+                    setNote(e.target.value);
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    backgroundColor: "inherit",
+                    lineHeight: 1,
+                    border: "1px solid #D0D5DD",
+                    borderRadius: "6px",
+                    color: "#000",
+                    fontWeight: 300,
+                  }}
+                />
+              </div>
+            </div>
+
+            <br />
+          </Boxes>
+
+          <Btn
+            disabled={isLoading}
+            clicking={() => {
+              mutate({
+                userId: userData?.data?.user?.userId,
+                amountRequested: amount,
+                userWallet: {
+                  walletId: walletDetails?.walletId,
+                },
+                comment: note,
+                lastUpdatedBy: 0,
+              });
+            }}
+            styles={{
+              width: "100%",
+            }}
+          >
+            {isLoading ? "Funding..." : " Fund"}
+          </Btn>
+          <Btn
+            disabled={isLoading}
+            clicking={() => {
+              setOpen(false);
+            }}
+            styles={{
+              width: "100%",
+              marginTop: "20px",
+              background: "#777777",
+            }}
+          >
+            Go Back
+          </Btn>
+        </Centeredbox>
+      ) : (
+        <Content>
+          <div
+            style={{
+              margin: "20px 0",
+              width: "100%",
+              padding: "0 20px",
+            }}
+          >
+            <div
+              style={{
+                padding: "20px",
+                borderRadius: "10px",
+                background: "#121212",
+                width: "100%",
+                height: "18vh",
+                position: "relative",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <CountryFlag
+                    countryCode={walletDetails?.currency?.code?.slice(0, 2)}
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "2000px",
+                    }}
+                    svg
+                  />
+                  <div
+                    style={{
+                      color: "white",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    {walletDetails?.currency?.name}{" "}
+                    {walletDetails?.currency?.code}
+                  </div>
+                </div>
+
                 <div
                   style={{
                     color: "white",
-                    marginLeft: "10px",
+                    fontSize: "30px",
+                    marginTop: "10px",
                   }}
                 >
-                  British Pound
+                  <AmountFormatter
+                    value={walletDetails?.balance}
+                    currency={walletDetails?.currency?.code}
+                  />
                 </div>
               </div>
-
-              <div
+              <img
                 style={{
-                  color: "white",
-                  fontSize: "30px",
-                  marginTop: "10px",
+                  position: "absolute",
+                  right: "10px",
+                  bottom: "0px",
                 }}
-              >
-                ${kFormatter2("4000")}
-              </div>
+                src={wallet}
+                alt=""
+              />
             </div>
-            <img
-              style={{
-                position: "absolute",
-                right: "10px",
-                bottom: "0px",
-              }}
-              src={wallet}
-              alt=""
-            />
-          </div>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Button
+            <div
               style={{
-                background: "rgba(0, 168, 90, 1)",
+                display: "flex",
+                justifyContent: "space-between",
               }}
             >
-              <svg
+              <Button
                 style={{
-                  marginRight: "10px",
+                  background: "rgba(0, 168, 90, 1)",
                 }}
-                width="21"
-                height="20"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6666 5.83268L6.33329 14.166M6.33329 14.166L14.6666 14.166M6.33329 14.166L6.33329 5.83268"
-                  stroke="white"
-                  stroke-width="1.66667"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              Fund Wallet
-            </Button>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <Button
-              style={{
-                background: "#D92D20",
-              }}
-            >
-              <svg
-                style={{
-                  marginRight: "10px",
+                onClick={() => {
+                  setOpen(true);
                 }}
-                width="21"
-                height="20"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  d="M3 4.99935H4.66667M4.66667 4.99935H18M4.66667 4.99935V16.666C4.66667 17.108 4.84226 17.532 5.15482 17.8445C5.46738 18.1571 5.89131 18.3327 6.33333 18.3327H14.6667C15.1087 18.3327 15.5326 18.1571 15.8452 17.8445C16.1577 17.532 16.3333 17.108 16.3333 16.666V4.99935H4.66667ZM7.16667 4.99935V3.33268C7.16667 2.89065 7.34226 2.46673 7.65482 2.15417C7.96738 1.84161 8.39131 1.66602 8.83333 1.66602H12.1667C12.6087 1.66602 13.0326 1.84161 13.3452 2.15417C13.6577 2.46673 13.8333 2.89065 13.8333 3.33268V4.99935M8.83333 9.16602V14.166M12.1667 9.16602V14.166"
-                  stroke="#ffffff"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              Delete Wallet
-            </Button>
+                <svg
+                  style={{
+                    marginRight: "10px",
+                  }}
+                  width="21"
+                  height="20"
+                  viewBox="0 0 21 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.6666 5.83268L6.33329 14.166M6.33329 14.166L14.6666 14.166M6.33329 14.166L6.33329 5.83268"
+                    stroke="white"
+                    stroke-width="1.66667"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Fund Wallet
+              </Button>
+            </div>
           </div>
-        </div>
 
-        {/*   <div
+          {/*   <div
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -385,162 +512,171 @@ function WalletsDetailsAgent() {
             />
           </div>
         </div> */}
-        <div className="head">
-          <p>Wallet History</p>
-        </div>
-        <Header>
-          <InputSearch
-            allowClear
-            placeholder="Search History"
-            style={{ width: "80%" }}
-            className="input"
-            onChange={handleSearch}
-          />
-
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            onClick={handlesorts}
-          >
-            <path
-              d="M3 7H21"
-              stroke="#5A6376"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <path
-              d="M6 12H18"
-              stroke="#5A6376"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <path
-              d="M10 17H14"
-              stroke="#5A6376"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-          </svg>
-        </Header>
-        {showFilterOptions && (
-          <div className="filteroptions">
-            {Object.keys(filteredData[0]).map((key) => (
-              <p onClick={(key) => handleSort(key)} key={key}>
-                {key}
-              </p>
-            ))}
-          </div>
-        )}
-
-        <BeneficiaryCont>
           <div className="head">
-            <p>Today</p>
+            <p>Wallet History</p>
           </div>
-          {filteredData
-            ?.filter((item) => {
-              if (!searchKeyword.length) return item;
-              else if (
-                Object.values(item).some((value) =>
-                  value.toString().toLowerCase().includes(searchKeyword)
-                )
-              ) {
-                return item;
-              }
-            })
-            .map((item) => (
-              <>
-                <Link
-                  className="box"
-                  to={`/user/transactions/details/?id=${item.sn}`}
-                  style={{ color: "#000", textDecoration: "none" }}
-                >
-                  <Box>
-                    {/* <Avatar  className="av">AB</Avatar> */}
-                    {item?.paymentStatus === "Deposited" ? (
-                      <svg
-                        width="50"
-                        height="50"
-                        viewBox="0 0 50 50"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle cx="25" cy="25" r="25" fill="#00A85A" />
-                        <path
-                          d="M29.6788 19.9334L19.0722 30.54"
-                          stroke="white"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M21.1412 19.9508L29.6788 19.9324L29.6611 28.4707"
-                          stroke="white"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        width="52"
-                        height="52"
-                        viewBox="0 0 52 52"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="26"
-                          cy="26"
-                          r="25"
-                          transform="rotate(-74.6597 26 26)"
-                          fill="#F2994A"
-                        />
-                        <path
-                          d="M22.4409 31.1983L31.2167 19.0333"
-                          stroke="white"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
-                          stroke="white"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    )}
+          <br />
 
-                    <div className="text">
-                      <h5>{item?.senderName}</h5>
-                      <p>{item?.sn}</p>
-                      <p>{item?.paymentStatus}</p>
-                      {/* <p>{item?.collectionDate}</p> */}
-                    </div>
-                    <div className="options">
-                      <h5>
-                        <AmountFormatter
-                          value={item?.paymentAmount}
-                          currency={item?.senderCurrency}
-                        />
-                      </h5>
-                      <h5>
-                        <AmountFormatter
-                          value={item?.receivedAmount}
-                          currency={item?.beneficiaryCurrency}
-                        />
-                      </h5>
-                    </div>
-                  </Box>
-                </Link>
-              </>
-            ))}
-        </BeneficiaryCont>
-      </Content>
+          <Header>
+            <InputSearch
+              allowClear
+              placeholder="Search History"
+              style={{ width: "80%", padding: "0 10px" }}
+              className="input"
+              onChange={handleSearch}
+            />
+
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              //onClick={handlesorts}
+            >
+              <path
+                d="M3 7H21"
+                stroke="#5A6376"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M6 12H18"
+                stroke="#5A6376"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M10 17H14"
+                stroke="#5A6376"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </Header>
+          {showFilterOptions && (
+            <div className="filteroptions">
+              {Object.keys(filteredData[0]).map((key) => (
+                <p onClick={(key) => handleSort(key)} key={key}>
+                  {key}
+                </p>
+              ))}
+            </div>
+          )}
+          <br />
+
+          <BeneficiaryCont>
+            <div className="head">
+              <p>Today</p>
+            </div>
+            {filteredData
+              ?.filter((item) => {
+                if (!searchKeyword.length) return item;
+                else if (
+                  Object.values(item).some((value) =>
+                    value.toString().toLowerCase().includes(searchKeyword)
+                  )
+                ) {
+                  return item;
+                }
+              })
+              .map((item) => (
+                <>
+                  <Link
+                    className="box"
+                    to={`/user/transactions/details/?id=${item.sn}`}
+                    style={{ color: "#000", textDecoration: "none" }}
+                  >
+                    <Box>
+                      {/* <Avatar  className="av">AB</Avatar> */}
+                      {item?.paymentStatus === "Deposited" ? (
+                        <svg
+                          width="50"
+                          height="50"
+                          viewBox="0 0 50 50"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle cx="25" cy="25" r="25" fill="#00A85A" />
+                          <path
+                            d="M29.6788 19.9334L19.0722 30.54"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M21.1412 19.9508L29.6788 19.9324L29.6611 28.4707"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          width="52"
+                          height="52"
+                          viewBox="0 0 52 52"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="26"
+                            cy="26"
+                            r="25"
+                            transform="rotate(-74.6597 26 26)"
+                            fill="#F2994A"
+                          />
+                          <path
+                            d="M22.4409 31.1983L31.2167 19.0333"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      )}
+
+                      <div className="text">
+                        <h5>{item?.senderName}</h5>
+                        <p>{item?.sn}</p>
+                        <p>{item?.paymentStatus}</p>
+                        {/* <p>{item?.collectionDate}</p> */}
+                      </div>
+                      <div className="options">
+                        <h5>
+                          <AmountFormatter
+                            value={item?.paymentAmount}
+                            currency={item?.senderCurrency}
+                          />
+                        </h5>
+                        <h5>
+                          <AmountFormatter
+                            value={item?.receivedAmount}
+                            currency={item?.beneficiaryCurrency}
+                          />
+                        </h5>
+                        <h4>
+                          {moment(item?.paymentDate).format(
+                            "DD MMM YYYY - hh:mm a"
+                          )}
+                        </h4>
+                      </div>
+                    </Box>
+                  </Link>
+                </>
+              ))}
+          </BeneficiaryCont>
+        </Content>
+      )}
     </Agentlayout>
   );
 }
@@ -709,4 +845,4 @@ const Button = styled.button`
   color: white;
 `;
 
-export default WalletsDetailsAgent;
+export default WalletsDetails;

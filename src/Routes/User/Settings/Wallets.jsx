@@ -199,13 +199,18 @@ function Wallets() {
     );
     setUserData(userDataFromLocalStorage);
   }, []);
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: [],
+  const {
+    data: newDetails,
+    isLoading: newDetailsloading,
+    refetch: refetchnewDetails,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
     queryFn: GetDetails,
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
       console.log(err);
     },
   });
@@ -278,7 +283,7 @@ function Wallets() {
             padding: "0 20px",
           }}
         >
-          {userData?.data?.user?.wallet?.map((item) => {
+          {newDetails?.data?.wallet?.map((item) => {
             return (
               <SwiperSlide
                 style={{
@@ -298,7 +303,7 @@ function Wallets() {
                     }}
                   >
                     <CountryFlag
-                      countryCode={item?.country?.currencyCode?.slice(0, 2)}
+                      countryCode={item?.currency?.code?.slice(0, 2)}
                       style={{
                         width: "30px",
                         height: "30px",
@@ -312,7 +317,7 @@ function Wallets() {
                         marginLeft: "10px",
                       }}
                     >
-                      {item?.country?.name} {item?.country?.currencyCode}
+                      {item?.currency?.name} {item?.currency?.code}
                     </div>
                   </div>
 
@@ -325,7 +330,7 @@ function Wallets() {
                   >
                     <AmountFormatter
                       value={item?.balance}
-                      currency={item?.country?.currencyCode}
+                      currency={item?.currency?.code}
                     />
                   </div>
                   <Link
@@ -407,6 +412,8 @@ function Wallets() {
         <div className="head">
           <p>Wallet History</p>
         </div>
+        <br />
+
         <Header>
           <InputSearch
             allowClear
@@ -422,7 +429,7 @@ function Wallets() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={handlesorts}
+            //onClick={handlesorts}
           >
             <path
               d="M3 7H21"
@@ -453,6 +460,7 @@ function Wallets() {
             ))}
           </div>
         )}
+        <br />
 
         <BeneficiaryCont>
           <div className="head">

@@ -253,6 +253,8 @@ function Dashboard() {
               {/* <Select></Select> */}
               <WalletList
                 value={wallet}
+                setValue={selectedWallet}
+                data={data?.data?.wallet}
                 onChange={(e) => {
                   selectedWallet(e);
                 }}
@@ -352,7 +354,7 @@ function Dashboard() {
               </svg>
               <div className="dashboardamount">
                 <p>Total Earnings </p>
-                <h3>{dashboardDetails?.agentAgentCommissionEarned || 0}</h3>
+                <h3>{data?.data?.agentAgentCommissionEarned || 0}</h3>
               </div>
             </div>
             <div className="dbox dbox2">
@@ -392,7 +394,7 @@ function Dashboard() {
               </svg>
               <div className="dashboardamount">
                 <p>Pending Balance</p>
-                <h3>{dashboardDetails?.pendingCommissionEarning || 0}</h3>
+                <h3>{data?.data?.pendingCommissionEarning || 0}</h3>
               </div>
             </div>
             <div className="dbox dbox3">
@@ -444,7 +446,7 @@ function Dashboard() {
               </svg>
               <div className="dashboardamount">
                 <p>Wallets</p>
-                <h3>{Userdata?.data?.user?.wallet?.length}</h3>
+                <h3>{data?.data.wallet?.length || 0}</h3>
               </div>
             </div>
             <div className="dbox dbox4">
@@ -486,8 +488,8 @@ function Dashboard() {
               <div className="dashboardamount">
                 <p>Failed Transactions</p>
                 <h3>
-                  {dashboardDetails?.totalFailedAmount ||
-                    dashboardDetails?.failedAmount ||
+                  {data?.data?.totalFailedAmount ||
+                    data?.data?.failedAmount ||
                     0}
                 </h3>
               </div>

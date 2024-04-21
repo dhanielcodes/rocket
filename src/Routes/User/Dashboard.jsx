@@ -290,6 +290,8 @@ function Dashboard() {
               {/* <Select></Select> */}
               <WalletList
                 value={wallet}
+                setValue={selectedWallet}
+                data={data?.data?.wallet}
                 onChange={(e) => {
                   selectedWallet(e);
                 }}

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useEffect } from "react";
 import ReactCountryFlag from "react-country-flag";
 import Select from "react-select";
 import countryList from "react-select-country-list";
@@ -11,63 +11,36 @@ import { countryObjectsArray } from "../../config/CountryCodes";
 import { getCurrencies } from "../services/Auth";
 const WalletList = ({
   value,
-  onChange,
-  style,
   defaultValue,
   option,
   setValue,
   disabled,
-  collectionStatus = false,
+  data,
 }) => {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
-  const wallets = Userdata?.data?.user?.wallet;
+  const wallets = data || Userdata?.data?.user?.wallet;
 
-  const options = option || countryList().getData();
-  const { data: newOptions } = useQuery({
-    queryKey: ["getCurrenciesd"],
-    queryFn: getCurrencies,
-    onSuccess: (data) => {
-      //setCountries(data?.data);
-      setValue(
-        collectionStatus
-          ? data?.data
-              ?.map((item) => {
-                return {
-                  code: item?.currencyCode,
-                  value: item?.name,
-                  label: item?.name,
-                  id: item?.id,
-                  ...item,
-                };
-              })
-              ?.filter((item) => item.isReceiving)[0]
-          : data?.data
-              ?.map((item) => {
-                return {
-                  code: item?.currencyCode,
-                  value: item?.name,
-                  label: item?.name,
-                  id: item?.id,
-                  ...item,
-                };
-              })
-              ?.filter((item) => !item.isReceiving)[0]
-      );
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
+  useEffect(() => {
+    setValue(
+      wallets?.map((item) => {
+        return {
+          ...item,
+          value: item?.currency?.name,
+          label: item?.currency?.name,
+          code: item?.currency?.code,
+        };
+      })?.[0]
+    );
+  }, [data]);
 
   return (
     <CountyCont>
       <Select
         value={value}
-        onChange={onChange}
+        onChange={(e) => {
+          setValue(e);
+        }}
         options={wallets?.map((item) => {
           return {
             ...item,

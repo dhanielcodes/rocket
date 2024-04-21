@@ -402,10 +402,7 @@ function WalletsDetails() {
                   }}
                 >
                   <CountryFlag
-                    countryCode={walletDetails?.country?.currencyCode?.slice(
-                      0,
-                      2
-                    )}
+                    countryCode={walletDetails?.currency?.code?.slice(0, 2)}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -419,8 +416,8 @@ function WalletsDetails() {
                       marginLeft: "10px",
                     }}
                   >
-                    {walletDetails?.country?.name}{" "}
-                    {walletDetails?.country?.currencyCode}
+                    {walletDetails?.currency?.name}{" "}
+                    {walletDetails?.currency?.code}
                   </div>
                 </div>
 
@@ -433,7 +430,7 @@ function WalletsDetails() {
                 >
                   <AmountFormatter
                     value={walletDetails?.balance}
-                    currency={walletDetails?.country?.currencyCode}
+                    currency={walletDetails?.currency?.code}
                   />
                 </div>
               </div>
@@ -517,6 +514,8 @@ function WalletsDetails() {
           <div className="head">
             <p>Wallet History</p>
           </div>
+          <br />
+
           <Header>
             <InputSearch
               allowClear
@@ -532,7 +531,7 @@ function WalletsDetails() {
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={handlesorts}
+              //onClick={handlesorts}
             >
               <path
                 d="M3 7H21"
@@ -563,6 +562,7 @@ function WalletsDetails() {
               ))}
             </div>
           )}
+          <br />
 
           <BeneficiaryCont>
             <div className="head">

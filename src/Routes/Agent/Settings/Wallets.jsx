@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
@@ -37,12 +38,16 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import CountryFlag from "react-country-flag";
 import { kFormatter, kFormatter2 } from "../../../reuseables/format";
+import moment from "moment";
 import Agentlayout from "../../../reuseables/AgentLayout";
 
 const Droplist = (
   <Menu>
     <IconMoreVertical />
-    <Menu.Item key="1" onClick={() => useNavigate("/user/beneficiary/details")}>
+    <Menu.Item
+      key="1"
+      onClick={() => useNavigate("/agent/beneficiary/details")}
+    >
       <span>
         <svg
           width="30"
@@ -164,13 +169,15 @@ const Droplist = (
 
 const InputSearch = Input.Search;
 
-function WalletsAgent() {
+function Wallets() {
   const [userData, setUserData] = useState(null);
   const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
 
   const { data: walletT, isLoading: walletTLoading } = useQuery({
-    queryKey: ["userwalletslogs"],
-    queryFn: GetUserWalletsTransactions,
+    queryKey: [],
+    queryFn: GetUserWalletsTransactions(
+      `userId=${Userdata?.data?.user?.userId}&requestId=${Userdata?.data?.userRoleId}`
+    ),
     onSuccess: (data) => {
       console.log(data);
     },
@@ -179,11 +186,11 @@ function WalletsAgent() {
     },
   });
   const {
-    data: nameEnqwe,
+    data: nameEnq,
     isLoading: namEnqloading,
     refetch: refetchnameEnq,
   } = useQuery({
-    queryKey: [userData?.data?.user?.userId, "wallet"],
+    queryKey: [userData?.data?.user?.userId],
     queryFn: Tranx,
     onError: (err) => {
       console.error(err);
@@ -196,12 +203,25 @@ function WalletsAgent() {
     );
     setUserData(userDataFromLocalStorage);
   }, []);
+  const {
+    data: newDetails,
+    isLoading: newDetailsloading,
+    refetch: refetchnewDetails,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
 
   const [transactionList, setTransactionList] = useState(
-    nameEnqwe?.data || Trnx?.data
+    nameEnq?.data || Trnx?.data
   );
-
-  console.log(nameEnqwe?.message);
 
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredData, setFilteredData] = useState(
@@ -245,7 +265,7 @@ function WalletsAgent() {
     setUserData(userDataFromLocalStorage);
   }, []);
 
-  console.log(walletT, "we");
+  console.log(walletT, Userdata, "we");
   return (
     <Agentlayout current="Wallets" useBack={true}>
       <Content>
@@ -267,7 +287,7 @@ function WalletsAgent() {
             padding: "0 20px",
           }}
         >
-          {userData?.data?.user?.wallet?.map((item) => {
+          {newDetails?.data?.wallet?.map((item) => {
             return (
               <SwiperSlide
                 style={{
@@ -287,7 +307,7 @@ function WalletsAgent() {
                     }}
                   >
                     <CountryFlag
-                      countryCode={item?.country?.currencyCode?.slice(0, 2)}
+                      countryCode={item?.currency?.code?.slice(0, 2)}
                       style={{
                         width: "30px",
                         height: "30px",
@@ -301,7 +321,7 @@ function WalletsAgent() {
                         marginLeft: "10px",
                       }}
                     >
-                      {item?.country?.name} {item?.country?.currencyCode}
+                      {item?.currency?.name} {item?.currency?.code}
                     </div>
                   </div>
 
@@ -314,11 +334,14 @@ function WalletsAgent() {
                   >
                     <AmountFormatter
                       value={item?.balance}
-                      currency={item?.country?.currencyCode}
-                    />{" "}
+                      currency={item?.currency?.code}
+                    />
                   </div>
                   <Link
-                    to={`/user/settings/wallet/${"id"}`}
+                    to={`/agent/settings/wallet/${"single"}`}
+                    onClick={() => {
+                      localStorage.setItem("walletID", JSON.stringify(item));
+                    }}
                     style={{
                       textDecoration: "none",
                       display: "block",
@@ -328,11 +351,37 @@ function WalletsAgent() {
                     <div
                       style={{
                         color: "white",
-                        fontSize: "17px",
+                        fontSize: "16px",
                         marginTop: "10px",
+                        display: "flex",
+                        alignContent: "center",
                       }}
                     >
-                      Explore
+                      <div>View Card </div>
+                      <div style={{ marginLeft: "10px" }}>
+                        <svg
+                          width="14"
+                          height="15"
+                          viewBox="0 0 14 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M11.5208 7.66081L2.77075 7.66081"
+                            stroke="white"
+                            stroke-width="1.16667"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M7.9917 11.1751L11.5209 7.66107L7.9917 4.14648"
+                            stroke="white"
+                            stroke-width="1.16667"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </div>
                     </div>
                   </Link>
                 </div>
@@ -367,6 +416,8 @@ function WalletsAgent() {
         <div className="head">
           <p>Wallet History</p>
         </div>
+        <br />
+
         <Header>
           <InputSearch
             allowClear
@@ -382,7 +433,7 @@ function WalletsAgent() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={handlesorts}
+            //onClick={handlesorts}
           >
             <path
               d="M3 7H21"
@@ -413,106 +464,122 @@ function WalletsAgent() {
             ))}
           </div>
         )}
+        <br />
 
         <BeneficiaryCont>
           <div className="head">
             <p>Today</p>
           </div>
-          {nameEnqwe?.data.map((item) => (
-            <>
-              <Link
-                className="box"
-                to={`/user/transactions/details/?id=${item.sn}`}
-                style={{ color: "#000", textDecoration: "none" }}
-              >
-                <Box>
-                  {/* <Avatar  className="av">AB</Avatar> */}
-                  {item?.paymentStatus === "Deposited" ? (
-                    <svg
-                      width="50"
-                      height="50"
-                      viewBox="0 0 50 50"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle cx="25" cy="25" r="25" fill="#00A85A" />
-                      <path
-                        d="M29.6788 19.9334L19.0722 30.54"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M21.1412 19.9508L29.6788 19.9324L29.6611 28.4707"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      width="52"
-                      height="52"
-                      viewBox="0 0 52 52"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle
-                        cx="26"
-                        cy="26"
-                        r="25"
-                        transform="rotate(-74.6597 26 26)"
-                        fill="#F2994A"
-                      />
-                      <path
-                        d="M22.4409 31.1983L31.2167 19.0333"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  )}
+          {filteredData
+            ?.filter((item) => {
+              if (!searchKeyword.length) return item;
+              else if (
+                Object.values(item).some((value) =>
+                  value.toString().toLowerCase().includes(searchKeyword)
+                )
+              ) {
+                return item;
+              }
+            })
+            .map((item) => (
+              <>
+                <Link
+                  className="box"
+                  to={`/agent/transactions/details/?id=${item.paymentRef}`}
+                  style={{ color: "#000", textDecoration: "none" }}
+                >
+                  <Box>
+                    {/* <Avatar  className="av">AB</Avatar> */}
+                    {item?.paymentStatus === "Deposited" ? (
+                      <svg
+                        width="50"
+                        height="50"
+                        viewBox="0 0 50 50"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="25" cy="25" r="25" fill="#00A85A" />
+                        <path
+                          d="M29.6788 19.9334L19.0722 30.54"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M21.1412 19.9508L29.6788 19.9324L29.6611 28.4707"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="52"
+                        height="52"
+                        viewBox="0 0 52 52"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="26"
+                          cy="26"
+                          r="25"
+                          transform="rotate(-74.6597 26 26)"
+                          fill="#F2994A"
+                        />
+                        <path
+                          d="M22.4409 31.1983L31.2167 19.0333"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    )}
 
-                  <div className="text">
-                    <h5>{item?.senderName}</h5>
-                    <p>{item?.sn}</p>
-                    <p>{item?.paymentStatus}</p>
-                    {/* <p>{item?.collectionDate}</p> */}
-                  </div>
-                  <div className="options">
-                    <h5>
-                      <AmountFormatter
-                        value={item?.paymentAmount}
-                        currency={item?.senderCurrency}
-                      />
-                    </h5>
-                    <h5>
-                      <AmountFormatter
-                        value={item?.receivedAmount}
-                        currency={item?.beneficiaryCurrency}
-                      />
-                    </h5>
-                  </div>
-                </Box>
-              </Link>
-            </>
-          ))}
+                    <div className="text">
+                      <h5>{item?.senderName}</h5>
+                      <p>{item?.sn}</p>
+                      <p>{item?.paymentStatus}</p>
+                      {/* <p>{item?.collectionDate}</p> */}
+                    </div>
+                    <div className="options">
+                      <h5>
+                        <AmountFormatter
+                          value={item?.paymentAmount}
+                          currency={item?.senderCurrency}
+                        />
+                      </h5>
+                      <h5>
+                        <AmountFormatter
+                          value={item?.receivedAmount}
+                          currency={item?.beneficiaryCurrency}
+                        />
+                      </h5>
+                      <h4>
+                        {moment(item?.paymentDate).format(
+                          "DD MMM YYYY - hh:mm a"
+                        )}
+                      </h4>
+                    </div>
+                  </Box>
+                </Link>
+              </>
+            ))}
         </BeneficiaryCont>
       </Content>
     </Agentlayout>
   );
 }
-export default WalletsAgent;
 
 const Content = styled.div`
   width: 100%;
@@ -661,6 +728,8 @@ const Box = styled.div`
         height: 50%; */
   }
 `;
+
+export default Wallets;
 
 const Button = styled.button`
   display: flex;
