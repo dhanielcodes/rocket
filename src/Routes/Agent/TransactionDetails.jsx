@@ -374,7 +374,7 @@ function TransactionDetailsAgent() {
               </div>
             </div>
 
-            {transactionList?.paymentLink && (
+            {transactionList?.paymentStatus === "Pending" && (
               <Btn
                 clicking={() => {
                   mutate(transactionList?.paymentRef);
