@@ -316,22 +316,24 @@ function SendMoney() {
   const [purposee, setPurpose] = useState();
   const [notee, setNote] = useState();
   const handleStep = () => {
-    localStorage.setItem(
-      "paymentChannelId",
-      JSON.stringify({
-        id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
-        name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")
-          ?.name,
-      })
-    );
-    localStorage.setItem(
-      "payoutChannelId",
-      JSON.stringify({
-        id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
-        name: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")
-          ?.name,
-      })
-    );
+    if (current === 1) {
+      localStorage.setItem(
+        "paymentChannelId",
+        JSON.stringify({
+          id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
+          name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")
+            ?.name,
+        })
+      );
+      localStorage.setItem(
+        "payoutChannelId",
+        JSON.stringify({
+          id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
+          name: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")
+            ?.name,
+        })
+      );
+    }
     if (current === 2) {
       if (amount !== "null") {
         setCurrent((prev) => {
