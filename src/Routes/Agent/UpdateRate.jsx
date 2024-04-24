@@ -360,6 +360,7 @@ function UpdateRate() {
                 type="number"
                 name="username"
                 padding="12px"
+                disabled
                 onChange={(e) => {
                   setRateBand({
                     ...rateBand,
