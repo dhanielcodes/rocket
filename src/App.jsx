@@ -63,6 +63,8 @@ import ViewBarDetails from "./Routes/User/ViewBarDetails";
 import ManualUpload from "./Routes/User/ManualUpload";
 import CustomerDetails from "./Routes/Agent/CustomerDetails";
 import ManualUploadBene from "./Routes/User/ManualUploadBene";
+import OurBanks from "./Routes/User/OurBanks.jsx";
+import OurBanksAgent from "./Routes/Agent/OurBanks.jsx.jsx";
 //
 
 function App() {
@@ -134,6 +136,7 @@ function App() {
             <Route path="/user/settings/address" element={<ChangeAddress />} />
             <Route path="/user/settings/password" element={<ChangePassord />} />
             <Route path="/user/settings/wallet" element={<Wallets />} />
+            <Route path="/user/settings/banks" element={<OurBanks />} />
             <Route path="/user/settings/add-wallet" element={<AddWallet />} />
             <Route
               path="/user/settings/wallet/:id"
@@ -154,6 +157,7 @@ function App() {
               element={<ChangePassordAgent />}
             />
             <Route path="/agent/settings/wallet" element={<WalletsAgent />} />
+            <Route path="/agent/settings/banks" element={<OurBanksAgent />} />
             <Route
               path="/agent/settings/add-wallet"
               element={<AddWalletAgent />}

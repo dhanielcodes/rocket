@@ -108,7 +108,10 @@ export const TransferPurpose = async () => {
   const { data } = await Axios.get(`${baseurl}/gettransferpurpose`);
   return data;
 };
-
+export const getCompanyBanks = async (userId, bid) => {
+  const { data } = await Axios.get(`${baseurl}/getsystemofflinepaymentbanks`);
+  return data;
+};
 export const Paymentchannel = async () => {
   const { data } = await Axios.get(`${baseurl}/getpaymentchannel`);
   return data;

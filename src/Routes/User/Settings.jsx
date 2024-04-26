@@ -71,6 +71,7 @@ const Settings = () => {
       id: 1,
       title: "Our Bank Details",
       image: bankdetails,
+      path: "/user/settings/banks",
     },
     {
       id: 2,

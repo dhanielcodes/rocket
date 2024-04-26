@@ -72,6 +72,7 @@ const AgentSettings = () => {
       id: 1,
       title: "Our Bank Details",
       image: bankdetails,
+      path: "/agent/settings/banks",
     },
     {
       id: 2,
