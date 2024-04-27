@@ -39,11 +39,11 @@ const AgentSettings = () => {
       image: contact,
       path: "/agent/settings/wallet",
     },
-    {
+    /*   {
       id: 3,
       title: "Discounts",
       image: discount,
-    },
+    }, */
     {
       id: 4,
       title: "ID Documents",
@@ -55,11 +55,11 @@ const AgentSettings = () => {
       title: "Refer & Earn $10",
       image: contact,
     },
-    {
+    /*   {
       id: 6,
       title: "Communication Preferences",
       image: contact,
-    },
+    }, */
   ];
   const settingsMap2 = [
     {
@@ -74,28 +74,28 @@ const AgentSettings = () => {
       image: bankdetails,
       path: "/agent/settings/banks",
     },
-    {
+    /*   {
       id: 2,
       title: "KYC Upload Help",
       image: contact,
-    },
-    {
+    }, */
+    /*   {
       id: 3,
       title: "Contact Us",
       image: discount,
-    },
-    {
+    }, */
+    /*  {
       id: 4,
       title: "FAQs",
       image: faqs,
-    },
+    }, */
   ];
   const settingsMap3 = [
-    {
+    /* {
       id: 1,
       title: "Delete My Account",
       image: delet,
-    },
+    }, */
   ];
 
   const handleUploadImage = (e) => {

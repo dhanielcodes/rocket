@@ -38,18 +38,18 @@ const Settings = () => {
       image: contact,
       path: "/user/settings/wallet",
     },
-    {
+    /*  {
       id: 3,
       title: "Discounts",
       image: discount,
-    },
+    }, */
     {
       id: 4,
       title: "ID Documents",
       image: document,
       path: "/user/id/documents",
     },
-    {
+    /*  {
       id: 5,
       title: "Refer & Earn $10",
       image: contact,
@@ -58,7 +58,7 @@ const Settings = () => {
       id: 6,
       title: "Communication Preferences",
       image: contact,
-    },
+    }, */
   ];
   const settingsMap2 = [
     {
@@ -73,28 +73,28 @@ const Settings = () => {
       image: bankdetails,
       path: "/user/settings/banks",
     },
-    {
+    /*  {
       id: 2,
       title: "KYC Upload Help",
       image: contact,
-    },
-    {
+    }, */
+    /*  {
       id: 3,
       title: "Contact Us",
       image: discount,
-    },
-    {
+    }, */
+    /*  {
       id: 4,
       title: "FAQs",
       image: faqs,
-    },
+    }, */
   ];
   const settingsMap3 = [
-    {
+    /*  {
       id: 1,
       title: "Delete My Account",
       image: delet,
-    },
+    }, */
   ];
 
   const handleUploadImage = (e) => {
