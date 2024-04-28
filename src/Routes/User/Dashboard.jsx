@@ -34,6 +34,7 @@ import { getLocals } from "../../hooks/useSessionStorage";
 import WalletList from "../../reuseables/WalletList";
 import useScreenSize from "../../hooks/useScreenSize";
 import Profile from "../../assets/profile.png";
+import { NumberWithCommas } from "../../utils/format";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -304,14 +305,7 @@ function Dashboard() {
             {wallets?.length ? (
               <>
                 <h5>
-                  {showbalance ? (
-                    <AmountFormatter
-                      //currency={wallet?.code || 0}
-                      value={wallet?.balance || 0}
-                    />
-                  ) : (
-                    "****"
-                  )}
+                  {showbalance ? NumberWithCommas(wallet?.balance) : "****"}
                 </h5>
                 {showbalance ? (
                   <svg
