@@ -427,15 +427,17 @@ function TransactionDetails() {
             </div>
 
             {transactionList?.paymentStatus === "Pending" &&
-              transactionList?.paymentLink && (
-                <Btn
-                  clicking={() => {
-                    mutate(transactionList?.paymentRef);
-                  }}
-                >
-                  {isLoading ? "submitting..." : "Continue"}
-                </Btn>
-              )}
+            transactionList?.systemOfflinePaymentBank ? (
+              ""
+            ) : (
+              <Btn
+                clicking={() => {
+                  mutate(transactionList?.paymentRef);
+                }}
+              >
+                {isLoading ? "submitting..." : "Continue"}
+              </Btn>
+            )}
 
             {transactionList?.paymentStatus === "Pending" &&
               transactionList?.systemOfflinePaymentBank && (
