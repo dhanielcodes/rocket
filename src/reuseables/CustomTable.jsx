@@ -1,7 +1,16 @@
 import { Table } from "@arco-design/web-react";
 import styled from "styled-components";
 
-const CustomTable = ({ Apidata, tableColumns, loading, noData }) => {
+const CustomTable = ({
+  Apidata,
+  tableColumns,
+  loading,
+  noData,
+  scroll = {
+    x: 300,
+    y: 600,
+  },
+}) => {
   const columns = [
     {
       title: "MIN AMT",
@@ -61,10 +70,7 @@ const CustomTable = ({ Apidata, tableColumns, loading, noData }) => {
         style={{
           padding: "12px 0",
         }}
-        scroll={{
-          x: 300,
-          y: 600,
-        }}
+        scroll={scroll}
       />
     </Content>
   );
@@ -75,16 +81,29 @@ const Content = styled.div`
   padding-top: 20px;
   margin-top: 20px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: rgb(255, 255, 255);
+  font-weight: 800;
 
   .table3 {
     th {
+      span {
+        color: #757575 !important;
+        font-weight: 900 !important;
+      }
+      background-color: #f9fafb;
       padding: 0px;
       font-size: 12px;
-      background-color: #f9fafb;
     }
     td {
       padding: 20px;
+      font-size: 12px;
+      color: #000;
+      font-weight: 800;
+      span {
+        color: #000 !important;
+        font-weight: 800 !important;
+        display: block;
+      }
     }
   }
 `;

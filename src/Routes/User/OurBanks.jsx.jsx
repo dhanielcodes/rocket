@@ -35,22 +35,31 @@ function OurBanks() {
     {
       title: "BANK NAME",
       dataIndex: "bankName",
+      width: 130,
       //render: () => "Other 2",
     },
 
     {
       title: "ACCOUNT NAME",
       dataIndex: "accountName",
+      width: 145,
       //render: () => "Other 2",
     },
     {
       title: "CURRENCY NAME",
       dataIndex: "sending",
+      width: 145,
       //render: () => "Other 2",
     },
     {
       title: "ACCOUNT NUMBER",
+      width: 120,
       dataIndex: "accountNumber",
+    },
+    {
+      title: "SORT CODE",
+      width: 130,
+      dataIndex: "sortCode",
     },
   ];
 
@@ -73,7 +82,7 @@ function OurBanks() {
             countryCode={item?.currency?.code?.slice(0, 2)}
             svg
           />
-          <div>{item?.currency["name"]}</div>
+          <span>{item?.currency["name"]}</span>
         </div>
       ),
     };
@@ -87,8 +96,8 @@ function OurBanks() {
           tableColumns={columns}
           loading={isLoading || isFetching}
           scroll={{
-            x: 800,
-            y: 800,
+            x: 600,
+            y: 400,
           }}
         />
       </Content>
