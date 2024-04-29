@@ -443,7 +443,7 @@ function TransactionDetails() {
                     setShowModal(true);
                   }}
                 >
-                  View Payment Details
+                  Proceed to make Payment
                 </Btn>
               )}
           </Details>
