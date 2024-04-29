@@ -219,6 +219,17 @@ function TransactionDetails() {
                   {transactionList?.systemOfflinePaymentBank?.accountNumber}
                 </b>
               </h3>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+
+              <h3>
+                Sort Code -{" "}
+                <b>{transactionList?.systemOfflinePaymentBank?.sortCode}</b>
+              </h3>
             </>
           </ReusableModal>
         }
