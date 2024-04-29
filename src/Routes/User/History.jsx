@@ -254,6 +254,17 @@ function History() {
     setFilteredData(sortedData);
   };
 
+  const filteredDataa = transactionsList?.filter((el) => {
+    //if no input the return the original
+    if (searchKeyword === "") {
+      return el;
+    }
+    //return the item which contains the user input
+    else {
+      return el?.paymentRef.toLowerCase().includes(searchKeyword);
+    }
+  });
+
   return (
     <Userlayout current="history" useBack={true}>
       <Content>
@@ -272,7 +283,6 @@ function History() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={handlesorts}
           >
             <path
               d="M3 7H21"
@@ -319,7 +329,7 @@ function History() {
               <Spinner />
             </div>
           ) : (
-            transactionsList?.map((item) => (
+            filteredDataa?.map((item) => (
               <>
                 <Link
                   className="box"
