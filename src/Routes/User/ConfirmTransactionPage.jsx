@@ -54,6 +54,7 @@ function ConfirmTransactionPage() {
   const [getmsg, setmsg] = useState("");
   const [getlink, setlink] = useState("");
   const [status, setStatus] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const [showBtn, setShowBtn] = useState(false);
   const { mutate, isLoading, isError } = useMutation({
@@ -204,6 +205,67 @@ function ConfirmTransactionPage() {
             </Msg>
           </ReusableModal>
         )}
+
+        {
+          <ReusableModal
+            isOpen={showModal}
+            onClose={() => {
+              setShowModal(!showModal);
+            }}
+          >
+            <>
+              <span
+                style={{
+                  fontSize: "15px",
+                  color: "#757575",
+                }}
+              >
+                Bank Details to transfer to
+              </span>
+              <br />
+              <h2>
+                Bank -{" "}
+                <b>{transactionList?.systemOfflinePaymentBank?.bankName}</b>
+              </h2>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <h4>
+                Account Name -{" "}
+                <b>{transactionList?.systemOfflinePaymentBank?.accountName}</b>
+              </h4>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+
+              <h3>
+                Account Number -{" "}
+                <b>
+                  {transactionList?.systemOfflinePaymentBank?.accountNumber}
+                </b>
+              </h3>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+              <hr></hr>
+
+              <h3>
+                Sort Code -{" "}
+                <b>{transactionList?.systemOfflinePaymentBank?.sortCode}</b>
+              </h3>
+            </>
+          </ReusableModal>
+        }
         <Details>
           <h3 className="detailsinfo">Personal Details</h3>
           <div className="detailscont">
@@ -329,15 +391,34 @@ function ConfirmTransactionPage() {
           >
             Erase
           </button> */}
-          <div className="actionbtn">
-            <Btn
-              clicking={() => {
-                mutate(id);
-              }}
-            >
-              {isLoading ? "submitting..." : "Submit"}
-            </Btn>
-          </div>
+
+          {transactionList?.paymentStatus === "Pending" ? (
+            transactionList?.systemOfflinePaymentBank ? (
+              ""
+            ) : (
+              <Btn
+                clicking={() => {
+                  mutate(id);
+                }}
+              >
+                {isLoading ? "submitting..." : "Submit"}
+              </Btn>
+            )
+          ) : (
+            ""
+          )}
+
+          {transactionList?.paymentStatus === "Pending"
+            ? transactionList?.systemOfflinePaymentBank && (
+                <Btn
+                  clicking={() => {
+                    setShowModal(true);
+                  }}
+                >
+                  Proceed to make Payment
+                </Btn>
+              )
+            : ""}
         </Details>
       </div>
     </Content>
