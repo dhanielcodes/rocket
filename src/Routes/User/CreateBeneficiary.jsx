@@ -325,7 +325,21 @@ function CreateBeneficiary() {
                 <p className="textheader">Select country</p>
 
                 <Select
-                  value={selectedCountry}
+                  value={
+                    selectedCountry ||
+                    countrylist?.data
+                      ?.filter((item) => item?.name === "Nigeria")
+                      ?.map((item) => {
+                        return {
+                          code: item?.currencyCode,
+                          value: item?.name,
+                          label: item?.name,
+                          id: item?.id,
+                          slug: countryObjectsArray(item?.name),
+                          ...item,
+                        };
+                      })?.[0]
+                  }
                   onChange={handleSelectCountry}
                   options={countrylist?.data?.map((item) => {
                     return {

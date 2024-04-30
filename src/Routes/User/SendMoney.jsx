@@ -279,6 +279,11 @@ function SendMoney() {
     tranxpurpose || mappedPurpose
   );
   console.log(
+    mappedPurpose?.find((item) => item?.name === 1),
+    "kdd"
+  );
+
+  console.log(
     "🚀 ~ file: SendMoney.jsx:134 ~ SendMoney ~ transferpurpose:",
     transferpurpose
   );
@@ -296,6 +301,7 @@ function SendMoney() {
   };
 
   const [moneyData, setMoneyData] = useState();
+  const [currentRates, setcurrentRates] = useState(null);
 
   const getBeneF = getLocals("userBeneficiaryId") || [];
   const getNote = getLocals("note") || [];
@@ -314,6 +320,12 @@ function SendMoney() {
 
   console.log(params.get("statusMessage"));
   const [purposee, setPurpose] = useState();
+  if (!purposee) {
+    localStorage.setItem(
+      "purpose",
+      JSON.stringify(mappedPurpose?.find((item) => item?.name === 1)?.label)
+    );
+  }
   const [notee, setNote] = useState();
   const handleStep = () => {
     if (current === 1) {
@@ -336,18 +348,18 @@ function SendMoney() {
     }
     if (current === 2) {
       if (amount !== "null") {
-        setCurrent((prev) => {
-          localStorage.setItem("steps", prev + 1);
-          return prev + 1;
-        });
+        if (currentRates?.totalAmountToPay) {
+          setCurrent((prev) => {
+            localStorage.setItem("steps", prev + 1);
+            return prev + 1;
+          });
+        }
       }
     } else if (current === 3) {
-      if (purposee) {
-        setCurrent((prev) => {
-          localStorage.setItem("steps", prev + 1);
-          return prev + 1;
-        });
-      }
+      setCurrent((prev) => {
+        localStorage.setItem("steps", prev + 1);
+        return prev + 1;
+      });
     } else if (current === 4) {
       setCurrent((prev) => {
         localStorage.setItem("steps", prev + 1);
@@ -631,6 +643,8 @@ function SendMoney() {
               setSelectedItems2(null);
               setisSelected(null);
               setShowBtn(false);
+              setAmount(0);
+              setcurrentRates(null);
             }}
           >
             {status === true ? (
@@ -704,6 +718,8 @@ function SendMoney() {
             onClose={() => {
               navigate("/user/sendmoney");
               localStorage.removeItem("amount");
+              setAmount(0);
+              setcurrentRates();
             }}
           >
             <Msg type={statusCode === "0" ? true : false}>
@@ -875,6 +891,8 @@ function SendMoney() {
                   setAmount={setAmount}
                   moneyData={moneyData}
                   setMoneyData={setMoneyData}
+                  currentRates={currentRates}
+                  setcurrentRates={setcurrentRates}
                 />
                 {paymentchannelloading ? (
                   "Loading..."
@@ -1206,6 +1224,9 @@ function SendMoney() {
                   <p className="">Select purpose of transfer</p>
                   <CustomSelect
                     options={mappedPurpose}
+                    defaultValue={mappedPurpose?.find(
+                      (item) => item?.name === 1
+                    )}
                     placeholder="Family support"
                     onChange={(e) => {
                       localStorage.setItem("purpose", JSON.stringify(e?.label));
@@ -1430,21 +1451,31 @@ function SendMoney() {
                       </p>
                     </div>
 
-                    <div className="details">
-                      <h5>Beneficiary Bank</h5>
-                      <p>
-                        {(getBeneF && getBeneF?.beneficiaryBank?.bankName) ||
-                          userBene?.beneficiaryBank?.bankName}
-                      </p>
-                    </div>
-                    <div className="details">
-                      <h5>Beneficiary Account Number</h5>
-                      <p>
-                        {(getBeneF &&
-                          getBeneF?.beneficiaryBank?.accountNumber) ||
-                          userBene?.beneficiaryBank?.accountNumber}
-                      </p>
-                    </div>
+                    {payoutC?.name === "Pay To Wallet" ||
+                    payoutC?.name === "Cash Pick Up" ? (
+                      ""
+                    ) : (
+                      <div className="details">
+                        <h5>Beneficiary Bank</h5>
+                        <p>
+                          {(getBeneF && getBeneF?.beneficiaryBank?.bankName) ||
+                            userBene?.beneficiaryBank?.bankName}
+                        </p>
+                      </div>
+                    )}
+                    {payoutC?.name === "Pay To Wallet" ||
+                    payoutC?.name === "Cash Pick Up" ? (
+                      ""
+                    ) : (
+                      <div className="details">
+                        <h5>Beneficiary Account Number</h5>
+                        <p>
+                          {(getBeneF &&
+                            getBeneF?.beneficiaryBank?.accountNumber) ||
+                            userBene?.beneficiaryBank?.accountNumber}
+                        </p>
+                      </div>
+                    )}
                     <div className="details">
                       <h5>Note</h5>
                       <p>{getNote}</p>
