@@ -190,7 +190,9 @@ export const TodayRates = async (query) => {
 export const DashboardTodayRates = async (query) => {
   const q = query?.queryKey;
   const { data } = await Axios.get(
-    `${baseurl}/gettodaysrate?fromCurrencyId=${0}&toCurrencyId=${0}&roleId=${0}&userId=${0}`
+    `${baseurl}/gettodaysrate?fromCurrencyId=${0}&toCurrencyId=${0}&roleId=${
+      q[0] || Userdata?.data?.user?.role?.id
+    }&userId=${q[1] || Userdata?.data?.user?.userId}`
   );
   return data;
 };

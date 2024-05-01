@@ -190,7 +190,7 @@ function Login() {
   });
 
   const { data: hdj, refetch: refetchNew } = useQuery({
-    queryKey: ["llllsk"],
+    queryKey: [op?.data?.user?.role?.id, op?.data?.user?.userId],
     queryFn: DashboardTodayRates,
     enabled: false,
     onSuccess: (data) => {
@@ -218,6 +218,7 @@ function Login() {
 
   useEffect(() => {
     refetch([op?.data?.user?.userId]);
+    refetchNew([op?.data?.user?.role?.id, op?.data?.user?.userId]);
     //eslint-disable-next-line
   }, [op]);
 
