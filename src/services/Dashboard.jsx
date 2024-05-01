@@ -187,6 +187,14 @@ export const TodayRates = async (query) => {
   return data;
 };
 
+export const DashboardTodayRates = async (query) => {
+  const q = query?.queryKey;
+  const { data } = await Axios.get(
+    `${baseurl}/gettodaysrate?fromCurrencyId=${0}&toCurrencyId=${0}&roleId=${0}&userId=${0}`
+  );
+  return data;
+};
+
 export const TodayRatesType2 = async (query) => {
   const q = query?.queryKey;
   const { data } = await Axios.get(

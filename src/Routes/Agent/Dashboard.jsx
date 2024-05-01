@@ -89,22 +89,28 @@ function Dashboard() {
       console.error(err);
     },
   });
-  const getC = JSON.parse(localStorage.getItem("currencyList"));
+
+  const [selectedCountry, setSelectedCountry] = useState();
+
   const getC2 = data?.data?.allowMultiCurrencyTrading
     ? JSON.parse(localStorage.getItem("currencyList"))
     : JSON.parse(localStorage.getItem("userCurrencyList"));
 
-  const c1 = getC2
-    ?.filter((item) => item?.isSending)
-    ?.map((item) => {
-      return {
-        value: item?.name,
-        label: item?.name,
-        ...item,
-      };
-    })?.[0];
-  const c2 = getC
-    ?.filter((item) => item?.isReceiving)
+  const c1 =
+    selectedCountry ||
+    getC2
+      ?.filter((item) => item?.isSending)
+      ?.map((item) => {
+        return {
+          value: item?.name,
+          label: item?.name,
+          ...item,
+        };
+      })?.[0];
+  const c2 = getC2
+    ?.filter(
+      (item) => item?.code === Userdata?.data?.user?.country?.currencyCode
+    )
     ?.map((item) => {
       return {
         value: item?.name,
@@ -167,9 +173,7 @@ function Dashboard() {
     };
   });
 
-  const [selectedCountry, setSelectedCountry] = useState();
-
-  console.log(selectedCountry);
+  console.log(c1, "klkoo");
   const [showbalance, setShowBalance] = useState(false);
 
   const handleRates = (e) => {
@@ -221,14 +225,6 @@ function Dashboard() {
 
   return (
     <Agentlayout>
-      {/* <div>
-        {selectedCountry && (
-          <p>
-            You selected: {selectedCountry.label}{' '}
-            <img src={selectedCountry.flag} alt={selectedCountry.label} />
-          </p>
-        )}
-      </div> */}
       <ReusableModal
         isOpen={kyc}
         onClose={() => {
@@ -538,7 +534,7 @@ function Dashboard() {
           <p>Select country to view rates</p>
           <CountryDropdown
             removeNaira={true}
-            value={selectedCountry}
+            value={c1}
             onChange={handleRates}
             setValue={setSelectedCountry}
           />
@@ -547,9 +543,7 @@ function Dashboard() {
           <div className="rates">
             <div className="pri">
               <CountryFlag
-                countryCode={
-                  selectedCountry?.code?.slice(0, 2) || c1?.code?.slice(0, 2)
-                }
+                countryCode={c1?.code?.slice(0, 2)}
                 style={{
                   width: "40px",
                   height: "40px",
@@ -558,12 +552,7 @@ function Dashboard() {
               />
               {/* <p>920.000 USD</p> */}
               {/* <AmountFormatter currency={countryFlags[0].code} value={1}/> */}
-              <AmountFormatter
-                currency={
-                  (currencyDetails && selectedCountry?.code) || c1?.code || 0
-                }
-                value={1}
-              />
+              <AmountFormatter currency={c1?.code || 0} value={1} />
               {/* <p>{rates?.data?.fromAmount}</p> */}
             </div>
             <div style={{ color: "#000" }}>=</div>

@@ -34,6 +34,7 @@ import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
+import { DashboardTodayRates } from "../services/Dashboard";
 
 const baseurl = BASE_URL;
 
@@ -170,6 +171,33 @@ function Login() {
       if (data?.status) {
         localStorage.setItem(
           "currencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  const { data: hdj, refetch: refetchNew } = useQuery({
+    queryKey: ["llllsk"],
+    queryFn: DashboardTodayRates,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
           JSON.stringify(
             data?.data?.map((item) => {
               return {

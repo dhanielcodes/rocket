@@ -15,7 +15,14 @@ import { countryObjectsArray } from "../../config/CountryCodes";
 import InputNumber from "rc-input-number";
 import { CFormatter } from "../hooks/format";
 
-function Rates({ amount, setAmount, moneyData, setMoneyData, currentRates, setcurrentRates }) {
+function Rates({
+  amount,
+  setAmount,
+  moneyData,
+  setMoneyData,
+  currentRates,
+  setcurrentRates,
+}) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata);
 
@@ -104,7 +111,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData, currentRates, setcu
               label: item?.name,
               ...item,
             };
-          })?.[0]
+          })?.[1]
     )
   );
 
@@ -221,7 +228,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData, currentRates, setcu
         label: item?.name,
         ...item,
       };
-    })?.[0]?.id;
+    })?.[1]?.id;
 
   const {
     data: rates,
@@ -423,7 +430,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData, currentRates, setcu
                           label: item?.name,
                           ...item,
                         };
-                      })?.[0]?.code
+                      })?.[1]?.code
                   }
                   value={
                     currentRates?.agentRate ||
@@ -502,7 +509,7 @@ function Rates({ amount, setAmount, moneyData, setMoneyData, currentRates, setcu
                     id: item?.id,
                     ...item,
                   };
-                })?.[0]
+                })?.[1]
             }
             onChange={handleCountryChange2}
             newOptions={getC?.map((item) => {

@@ -85,9 +85,10 @@ const Droplist = ({
       Edit
     </Menu.Item> */}
     <Menu.Item
-      onClick={() =>
-        onNavigate(`/agent/update-rate-customer?id=${id}&name=${name}`)
-      }
+      onClick={(e) => {
+        e.stopPropagation();
+        onNavigate(`/agent/update-rate-customer?id=${id}&name=${name}`);
+      }}
       key="3"
       style={{
         display: "flex",
