@@ -58,6 +58,8 @@ import CustomTable from "../../reuseables/CustomTable";
 import AppModal from "../../components/AppModal";
 import AppInput from "../../reuseables/AppInput";
 import AppSelect from "../../reuseables/AppSelect";
+import getSymbolFromCurrency from "currency-symbol-map";
+
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -180,6 +182,9 @@ function UpdateRate() {
   const [rateBand, setRateBand] = useState({});
   const handleRates = (e) => {
     setSelectedCountry(e);
+    setFee(e?.agentFeePercentage);
+    setAmount(e?.agentRate);
+    setThresh(e?.agentTransactionFeeThreshold);
     setRateBands(e?.rateBands);
     console.log(e, "kdksdsdsd");
   };
@@ -555,7 +560,7 @@ function UpdateRate() {
                     <input
                       className="input"
                       onWheel={numberInputOnWheelPreventChange}
-                      defaultValue={selectedCountry?.agentRate}
+                      value={amount}
                       type="number"
                       onKeyDown={(evt) => {
                         ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
@@ -671,7 +676,7 @@ function UpdateRate() {
                       color: "black",
                       borderBottom: "1px solid #b3b3b3",
                     }}
-                    value={selectedCountry?.agentFeePercentage}
+                    value={fee}
                     onChange={(newValue) => {
                       console.log("Change:", `${newValue.target.value}`);
                       setFee(newValue.target.value);

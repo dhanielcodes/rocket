@@ -24,6 +24,7 @@
     "countries-list": "^3.0.1",
     "crypto": "^1.0.1",
     "crypto-js": "^4.1.1",
+    "currency-symbol-map": "^5.1.0",
     "form-data": "^4.0.0",
     "i18next": "^23.5.1",
     "moment": "^2.29.4",

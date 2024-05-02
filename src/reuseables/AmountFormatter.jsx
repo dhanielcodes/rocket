@@ -1,15 +1,12 @@
-import React from 'react';
-import { FormattedNumber } from 'react-intl';
+import getSymbolFromCurrency from "currency-symbol-map";
+import { FormatCorrect } from "../utils/format";
 
 const AmountFormatter = ({ value, currency }) => {
   return (
-    <FormattedNumber
-      value={value}
-      style="currency"
-     currency={currency && currency}
-      minimumFractionDigits={2}
-      
-    />
+    <>
+      {getSymbolFromCurrency(currency)}
+      {FormatCorrect(value)}
+    </>
   );
 };
 
