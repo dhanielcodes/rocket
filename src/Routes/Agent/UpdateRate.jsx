@@ -59,6 +59,7 @@ import AppModal from "../../components/AppModal";
 import AppInput from "../../reuseables/AppInput";
 import AppSelect from "../../reuseables/AppSelect";
 import getSymbolFromCurrency from "currency-symbol-map";
+import { FormatCorrect } from "../../utils/format";
 
 const { Text } = Typography;
 const TextArea = Input.TextArea;
@@ -557,7 +558,7 @@ function UpdateRate() {
                     </div>
                   </div>
                   <div style={{ position: "relative" }}>
-                    <input
+                    {/*  <input
                       className="input"
                       onWheel={numberInputOnWheelPreventChange}
                       value={amount}
@@ -583,55 +584,42 @@ function UpdateRate() {
                         background: "#ffffff",
                         color: "#000000",
                       }}
+                    /> */}
+
+                    <InputNumber
+                      className="input"
+                      ref={inputElem}
+                      onWheel={numberInputOnWheelPreventChange}
+                      disabled={false}
+                      value={amount}
+                      style={{
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "0px 8px 8px 0px",
+                        padding: "13px",
+                        borderTop: "1px solid #b3b3b3",
+                        borderBottom: "1px solid #b3b3b3",
+                        borderRight: "1px solid #b3b3b3",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }}
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        console.log("Change:", `${newValue}`);
+                        setAmount(newValue);
+                      }}
+                      formatter={(value) => {
+                        return FormatCorrect(value);
+                      }}
                     />
-                    {amount && (
-                      <InputNumber
-                        className="input"
-                        ref={inputElem}
-                        onWheel={numberInputOnWheelPreventChange}
-                        disabled
-                        value={amount}
-                        style={{
-                          borderSize: "0.5px",
-                          fontSize: "6px",
-                          borderRadius: "0px 8px 8px 0px",
-                          padding: "13px",
-                          borderTop: "1px solid #b3b3b3",
-                          borderBottom: "1px solid #b3b3b3",
-                          borderRight: "1px solid #b3b3b3",
-                          width: "100%",
-                          background: "#ffffff",
-                          color: "#000000",
-                          pointerEvents: "none",
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                        }}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(newValue) => {
-                          console.log("Change:", `${newValue}`);
-                          setAmount(newValue);
-                        }}
-                        formatter={(value) => {
-                          return `${value}`.replace(
-                            /\B(?=(\d{3})+(?!\d))/g,
-                            ","
-                          );
-                        }}
-                      />
-                    )}
                   </div>
                 </div>
               </div>
@@ -724,7 +712,7 @@ function UpdateRate() {
                   </div>
 
                   <div style={{ position: "relative" }}>
-                    <input
+                    {/*  <input
                       className="input"
                       onWheel={numberInputOnWheelPreventChange}
                       defaultValue={
@@ -751,55 +739,40 @@ function UpdateRate() {
                         background: "#ffffff",
                         color: "#000000",
                       }}
+                    /> */}
+                    <InputNumber
+                      className="input"
+                      ref={inputElem}
+                      onWheel={numberInputOnWheelPreventChange}
+                      value={thresh}
+                      style={{
+                        borderSize: "0.5px",
+                        fontSize: "6px",
+                        borderRadius: "0px 8px 8px 0px",
+                        padding: "13px",
+                        borderTop: "1px solid #b3b3b3",
+                        borderBottom: "1px solid #b3b3b3",
+                        borderRight: "1px solid #b3b3b3",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#000000",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }}
+                      onKeyDown={(evt) => {
+                        ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
+                          evt.key
+                        ) && evt.preventDefault();
+                      }}
+                      onChange={(newValue) => {
+                        console.log("Change:", `${newValue}`);
+                        setThresh(newValue);
+                      }}
+                      formatter={(value) => {
+                        return FormatCorrect(value);
+                      }}
                     />
-                    {thresh && (
-                      <InputNumber
-                        className="input"
-                        ref={inputElem}
-                        onWheel={numberInputOnWheelPreventChange}
-                        disabled
-                        value={thresh}
-                        style={{
-                          borderSize: "0.5px",
-                          fontSize: "6px",
-                          borderRadius: "0px 8px 8px 0px",
-                          padding: "13px",
-                          borderTop: "1px solid #b3b3b3",
-                          borderBottom: "1px solid #b3b3b3",
-                          borderRight: "1px solid #b3b3b3",
-                          width: "100%",
-                          background: "#ffffff",
-                          color: "#000000",
-                          pointerEvents: "none",
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                        }}
-                        onKeyDown={(evt) => {
-                          [
-                            "e",
-                            "E",
-                            "+",
-                            "-",
-                            "=",
-                            "(",
-                            ")",
-                            "*",
-                            "&",
-                          ].includes(evt.key) && evt.preventDefault();
-                        }}
-                        onChange={(newValue) => {
-                          console.log("Change:", `${newValue}`);
-                          setThresh(newValue);
-                        }}
-                        formatter={(value) => {
-                          return `${value}`.replace(
-                            /\B(?=(\d{3})+(?!\d))/g,
-                            ","
-                          );
-                        }}
-                      />
-                    )}
                   </div>
                 </div>
               </div>
