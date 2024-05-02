@@ -197,6 +197,16 @@ export const DashboardTodayRates = async (query) => {
   return data;
 };
 
+export const DashboardTodayRatesAgent = async (query) => {
+  const q = query?.queryKey;
+  const { data } = await Axios.get(
+    `${baseurl}/getagenttodaysrate?fromCurrencyId=${0}&toCurrencyId=${0}&agentId=${
+      q[0] || Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId
+    }&userId=${q[1] || Userdata?.data?.user?.userId}`
+  );
+  return data;
+};
+
 export const TodayRatesType2 = async (query) => {
   const q = query?.queryKey;
   const { data } = await Axios.get(

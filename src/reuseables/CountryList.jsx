@@ -110,7 +110,7 @@ const CountryDropdown = ({
               svg
             />{" "}
             &nbsp;
-            {country.label}
+            {country.code}
           </span>
         )}
         styles={{

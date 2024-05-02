@@ -35,6 +35,7 @@ import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 import Profile from "../../assets/profile.png";
 import { NumberWithCommas } from "../../utils/format";
+import RateListDashboad from "../../reuseables/RateListDashboad";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -92,14 +93,16 @@ function Dashboard() {
 
   const [selectedCountry, setSelectedCountry] = useState();
 
-  const getC2 = data?.data?.allowMultiCurrencyTrading
-    ? JSON.parse(localStorage.getItem("currencyList"))
-    : JSON.parse(localStorage.getItem("userCurrencyList"));
+  const ratesds = JSON.parse(localStorage.getItem("newCurrencyList"));
 
   const c1 =
     selectedCountry ||
-    getC2
-      ?.filter((item) => item?.isSending)
+    ratesds
+      ?.filter(
+        (item) =>
+          item?.fromCurrency?.code ===
+          Userdata?.data?.user?.country?.currencyCode
+      )
       ?.map((item) => {
         return {
           value: item?.name,
@@ -107,17 +110,6 @@ function Dashboard() {
           ...item,
         };
       })?.[0];
-  const c2 = getC2
-    ?.filter(
-      (item) => item?.code === Userdata?.data?.user?.country?.currencyCode
-    )
-    ?.map((item) => {
-      return {
-        value: item?.name,
-        label: item?.name,
-        ...item,
-      };
-    })?.[0];
 
   // Userdata?.data?.user?.userIdupdateCurrencyDetails
 
@@ -129,29 +121,6 @@ function Dashboard() {
     "🚀 ~ file: Dashboard.jsx:37 ~ Dashboard ~ currencyDetails:",
     currencyDetails
   );
-
-  const {
-    data: rates,
-    isLoading: Ratesloading,
-    refetch: RatesnameEnq,
-  } = useQuery({
-    queryKey: [
-      getrates?.id || dataObject?.id?.country?.id || c1?.id,
-      c2?.id,
-      2,
-      0,
-    ],
-    queryFn: TodayRates,
-    onSuccess: (data) => {
-      setcurrentRates(data?.data);
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
 
   const countryFlags = [
     { code: "GB", label: "United Kingdom" },
@@ -532,18 +501,20 @@ function Dashboard() {
       <SectionThree>
         <div className="text">
           <p>Select country to view rates</p>
-          <CountryDropdown
+          <RateListDashboad
             removeNaira={true}
             value={c1}
+            rates={ratesds}
             onChange={handleRates}
             setValue={setSelectedCountry}
+            multiCurrency={data?.data?.allowMultiCurrencyTrading}
           />
           {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
 
           <div className="rates">
             <div className="pri">
               <CountryFlag
-                countryCode={c1?.code?.slice(0, 2)}
+                countryCode={c1?.fromCurrency?.code?.slice(0, 2)}
                 style={{
                   width: "40px",
                   height: "40px",
@@ -552,25 +523,26 @@ function Dashboard() {
               />
               {/* <p>920.000 USD</p> */}
               {/* <AmountFormatter currency={countryFlags[0].code} value={1}/> */}
-              <AmountFormatter currency={c1?.code || 0} value={1} />
+              <AmountFormatter
+                currency={c1?.fromCurrency?.code || 0}
+                value={1}
+              />
               {/* <p>{rates?.data?.fromAmount}</p> */}
             </div>
             <div style={{ color: "#000" }}>=</div>
             <div className="sec">
-              <CountryFlag countryCode={c2.code?.slice(0, 2)} svg />
-              {currentRates === "Unable to get rate." ? (
-                <div
-                  style={{
-                    fontSize: "16px",
-                  }}
-                >
-                  No Rate Data
-                </div>
-              ) : (
-                <div>
-                  <AmountFormatter currency={c2?.code} value={currentRates} />
-                </div>
-              )}
+              <CountryFlag
+                countryCode={c1?.toCurrency?.code?.slice(0, 2)}
+                svg
+              />
+
+              <div>
+                <AmountFormatter
+                  currency={c1?.toCurrency?.code}
+                  value={c1?.agentRate}
+                />
+              </div>
+
               {/* <p>920.000 NGN</p> */}
             </div>
           </div>

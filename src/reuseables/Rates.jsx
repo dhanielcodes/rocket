@@ -278,6 +278,10 @@ function Rates({
               selectedCountry ||
               getC2
                 ?.filter((item) => item?.isSending)
+                .filter(
+                  (item) =>
+                    item?.code === Userdata?.data?.user?.country?.currencyCode
+                )
                 ?.map((item) => {
                   return {
                     code: item?.currencyCode,
@@ -501,6 +505,10 @@ function Rates({
               selectedCountry2 ||
               getC
                 ?.filter((item) => item?.isReceiving)
+                .filter(
+                  (item) =>
+                    item?.code !== Userdata?.data?.user?.country?.currencyCode
+                )
                 ?.map((item) => {
                   return {
                     code: item?.currencyCode,
@@ -509,7 +517,7 @@ function Rates({
                     id: item?.id,
                     ...item,
                   };
-                })?.[1]
+                })?.[0]
             }
             onChange={handleCountryChange2}
             newOptions={getC?.map((item) => {
@@ -582,7 +590,7 @@ const RateCont = styled.div`
   .cont1,
   .cont3 {
     display: grid;
-    grid-template-columns: 4fr 2fr;
+    grid-template-columns: 2.9fr 4fr;
 
     width: 100%;
     .css-13cymwt-control {

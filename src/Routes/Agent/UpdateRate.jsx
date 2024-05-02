@@ -555,6 +555,7 @@ function UpdateRate() {
                     <input
                       className="input"
                       onWheel={numberInputOnWheelPreventChange}
+                      defaultValue={selectedCountry?.agentRate}
                       type="number"
                       onKeyDown={(evt) => {
                         ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
@@ -657,12 +658,20 @@ function UpdateRate() {
                       </span>
                     </div>
                   </div>
-                  <AppInput
+                  <input
                     type="number"
                     name="username"
-                    padding="12px"
-                    cut
-                    removeCutBorder
+                    style={{
+                      padding: "12px",
+                      borderRadius: "0px 8px 8px 0px",
+                      borderTop: "1px solid #b3b3b3",
+                      borderLeft: "none",
+                      borderRight: "1px solid #b3b3b3",
+                      background: "white",
+                      color: "black",
+                      borderBottom: "1px solid #b3b3b3",
+                    }}
+                    value={selectedCountry?.agentFeePercentage}
                     onChange={(newValue) => {
                       console.log("Change:", `${newValue.target.value}`);
                       setFee(newValue.target.value);
@@ -713,6 +722,9 @@ function UpdateRate() {
                     <input
                       className="input"
                       onWheel={numberInputOnWheelPreventChange}
+                      defaultValue={
+                        selectedCountry?.agentTransactionFeeThreshold
+                      }
                       onKeyDown={(evt) => {
                         ["e", "E", "+", "-", "=", "(", ")", "*", "&"].includes(
                           evt.key
@@ -825,43 +837,43 @@ function UpdateRate() {
               noData={rateBands?.length}
               tableColumns={columns}
             />
-            {amount && thresh && fee && (
-              <Btn
-                disabled={isLoading}
-                clicking={() => {
-                  mutate({
-                    agentId:
-                      Userdata?.data?.user?.agentId ||
-                      Userdata?.data?.user?.userId,
-                    agentCurrentRate: {
-                      id: selectedCountry?.id,
-                      agentRate: amount, //Agent new rate
-                      agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
-                      agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
-                      rateBands: [...rateBands],
-                    },
-                  });
-                  console.log({
-                    agentId:
-                      Userdata?.data?.user?.agentId ||
-                      Userdata?.data?.user?.userId,
-                    agentCurrentRate: {
-                      id: selectedCountry?.id,
-                      agentRate: amount, //Agent new rate
-                      agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
-                      agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
-                    },
+            <Btn
+              disabled={isLoading}
+              clicking={() => {
+                mutate({
+                  agentId:
+                    Userdata?.data?.user?.agentId ||
+                    Userdata?.data?.user?.userId,
+                  agentCurrentRate: {
+                    id: selectedCountry?.id,
+                    agentRate: amount || selectedCountry?.agentRate, //Agent new rate
+                    agentFeePercentage:
+                      fee || selectedCountry?.agentFeePercentage, //Percetange of the sending amount if upto or equal to threshold
+                    agentTransactionFeeThreshold:
+                      thresh || selectedCountry?.agentTransactionFeeThreshold, //Threshold to consider fee in perdewntage ....
                     rateBands: [...rateBands],
-                  });
-                }}
-                styles={{
-                  width: "100%",
-                  marginTop: "14px",
-                }}
-              >
-                {isLoading ? "Updating..." : " Save Changes"}
-              </Btn>
-            )}
+                  },
+                });
+                console.log({
+                  agentId:
+                    Userdata?.data?.user?.agentId ||
+                    Userdata?.data?.user?.userId,
+                  agentCurrentRate: {
+                    id: selectedCountry?.id,
+                    agentRate: amount, //Agent new rate
+                    agentFeePercentage: fee, //Percetange of the sending amount if upto or equal to threshold
+                    agentTransactionFeeThreshold: thresh, //Threshold to consider fee in perdewntage ....
+                  },
+                  rateBands: [...rateBands],
+                });
+              }}
+              styles={{
+                width: "100%",
+                marginTop: "14px",
+              }}
+            >
+              {isLoading ? "Updating..." : " Save Changes"}
+            </Btn>
           </SectionThree>
         )}
       </div>

@@ -34,7 +34,10 @@ import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
-import { DashboardTodayRates } from "../services/Dashboard";
+import {
+  DashboardTodayRates,
+  DashboardTodayRatesAgent,
+} from "../services/Dashboard";
 
 const baseurl = BASE_URL;
 
@@ -130,17 +133,19 @@ function Login() {
     queryFn: getUserCurrencies,
     enabled: false,
     onSuccess: (data) => {
-      localStorage.setItem(
-        "userCurrencyList",
-        JSON.stringify(
-          data?.data?.map((item) => {
-            return {
-              ...item,
-            };
-          })
-        )
-      );
       if (data?.status) {
+        localStorage.setItem(
+          "userCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+      /*  if (data?.status && (hdj || hdjl)) {
         if (op?.data?.user?.kycStatus === "Completed") {
           if (op?.data?.user?.role?.id === 6) {
             //navigate("/user/dashboard");
@@ -155,7 +160,7 @@ function Login() {
         }
       } else {
         toast.error(data?.message);
-      }
+      } */
     },
     onError: (err) => {
       console.log(err);
@@ -216,9 +221,76 @@ function Login() {
     },
   });
 
+  const { data: hdjl, refetch: refetchNew2 } = useQuery({
+    queryKey: [
+      op?.data?.user?.agentId || op?.data?.user?.userId,
+      op?.data?.user?.userId,
+    ],
+    queryFn: DashboardTodayRatesAgent,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  useEffect(() => {
+    if (hdj || hdjl) {
+      if (op?.data?.user?.kycStatus === "Completed") {
+        if (op?.data?.user?.role?.id === 6) {
+          //navigate("/user/dashboard");
+          window.location.pathname = "/user/dashboard";
+        } else {
+          //navigate("/agent/dashboard");
+          window.location.pathname = "/agent/dashboard";
+        }
+      } else {
+        if (op) {
+          setModal(true);
+
+          localStorage.setItem("kycStatus", true);
+        }
+      }
+    } else {
+      if (currenciess?.status) {
+        toast.error(currenciess?.message);
+      }
+    }
+    console.log("llllllkds");
+  }, [hdj || hdjl]);
+
   useEffect(() => {
     refetch([op?.data?.user?.userId]);
-    refetchNew([op?.data?.user?.role?.id, op?.data?.user?.userId]);
+    if (op?.data?.user?.role?.id === 5) {
+      refetchNew2([
+        op?.data?.user?.agentId || op?.data?.user?.userId,
+        op?.data?.user?.userId,
+      ]);
+    } else if (op?.data?.user?.agentId) {
+      refetchNew2([
+        op?.data?.user?.agentId || op?.data?.user?.userId,
+        op?.data?.user?.userId,
+      ]);
+    } else {
+      refetchNew([op?.data?.user?.role?.id, op?.data?.user?.userId]);
+    }
     //eslint-disable-next-line
   }, [op]);
 
