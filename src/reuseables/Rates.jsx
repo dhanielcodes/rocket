@@ -84,6 +84,40 @@ function Rates({
     "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry2:",
     selectedCountry2
   );
+  useEffect(() => {
+    setSelectedCountry(
+      getC2
+        ?.filter((item) => item?.isSending)
+        .filter(
+          (item) => item?.code === Userdata?.data?.user?.country?.currencyCode
+        )
+        ?.map((item) => {
+          return {
+            code: item?.currencyCode,
+            value: item?.name,
+            label: item?.name,
+            id: item?.id,
+            ...item,
+          };
+        })?.[0]
+    );
+    setSelectedCountry2(
+      getC
+        ?.filter((item) => item?.isReceiving)
+        .filter(
+          (item) => item?.code !== Userdata?.data?.user?.country?.currencyCode
+        )
+        ?.map((item) => {
+          return {
+            code: item?.currencyCode,
+            value: item?.name,
+            label: item?.name,
+            id: item?.id,
+            ...item,
+          };
+        })?.[0]
+    );
+  }, []);
   localStorage.setItem(
     "country1",
     JSON.stringify(
@@ -135,6 +169,7 @@ function Rates({
       "🚀 ~ file: Dashboard.jsx:37 ~ handleCountryChange ~ selectedOption:",
       selectedOption
     );
+
     const getC = JSON.parse(localStorage.getItem("currenyList"));
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
@@ -210,37 +245,12 @@ function Rates({
   });
   console.log("🚀 ~ file: Rates.jsx:104 ~ Rates ~ dataObject2:", dataObject2);
 
-  const c1 = getC2
-    ?.filter((item) => item?.isSending)
-    ?.map((item) => {
-      return {
-        value: item?.name,
-        label: item?.name,
-        ...item,
-      };
-    })?.[0]?.id;
-
-  const c2 = getC
-    ?.filter((item) => item?.isReceiving)
-    ?.map((item) => {
-      return {
-        value: item?.name,
-        label: item?.name,
-        ...item,
-      };
-    })?.[1]?.id;
-
   const {
     data: rates,
     isLoading: Ratesloading,
     refetch: RatesnameEnq,
   } = useQuery({
-    queryKey: [
-      getrates?.id || selectedCountry?.id || c1,
-      selectedCountry2?.id || c2,
-      amount,
-      amount2,
-    ],
+    queryKey: [selectedCountry?.id, selectedCountry2?.id, amount, amount2],
     queryFn: Userdata?.data?.user?.agentId ? agentCustomerGetRate : Ratess,
     onSuccess: (data) => {
       console.log(data, "jklssds");
@@ -274,24 +284,7 @@ function Rates({
       <RateCont>
         <div className="cont1">
           <CountryDropdown
-            value={
-              selectedCountry ||
-              getC2
-                ?.filter((item) => item?.isSending)
-                .filter(
-                  (item) =>
-                    item?.code === Userdata?.data?.user?.country?.currencyCode
-                )
-                ?.map((item) => {
-                  return {
-                    code: item?.currencyCode,
-                    value: item?.name,
-                    label: item?.name,
-                    id: item?.id,
-                    ...item,
-                  };
-                })?.[0]
-            }
+            value={selectedCountry}
             onChange={handleCountryChange}
             newOptions={getC2?.map((item) => {
               return {
@@ -424,18 +417,7 @@ function Rates({
               <span>Rate = </span>
               <span style={{ fontSize: "11px" }}>
                 <AmountFormatter
-                  currency={
-                    selectedCountry2?.code ||
-                    getC
-                      ?.filter((item) => item?.isReceiving)
-                      ?.map((item) => {
-                        return {
-                          value: item?.name,
-                          label: item?.name,
-                          ...item,
-                        };
-                      })?.[1]?.code
-                  }
+                  currency={selectedCountry2?.code}
                   value={
                     currentRates?.agentRate ||
                     currentRates?.conversionRate ||
@@ -451,18 +433,7 @@ function Rates({
 
               <span style={{ fontSize: "13px" }}>
                 <AmountFormatter
-                  currency={
-                    selectedCountry?.code ||
-                    getC2
-                      ?.filter((item) => item?.isSending)
-                      ?.map((item) => {
-                        return {
-                          value: item?.name,
-                          label: item?.name,
-                          ...item,
-                        };
-                      })?.[0]?.code
-                  }
+                  currency={selectedCountry?.code}
                   value={currentRates?.transitionFee || 0}
                 />
               </span>
@@ -472,18 +443,7 @@ function Rates({
               <span>Total to pay = </span>
               <span style={{ fontSize: "11px" }}>
                 <AmountFormatter
-                  currency={
-                    selectedCountry?.code ||
-                    getC2
-                      ?.filter((item) => item?.isSending)
-                      ?.map((item) => {
-                        return {
-                          value: item?.name,
-                          label: item?.name,
-                          ...item,
-                        };
-                      })?.[0]?.code
-                  }
+                  currency={selectedCountry?.code}
                   value={
                     currentRates?.totalAmountToPay ||
                     currencyDetails[0]?.balance ||
@@ -501,24 +461,7 @@ function Rates({
             style={{
               width: "100%",
             }}
-            value={
-              selectedCountry2 ||
-              getC
-                ?.filter((item) => item?.isReceiving)
-                .filter(
-                  (item) =>
-                    item?.code !== Userdata?.data?.user?.country?.currencyCode
-                )
-                ?.map((item) => {
-                  return {
-                    code: item?.currencyCode,
-                    value: item?.name,
-                    label: item?.name,
-                    id: item?.id,
-                    ...item,
-                  };
-                })?.[0]
-            }
+            value={selectedCountry2}
             onChange={handleCountryChange2}
             newOptions={getC?.map((item) => {
               return {
