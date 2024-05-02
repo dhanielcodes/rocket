@@ -298,6 +298,7 @@ function Rates({
           />
           <InputNumber
             className="input"
+            step={0}
             style={{
               borderSize: "0.5px",
               fontSize: "6px",
@@ -475,6 +476,7 @@ function Rates({
           />
           <InputNumber
             className="input"
+            step={0}
             style={{
               borderSize: "0.5px",
               fontSize: "6px",
