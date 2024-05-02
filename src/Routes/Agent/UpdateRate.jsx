@@ -80,7 +80,8 @@ function UpdateRate() {
   const [feeFixed, setFeeFixed] = useState(null);
 
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
-  const inputElem = useRef();
+  const inputElem = useRef(null);
+  const inputElem2 = useRef(null);
 
   const [status, setStatus] = useState(false);
   const [type, setType] = useState();
@@ -178,6 +179,12 @@ function UpdateRate() {
     }, 0);
   };
 
+  const numberInputOnWheelPreventChange3 = (e) => {
+    // Prevent the input value change
+    e.currentTarget.blur();
+    // Prevent the page/container scrolling
+  };
+
   console.log(rates);
   const [rateBands, setRateBands] = useState([]);
   const [rateBand, setRateBand] = useState({});
@@ -232,7 +239,7 @@ function UpdateRate() {
     {
       title: "MIN AMT",
       dataIndex: "minimumAmount",
-      width: "130%",
+      width: "140%",
     },
     {
       title: "MAX AMT",
@@ -589,9 +596,8 @@ function UpdateRate() {
                     <InputNumber
                       className="input"
                       ref={inputElem}
-                      onWheel={numberInputOnWheelPreventChange}
-                      disabled={false}
                       value={amount}
+                      step={0}
                       style={{
                         borderSize: "0.5px",
                         fontSize: "6px",
@@ -742,8 +748,8 @@ function UpdateRate() {
                     /> */}
                     <InputNumber
                       className="input"
-                      ref={inputElem}
-                      onWheel={numberInputOnWheelPreventChange}
+                      ref={inputElem2}
+                      step={0}
                       value={thresh}
                       style={{
                         borderSize: "0.5px",
@@ -814,6 +820,9 @@ function UpdateRate() {
               Apidata={newRatesTable}
               noData={rateBands?.length}
               tableColumns={columns}
+              scroll={{
+                x: 430,
+              }}
             />
             <Btn
               disabled={isLoading}

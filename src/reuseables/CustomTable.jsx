@@ -15,7 +15,7 @@ const CustomTable = ({
     {
       title: "MIN AMT",
       dataIndex: "minimumAmount",
-      width: "130%",
+      width: "135%",
     },
     {
       title: "MAX AMT",
