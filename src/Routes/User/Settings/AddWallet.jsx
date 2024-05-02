@@ -110,7 +110,7 @@ const AddWallet = () => {
               borderRadius: "10px",
             }}
           >
-            <label htmlFor="html">Country</label>
+            <label htmlFor="html">Currency</label>
 
             <CountryDropdown
               value={selectedCountry}
@@ -145,7 +145,7 @@ const AddWallet = () => {
               userWallet: {
                 name: name,
                 note: note,
-                country: {
+                currency: {
                   id: selectedCountry?.id,
                 },
               },

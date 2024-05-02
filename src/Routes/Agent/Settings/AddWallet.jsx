@@ -102,7 +102,7 @@ const AddWalletAgent = () => {
               borderRadius: "10px",
             }}
           >
-            <label htmlFor="html">Country</label>
+            <label htmlFor="html">Currency</label>
 
             <CountryDropdown
               value={selectedCountry}
