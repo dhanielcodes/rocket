@@ -671,7 +671,7 @@ function SendMoney() {
               <>
                 <Msg type={true}>{getmsg}</Msg>
 
-                {bankDets && (
+                {bankDets?.bankName && (
                   <>
                     <span
                       style={{
