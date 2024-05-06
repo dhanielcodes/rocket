@@ -15,7 +15,7 @@ import {
 } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Tranx, fundWallet } from "../../../services/Dashboard";
+import { GetDetails, Tranx, fundWallet } from "../../../services/Dashboard";
 import { Transactions as Trnx } from "../../../../config/Test";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import AmountFormatter from "../../../reuseables/AmountFormatter";
@@ -178,7 +178,7 @@ function WalletsDetails() {
     refetch: refetchnameEnq,
   } = useQuery({
     queryKey: [userData?.data?.user?.userId],
-    queryFn: Tranx,
+    queryFn: GetDetails,
     onError: (err) => {
       console.error(err);
     },
@@ -522,7 +522,7 @@ function WalletsDetails() {
               placeholder="Search History"
               style={{ width: "80%", padding: "0 10px" }}
               className="input"
-              onChange={handleSearch}
+              // onChange={handleSearch}
             />
 
             <svg
@@ -568,109 +568,131 @@ function WalletsDetails() {
             <div className="head">
               <p>Today</p>
             </div>
-            {filteredData
-              ?.filter((item) => {
-                if (!searchKeyword.length) return item;
-                else if (
-                  Object.values(item).some((value) =>
-                    value.toString().toLowerCase().includes(searchKeyword)
-                  )
-                ) {
-                  return item;
-                }
-              })
-              .map((item) => (
+            {nameEnq?.data?.walletTransactions
+              ?.filter((d) => d?.currency === walletDetails?.currency?.code)
+              ?.map((item) => (
                 <>
-                  <Link
+                  <div
                     className="box"
                     to={`/user/transactions/details/?id=${item.sn}`}
                     style={{ color: "#000", textDecoration: "none" }}
                   >
                     <Box>
                       {/* <Avatar  className="av">AB</Avatar> */}
-                      {item?.paymentStatus === "Deposited" ? (
-                        <svg
-                          width="50"
-                          height="50"
-                          viewBox="0 0 50 50"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle cx="25" cy="25" r="25" fill="#00A85A" />
-                          <path
-                            d="M29.6788 19.9334L19.0722 30.54"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M21.1412 19.9508L29.6788 19.9324L29.6611 28.4707"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          width="52"
-                          height="52"
-                          viewBox="0 0 52 52"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="26"
-                            cy="26"
-                            r="25"
-                            transform="rotate(-74.6597 26 26)"
-                            fill="#F2994A"
-                          />
-                          <path
-                            d="M22.4409 31.1983L31.2167 19.0333"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      )}
+                      <div>
+                        {item?.status === "Successful" ? (
+                          <svg
+                            width="50"
+                            height="50"
+                            viewBox="0 0 50 50"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="25" cy="25" r="25" fill="#00A85A" />
+                            <path
+                              d="M29.6788 19.9334L19.0722 30.54"
+                              stroke="white"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M21.1412 19.9508L29.6788 19.9324L29.6611 28.4707"
+                              stroke="white"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        ) : item?.status === "Pending" ? (
+                          <svg
+                            width="62"
+                            height="62"
+                            viewBox="0 0 52 52"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="26"
+                              cy="26"
+                              r="25"
+                              transform="rotate(-74.6597 26 26)"
+                              fill="#F2994A"
+                            />
+                            <path
+                              d="M22.4409 31.1983L31.2167 19.0333"
+                              stroke="white"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M30.8661 29.8165L22.4411 31.1987L21.0944 22.7672"
+                              stroke="white"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            width="70"
+                            height="70"
+                            viewBox="0 0 70 70"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="34.6484"
+                              cy="34.6482"
+                              r="24.5"
+                              transform="rotate(45 34.6484 34.6482)"
+                              fill="#FF0000"
+                            />
+                            <rect
+                              x="46.6689"
+                              y="43.1335"
+                              width="4"
+                              height="28"
+                              rx="2"
+                              transform="rotate(135 46.6689 43.1335)"
+                              fill="white"
+                            />
+                            <rect
+                              x="26.8701"
+                              y="45.9619"
+                              width="4"
+                              height="28"
+                              rx="2"
+                              transform="rotate(-135 26.8701 45.9619)"
+                              fill="white"
+                            />
+                          </svg>
+                        )}
+                      </div>
 
                       <div className="text">
-                        <h5>{item?.senderName}</h5>
+                        <h5>{item?.note}</h5>
                         <p>{item?.sn}</p>
-                        <p>{item?.paymentStatus}</p>
+                        <p>{item?.status}</p>
                         {/* <p>{item?.collectionDate}</p> */}
                       </div>
                       <div className="options">
                         <h5>
                           <AmountFormatter
-                            value={item?.paymentAmount}
-                            currency={item?.senderCurrency}
+                            value={item?.amount}
+                            currency={item?.currency}
                           />
                         </h5>
-                        <h5>
-                          <AmountFormatter
-                            value={item?.receivedAmount}
-                            currency={item?.beneficiaryCurrency}
-                          />
-                        </h5>
+
                         <h4>
-                          {moment(item?.paymentDate).format(
+                          {moment(item?.dateCreated).format(
                             "DD MMM YYYY - hh:mm a"
                           )}
                         </h4>
                       </div>
                     </Box>
-                  </Link>
+                  </div>
                 </>
               ))}
           </BeneficiaryCont>

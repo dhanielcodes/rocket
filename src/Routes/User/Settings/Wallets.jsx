@@ -420,7 +420,7 @@ function Wallets() {
             placeholder="Search History"
             style={{ width: "80%" }}
             className="input"
-            onChange={handleSearch}
+            //onChange={handleSearch}
           />
 
           <svg
@@ -466,27 +466,17 @@ function Wallets() {
           <div className="head">
             <p>Today</p>
           </div>
-          {filteredData
-            ?.filter((item) => {
-              if (!searchKeyword.length) return item;
-              else if (
-                Object.values(item).some((value) =>
-                  value.toString().toLowerCase().includes(searchKeyword)
-                )
-              ) {
-                return item;
-              }
-            })
-            .map((item) => (
-              <>
-                <Link
-                  className="box"
-                  to={`/user/transactions/details/?id=${item.sn}`}
-                  style={{ color: "#000", textDecoration: "none" }}
-                >
-                  <Box>
-                    {/* <Avatar  className="av">AB</Avatar> */}
-                    {item?.paymentStatus === "Deposited" ? (
+          {newDetails?.data?.walletTransactions?.map((item) => (
+            <>
+              <div
+                className="box"
+                to={`/user/transactions/details/?id=${item.sn}`}
+                style={{ color: "#000", textDecoration: "none" }}
+              >
+                <Box>
+                  {/* <Avatar  className="av">AB</Avatar> */}
+                  <div>
+                    {item?.status === "Successful" ? (
                       <svg
                         width="50"
                         height="50"
@@ -510,10 +500,10 @@ function Wallets() {
                           stroke-linejoin="round"
                         />
                       </svg>
-                    ) : (
+                    ) : item?.status === "Pending" ? (
                       <svg
-                        width="52"
-                        height="52"
+                        width="62"
+                        height="62"
                         viewBox="0 0 52 52"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -540,37 +530,67 @@ function Wallets() {
                           stroke-linejoin="round"
                         />
                       </svg>
+                    ) : (
+                      <svg
+                        width="70"
+                        height="70"
+                        viewBox="0 0 70 70"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="34.6484"
+                          cy="34.6482"
+                          r="24.5"
+                          transform="rotate(45 34.6484 34.6482)"
+                          fill="#FF0000"
+                        />
+                        <rect
+                          x="46.6689"
+                          y="43.1335"
+                          width="4"
+                          height="28"
+                          rx="2"
+                          transform="rotate(135 46.6689 43.1335)"
+                          fill="white"
+                        />
+                        <rect
+                          x="26.8701"
+                          y="45.9619"
+                          width="4"
+                          height="28"
+                          rx="2"
+                          transform="rotate(-135 26.8701 45.9619)"
+                          fill="white"
+                        />
+                      </svg>
                     )}
+                  </div>
 
-                    <div className="text">
-                      <h5>{item?.senderName}</h5>
-                      <p>{item?.sn}</p>
-                      <p>{item?.paymentStatus}</p>
-                      {/* <p>{item?.collectionDate}</p> */}
-                    </div>
-                    <div className="options">
-                      <h5>
-                        <AmountFormatter
-                          value={item?.paymentAmount}
-                          currency={item?.senderCurrency}
-                        />
-                      </h5>
-                      <h5>
-                        <AmountFormatter
-                          value={item?.receivedAmount}
-                          currency={item?.beneficiaryCurrency}
-                        />
-                      </h5>
-                      <h4>
-                        {moment(item?.paymentDate).format(
-                          "DD MMM YYYY - hh:mm a"
-                        )}
-                      </h4>
-                    </div>
-                  </Box>
-                </Link>
-              </>
-            ))}
+                  <div className="text">
+                    <h5>{item?.note}</h5>
+                    <p>{item?.sn}</p>
+                    <p>{item?.status}</p>
+                    {/* <p>{item?.collectionDate}</p> */}
+                  </div>
+                  <div className="options">
+                    <h5>
+                      <AmountFormatter
+                        value={item?.amount}
+                        currency={item?.currency}
+                      />
+                    </h5>
+                    <h5>{item?.currency}</h5>
+                    <h4>
+                      {moment(item?.dateCreated).format(
+                        "DD MMM YYYY - hh:mm a"
+                      )}
+                    </h4>
+                  </div>
+                </Box>
+              </div>
+            </>
+          ))}
         </BeneficiaryCont>
       </Content>
     </Userlayout>
