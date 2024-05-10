@@ -203,6 +203,7 @@ function SendMoney() {
   const [paymentlink, SetPaymentLink] = useState(false);
   const [currentArr, setCurrentArr] = useState([]);
   const [amount, setAmount] = useState(0);
+  const [amount2, setAmount2] = useState(0);
 
   const one = 1;
   const two = 2;
@@ -1053,6 +1054,8 @@ function SendMoney() {
                 <RateComponent
                   amount={amount}
                   setAmount={setAmount}
+                  setAmount2={setAmount2}
+                  amount2={amount2}
                   moneyData={moneyData}
                   setMoneyData={setMoneyData}
                   currentRates={currentRates}
@@ -1845,6 +1848,7 @@ const Content = styled.div`
   margin: 0 auto;
   height: 100%;
   overflow: hidden;
+  overflow-x: auto;
 
   .btn {
     width: 80%;
@@ -2024,7 +2028,7 @@ const BeneficiaryCont = styled.div`
   }
   .longcont {
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 1em 10px;
     display: flex;
     flex-direction: column;

@@ -1,13 +1,7 @@
-import getSymbolFromCurrency from "currency-symbol-map";
-import { FormatCorrect } from "../utils/format";
+import { FormatCorrect, FormatCorrect2 } from "../utils/format";
 
 const AmountFormatter = ({ value, currency }) => {
-  return (
-    <>
-      {getSymbolFromCurrency(currency)}
-      {FormatCorrect(value)}
-    </>
-  );
+  return currency ? FormatCorrect(value, currency) : FormatCorrect2(value);
 };
 
 export default AmountFormatter;

@@ -14,10 +14,13 @@ import {
 import { countryObjectsArray } from "../../config/CountryCodes";
 import InputNumber from "rc-input-number";
 import { CFormatter } from "../hooks/format";
+import { FormatCorrect, FormatCorrect2 } from "../utils/format";
 
 function Rates({
   amount,
   setAmount,
+  amount2,
+  setAmount2,
   moneyData,
   setMoneyData,
   currentRates,
@@ -181,7 +184,6 @@ function Rates({
 
   const [currencyDetails, setCurrencyDetails] = useState([]);
   const [currencyDetails2, setCurrencyDetails2] = useState([]);
-  const [amount2, setAmount2] = useState(0);
   console.log(
     "🚀 ~ file: Dashboard.jsx:57 ~ Dashboard ~ currencyDetails:",
     currencyDetails
@@ -279,6 +281,13 @@ function Rates({
     setAmount(e);
     localStorage.setItem("amount", JSON.stringify(rates?.data));
   };
+
+  useEffect(() => {
+    setAmount(currentRates?.fromComputedToAmount || 0);
+  }, [currentRates?.fromComputedToAmount]);
+  useEffect(() => {
+    setAmount2(currentRates?.toComputedToAmount || 0);
+  }, [currentRates?.toComputedToAmount]);
   return (
     <div>
       <RateCont>
@@ -313,8 +322,9 @@ function Rates({
               console.log("Change:", `${newValue}`);
               handleRatesChanges(`${newValue}`);
             }}
+            value={Number(amount) || 0}
             formatter={(value) => {
-              return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              return FormatCorrect(value, selectedCountry?.code);
             }}
           />
           {/*  <CustomInput
@@ -489,16 +499,12 @@ function Rates({
               backgroundColor: "transparent",
             }}
             formatter={(value) => {
-              return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              return FormatCorrect(value, selectedCountry2?.code);
             }}
-            disabled
-            value={
-              Number(amount.length)
-                ? Number(currentRates?.computedToAmount)
-                  ? Number(currentRates?.computedToAmount)
-                  : ""
-                : ""
-            }
+            onChange={(newValue) => {
+              setAmount2(`${newValue}`);
+            }}
+            value={Number(amount2) || 0}
           />
           {/*     <CustomInput
             placeholder="amount"
@@ -520,11 +526,14 @@ function Rates({
 }
 
 const RateCont = styled.div`
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 2em;
   background-color: #fff;
   width: 100%;
-
+  margin-bottom: 10px;
+  box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
+  -webkit-box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
+  -moz-box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
   .rc-input-number-input {
     background: #fff;
     border: none;
