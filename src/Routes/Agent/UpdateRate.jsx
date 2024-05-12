@@ -623,7 +623,10 @@ function UpdateRate() {
                         setAmount(newValue);
                       }}
                       formatter={(value) => {
-                        return FormatCorrect(value);
+                        return FormatCorrect(
+                          value,
+                          selectedCountry?.toCurrency.code
+                        );
                       }}
                     />
                   </div>
@@ -776,7 +779,10 @@ function UpdateRate() {
                         setThresh(newValue);
                       }}
                       formatter={(value) => {
-                        return FormatCorrect(value);
+                        return FormatCorrect(
+                          value,
+                          selectedCountry?.fromCurrency.code
+                        );
                       }}
                     />
                   </div>
