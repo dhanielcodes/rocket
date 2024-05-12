@@ -377,19 +377,6 @@ function Rates({
               }}
               value={Number(amount2) || 0}
             />
-            {/*     <CustomInput
-            placeholder="amount"
-            className="input"
-            style={{ borderRadius: "0px", borderSize: "0.5px" }}
-            disabled
-            val={
-              amount.length
-                ? currentRates?.computedToAmount
-                  ? currentRates?.computedToAmount
-                  : ""
-                : ""
-            }
-          /> */}
           </div>
         ) : (
           <div className="cont1">
@@ -666,19 +653,6 @@ function Rates({
               }}
               value={Number(amount2) || 0}
             />
-            {/*     <CustomInput
-            placeholder="amount"
-            className="input"
-            style={{ borderRadius: "0px", borderSize: "0.5px" }}
-            disabled
-            val={
-              amount.length
-                ? currentRates?.computedToAmount
-                  ? currentRates?.computedToAmount
-                  : ""
-                : ""
-            }
-          /> */}
           </div>
         )}
       </RateCont>
