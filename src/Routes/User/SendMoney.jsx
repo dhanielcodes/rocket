@@ -204,6 +204,7 @@ function SendMoney() {
   const [currentArr, setCurrentArr] = useState([]);
   const [amount, setAmount] = useState(0);
   const [amount2, setAmount2] = useState(0);
+  const [change, setChange] = useState(false);
 
   const one = 1;
   const two = 2;
@@ -1060,6 +1061,8 @@ function SendMoney() {
                   setMoneyData={setMoneyData}
                   currentRates={currentRates}
                   setcurrentRates={setcurrentRates}
+                  change={change}
+                  setChange={setChange}
                 />
                 {paymentchannelloading ? (
                   "Loading..."
@@ -1674,13 +1677,13 @@ function SendMoney() {
                      <button>Send Money</button>
                 </div> */}
                   <Total
-                    currency={country1?.code}
+                    currency={change ? country2?.code : country1?.code}
                     amount={money && money?.totalAmountToPay}
                   />
                   <Total
-                    currency={country2?.code}
+                    currency={change ? country1?.code : country2?.code}
                     text={"Total amount you'll be receiving"}
-                    amount={money && money?.computedToAmount}
+                    amount={money && money?.toComputedToAmount}
                   />
 
                   {/*   {paymentlink && (

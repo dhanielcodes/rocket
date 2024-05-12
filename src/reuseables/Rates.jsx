@@ -22,6 +22,8 @@ function Rates({
   amount2,
   setAmount2,
   moneyData,
+  change,
+  setChange,
   setMoneyData,
   currentRates,
   setcurrentRates,
@@ -252,7 +254,9 @@ function Rates({
     isLoading: Ratesloading,
     refetch: RatesnameEnq,
   } = useQuery({
-    queryKey: [selectedCountry?.id, selectedCountry2?.id, amount, amount2],
+    queryKey: change
+      ? [selectedCountry2?.id, selectedCountry?.id, amount2, amount]
+      : [selectedCountry?.id, selectedCountry2?.id, amount, amount2],
     queryFn: Userdata?.data?.user?.agentId ? agentCustomerGetRate : Ratess,
     onSuccess: (data) => {
       console.log(data, "jklssds");
@@ -262,7 +266,9 @@ function Rates({
         localStorage.setItem("amount", JSON.stringify(data?.data));
         setMoneyData(data?.data);
       }
-      setcurrentRates(data?.data);
+      if (data?.status) {
+        setcurrentRates(data?.data);
+      }
     },
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
@@ -279,55 +285,150 @@ function Rates({
 
   const handleRatesChanges = (e) => {
     setAmount(e);
+    setAmount2(e * currentRates?.conversionRate);
+    localStorage.setItem("amount", JSON.stringify(rates?.data));
+  };
+
+  const handleRatesChanges2 = (e) => {
+    setAmount2(e);
+    setAmount(e * currentRates?.conversionRate);
+    localStorage.setItem("amount", JSON.stringify(rates?.data));
+  };
+
+  const handleRatesChangesdiv = (e) => {
+    setAmount(e);
+    setAmount2(e / currentRates?.conversionRate);
+    localStorage.setItem("amount", JSON.stringify(rates?.data));
+  };
+
+  const handleRatesChangesdiv2 = (e) => {
+    setAmount2(e);
+    setAmount(e / currentRates?.conversionRate);
     localStorage.setItem("amount", JSON.stringify(rates?.data));
   };
 
   useEffect(() => {
-    setAmount(currentRates?.fromComputedToAmount || 0);
-  }, [currentRates?.fromComputedToAmount]);
-  useEffect(() => {
-    setAmount2(currentRates?.toComputedToAmount || 0);
-  }, [currentRates?.toComputedToAmount]);
+    if (change) {
+      setAmount(amount2 * currentRates?.conversionRate);
+    } else {
+      setAmount2(amount * currentRates?.conversionRate);
+    }
+  }, [currentRates?.conversionRate]);
+
   return (
     <div>
       <RateCont>
-        <div className="cont1">
-          <CountryDropdown
-            value={selectedCountry}
-            onChange={handleCountryChange}
-            newOptions={getC2?.map((item) => {
-              return {
-                code: item?.currencyCode,
-                value: item?.name,
-                label: item?.name,
-                id: item?.id,
-                ...item,
-              };
-            })}
-          />
-          <InputNumber
+        <img
+          style={{
+            position: "absolute",
+            right: 0,
+            top: "50%",
+            width: "30px",
+            transition: "all .5s",
+            transform: `translate(-100%, -60%) rotate(${
+              change ? "180deg" : "0deg"
+            })`,
+            cursor: "pointer",
+            opacity: "0.3",
+          }}
+          onClick={() => {
+            setChange(!change);
+          }}
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADKUlEQVR4nO2ayWsUQRSHvyQuo8a4EaNxQ/AgLv+ABxFFg4gHxSVqXE4eFHfwL3C96MEYFPToQVAxBkkOHgVFcYtoVEbFBaOIQSOKUcxIwRNCpl911UxPT0/IB3XJdL16v+56r6peBQYZuIwFVgJHgGbgCfAR+Ap0AR+AR8Al4DBQB4wiIQwDNgJtQA+Q8Wy/gRZgtdiKnRSwX954JqL2DtgRp6AVwJsIBfRvL4HFDn5U5ypgBHC+gAL6tl6gCRhuEdGei4ha4H5MIjJ92k1goiLC/O7FTCDtOPA34AqwG1gCzAJqgAnAbGARcAC4DPzwmGpTA0R4CZnsGA8PgE0y/VypBLZKmg6z/wyY20+Es5CRwN2QAczaUA+UkTvlQAPwOWSsvwF/c+JciOFrwDiiw8RCq2cMhbI8xMDJPL+CRgXQGJWQVEhcnKDwNEUhZK+lY7PM6UJTA3TnI8QsQJ+UTu+B8TGIqA7ITt5CNlg6rUuYiIzN0A2lw50EishohqpkWx3UYW0CRWQ0Y6uUh7ssm7dEclwRcoESo0URsp0S44UiZEGxHQPmK76ZXXkW2qbN7ICLzRRL/GbxS3nYbLeLzWjFN1PwyEKrgiShZDNG8c28/Cy6lIfNMbfYTFN8M9upLLTjrAm0YrNQ8a2DEmOnZTdeUlxUhBylhEhJ/ThIiKk1B+K7aWvPp+LnSIMl9apLQ9JElAEPlfFN4VzFVcRTYBKFZ7PFhzX5ConjSyBjdCo+dIZV7cNEdEthoNBUANctfuwKM+DyRU7HIKTRMv4rlzsU1xg5JW8taspDalrmumGZiyGfrNUaUPLPNybaQsY862rMpXDct5kzzJY8i3blkp20etr/dtun2t8/O80Dnjum421ybnClUvo8drD/2jfdB6XY6XLZ4jLdfgJXgYNy0TNH7NTKpc9SYJ9U8r872kwDM3xEYFknTCzc8oyhKNq9XM9DtsUuJdmqNyYRZ2TMnHBZsesc4ybXlpYxYmGoXHi+jVCAqfbv8byHjIwhwHoJXq0KY2t/ZD2qT1JZtkr+K+KQCDNp9YtcWffIOtEhx9NjcigyfQYZkPwDlq4jP/vD5WAAAAAASUVORK5CYII="
+        />
+        {change ? (
+          <div className="cont3">
+            <CountryDropdown
+              collectionStatus
+              style={{
+                width: "100%",
+              }}
+              value={selectedCountry2}
+              onChange={handleCountryChange2}
+              newOptions={getC?.map((item) => {
+                return {
+                  code: item?.currencyCode,
+                  value: item?.name,
+                  label: item?.name,
+                  id: item?.id,
+                  ...item,
+                };
+              })}
+            />
+            <InputNumber
+              className="input"
+              step={0}
+              style={{
+                borderSize: "0.5px",
+                fontSize: "6px",
+                borderRadius: "0  0 10px",
+                padding: "13px",
+                border: "1px solid #ccc",
+                background: "#ffffff",
+                color: "#000000",
+                width: "100%",
+                backgroundColor: "transparent",
+              }}
+              formatter={(value) => {
+                return FormatCorrect(value, selectedCountry2?.code);
+              }}
+              onChange={(newValue) => {
+                handleRatesChanges2(`${newValue}`);
+              }}
+              value={Number(amount2) || 0}
+            />
+            {/*     <CustomInput
+            placeholder="amount"
             className="input"
-            step={0}
-            style={{
-              borderSize: "0.5px",
-              fontSize: "6px",
-              borderRadius: "0  0 10px",
-              padding: "13px",
-              border: "1px solid #ccc",
-              width: "100%",
-              background: "#ffffff",
-              color: "#000000",
-            }}
-            onChange={(newValue) => {
-              console.log("Change:", `${newValue}`);
-              handleRatesChanges(`${newValue}`);
-            }}
-            value={Number(amount) || 0}
-            formatter={(value) => {
-              return FormatCorrect(value, selectedCountry?.code);
-            }}
-          />
-          {/*  <CustomInput
+            style={{ borderRadius: "0px", borderSize: "0.5px" }}
+            disabled
+            val={
+              amount.length
+                ? currentRates?.computedToAmount
+                  ? currentRates?.computedToAmount
+                  : ""
+                : ""
+            }
+          /> */}
+          </div>
+        ) : (
+          <div className="cont1">
+            <CountryDropdown
+              value={selectedCountry}
+              onChange={handleCountryChange}
+              newOptions={getC2?.map((item) => {
+                return {
+                  code: item?.currencyCode,
+                  value: item?.name,
+                  label: item?.name,
+                  id: item?.id,
+                  ...item,
+                };
+              })}
+            />
+            <InputNumber
+              className="input"
+              step={0}
+              style={{
+                borderSize: "0.5px",
+                fontSize: "6px",
+                borderRadius: "0  0 10px",
+                padding: "13px",
+                border: "1px solid #ccc",
+                width: "100%",
+                background: "#ffffff",
+                color: "#000000",
+              }}
+              onChange={(newValue) => {
+                console.log("Change:", `${newValue}`);
+                handleRatesChanges(`${newValue}`);
+              }}
+              value={Number(amount) || 0}
+              formatter={(value) => {
+                return FormatCorrect(value, selectedCountry?.code);
+              }}
+            />
+            {/*  <CustomInput
             placeholder="amount"
             className="input"
             style={{
@@ -340,7 +441,8 @@ function Rates({
               console.log(e.target.value);
             }}
           /> */}
-        </div>
+          </div>
+        )}
         <div className="cont2">
           <div className="cont2content">
             <div className="lines"></div>
@@ -428,7 +530,9 @@ function Rates({
               <span>Rate = </span>
               <span style={{ fontSize: "11px" }}>
                 <AmountFormatter
-                  currency={selectedCountry2?.code}
+                  currency={
+                    change ? selectedCountry?.code : selectedCountry2?.code
+                  }
                   value={
                     currentRates?.agentRate ||
                     currentRates?.conversionRate ||
@@ -444,7 +548,9 @@ function Rates({
 
               <span style={{ fontSize: "13px" }}>
                 <AmountFormatter
-                  currency={selectedCountry?.code}
+                  currency={
+                    change ? selectedCountry2?.code : selectedCountry?.code
+                  }
                   value={currentRates?.transitionFee || 0}
                 />
               </span>
@@ -454,11 +560,13 @@ function Rates({
               <span>Total to pay = </span>
               <span style={{ fontSize: "11px" }}>
                 <AmountFormatter
-                  currency={selectedCountry?.code}
+                  currency={
+                    change ? selectedCountry2?.code : selectedCountry?.code
+                  }
                   value={
-                    currentRates?.totalAmountToPay ||
-                    currencyDetails[0]?.balance ||
-                    0
+                    change
+                      ? Number(amount2) + currentRates?.transitionFee || 0
+                      : Number(amount) + currentRates?.transitionFee || 0
                   }
                 />
               </span>
@@ -466,47 +574,99 @@ function Rates({
             <div className="line2"></div>
           </div>
         </div>
-        <div className="cont3">
-          <CountryDropdown
-            collectionStatus
-            style={{
-              width: "100%",
-            }}
-            value={selectedCountry2}
-            onChange={handleCountryChange2}
-            newOptions={getC?.map((item) => {
-              return {
-                code: item?.currencyCode,
-                value: item?.name,
-                label: item?.name,
-                id: item?.id,
-                ...item,
-              };
-            })}
-          />
-          <InputNumber
+        {change ? (
+          <div className="cont1">
+            <CountryDropdown
+              value={selectedCountry}
+              onChange={handleCountryChange}
+              newOptions={getC2?.map((item) => {
+                return {
+                  code: item?.currencyCode,
+                  value: item?.name,
+                  label: item?.name,
+                  id: item?.id,
+                  ...item,
+                };
+              })}
+            />
+            <InputNumber
+              className="input"
+              step={0}
+              style={{
+                borderSize: "0.5px",
+                fontSize: "6px",
+                borderRadius: "0  0 10px",
+                padding: "13px",
+                border: "1px solid #ccc",
+                width: "100%",
+                background: "#ffffff",
+                color: "#000000",
+              }}
+              onChange={(newValue) => {
+                console.log("Change:", `${newValue}`);
+                handleRatesChangesdiv(`${newValue}`);
+              }}
+              value={Number(amount) || 0}
+              formatter={(value) => {
+                return FormatCorrect(value, selectedCountry?.code);
+              }}
+            />
+            {/*  <CustomInput
+            placeholder="amount"
             className="input"
-            step={0}
             style={{
+              borderRadius: "0px",
               borderSize: "0.5px",
               fontSize: "6px",
-              borderRadius: "0  0 10px",
-              padding: "13px",
-              border: "1px solid #ccc",
-              background: "#ffffff",
-              color: "#000000",
-              width: "100%",
-              backgroundColor: "transparent",
             }}
-            formatter={(value) => {
-              return FormatCorrect(value, selectedCountry2?.code);
+            onChange={(e) => {
+              handleRatesChanges3(e);
+              console.log(e.target.value);
             }}
-            onChange={(newValue) => {
-              setAmount2(`${newValue}`);
-            }}
-            value={Number(amount2) || 0}
-          />
-          {/*     <CustomInput
+          /> */}
+          </div>
+        ) : (
+          <div className="cont3">
+            <CountryDropdown
+              collectionStatus
+              style={{
+                width: "100%",
+              }}
+              value={selectedCountry2}
+              onChange={handleCountryChange2}
+              newOptions={getC?.map((item) => {
+                return {
+                  code: item?.currencyCode,
+                  value: item?.name,
+                  label: item?.name,
+                  id: item?.id,
+                  ...item,
+                };
+              })}
+            />
+            <InputNumber
+              className="input"
+              step={0}
+              style={{
+                borderSize: "0.5px",
+                fontSize: "6px",
+                borderRadius: "0  0 10px",
+                padding: "13px",
+                border: "1px solid #ccc",
+                background: "#ffffff",
+                color: "#000000",
+                width: "100%",
+                backgroundColor: "transparent",
+              }}
+              formatter={(value) => {
+                return FormatCorrect(value, selectedCountry2?.code);
+              }}
+              onChange={(newValue) => {
+                handleRatesChangesdiv2(`${newValue}`);
+              }}
+              value={Number(amount2) || 0}
+            />
+            {/*     <CustomInput
             placeholder="amount"
             className="input"
             style={{ borderRadius: "0px", borderSize: "0.5px" }}
@@ -519,7 +679,8 @@ function Rates({
                 : ""
             }
           /> */}
-        </div>
+          </div>
+        )}
       </RateCont>
     </div>
   );
@@ -531,6 +692,7 @@ const RateCont = styled.div`
   background-color: #fff;
   width: 100%;
   margin-bottom: 10px;
+  position: relative;
   box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
   -webkit-box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
   -moz-box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
