@@ -669,7 +669,7 @@ const RateCont = styled.div`
     border: 3px solid #00a85a44 !important;
     border-left: none !important;
   }
-  border-radius: 20px;
+  border-radius: 40px;
   padding: 2em;
   background-color: #fff;
   width: 100%;
