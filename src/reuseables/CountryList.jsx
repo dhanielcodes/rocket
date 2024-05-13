@@ -19,6 +19,7 @@ const CountryDropdown = ({
   setValue,
   disabled,
   collectionStatus = false,
+  rate = false,
 }) => {
   const options = option || [];
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -59,7 +60,7 @@ const CountryDropdown = ({
   });
 
   return (
-    <CountyCont>
+    <CountyCont $rate={rate}>
       <Select
         value={value}
         onChange={onChange}
@@ -104,7 +105,7 @@ const CountryDropdown = ({
               countryCode={country?.code?.slice(0, 2)}
               title={country.code}
               style={{
-                marginRight: "10px",
+                marginRight: "1px",
                 borderRadius: "10000000px",
               }}
               svg
@@ -120,7 +121,7 @@ const CountryDropdown = ({
             alignItems: "center",
             color: "#000",
             fontSize: "30px",
-            //   border:"0.1px solid #d8d8d8",
+
             //   backgroundColor:"#e4e4e4",
             //   borerRadius:"18px"
           }),
@@ -139,6 +140,7 @@ const CountryDropdown = ({
             ...styles,
             display: "flex",
             color: "#000",
+            width: "100%",
             alignItems: "center",
             "> svg": {
               marginRight: "8px",
@@ -153,7 +155,10 @@ const CountryDropdown = ({
 
 const CountyCont = styled.div`
   width: 100%;
-
+  border-radius: 10px;
+  .css-13cymwt-control {
+    border: ${(props) => (props.$rate ? "3px solid #00a85a44 !important" : "")};
+  }
   .flag {
     @media screen and (max-width: 40em) {
       font-size: 20px;

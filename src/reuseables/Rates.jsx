@@ -329,16 +329,17 @@ function Rates({
               change ? "180deg" : "0deg"
             })`,
             cursor: "pointer",
-            opacity: "0.3",
+            opacity: "0.7",
           }}
           onClick={() => {
             setChange(!change);
           }}
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADKUlEQVR4nO2ayWsUQRSHvyQuo8a4EaNxQ/AgLv+ABxFFg4gHxSVqXE4eFHfwL3C96MEYFPToQVAxBkkOHgVFcYtoVEbFBaOIQSOKUcxIwRNCpl911UxPT0/IB3XJdL16v+56r6peBQYZuIwFVgJHgGbgCfAR+Ap0AR+AR8Al4DBQB4wiIQwDNgJtQA+Q8Wy/gRZgtdiKnRSwX954JqL2DtgRp6AVwJsIBfRvL4HFDn5U5ypgBHC+gAL6tl6gCRhuEdGei4ha4H5MIjJ92k1goiLC/O7FTCDtOPA34AqwG1gCzAJqgAnAbGARcAC4DPzwmGpTA0R4CZnsGA8PgE0y/VypBLZKmg6z/wyY20+Es5CRwN2QAczaUA+UkTvlQAPwOWSsvwF/c+JciOFrwDiiw8RCq2cMhbI8xMDJPL+CRgXQGJWQVEhcnKDwNEUhZK+lY7PM6UJTA3TnI8QsQJ+UTu+B8TGIqA7ITt5CNlg6rUuYiIzN0A2lw50EishohqpkWx3UYW0CRWQ0Y6uUh7ssm7dEclwRcoESo0URsp0S44UiZEGxHQPmK76ZXXkW2qbN7ICLzRRL/GbxS3nYbLeLzWjFN1PwyEKrgiShZDNG8c28/Cy6lIfNMbfYTFN8M9upLLTjrAm0YrNQ8a2DEmOnZTdeUlxUhBylhEhJ/ThIiKk1B+K7aWvPp+LnSIMl9apLQ9JElAEPlfFN4VzFVcRTYBKFZ7PFhzX5ConjSyBjdCo+dIZV7cNEdEthoNBUANctfuwKM+DyRU7HIKTRMv4rlzsU1xg5JW8taspDalrmumGZiyGfrNUaUPLPNybaQsY862rMpXDct5kzzJY8i3blkp20etr/dtun2t8/O80Dnjum421ybnClUvo8drD/2jfdB6XY6XLZ4jLdfgJXgYNy0TNH7NTKpc9SYJ9U8r872kwDM3xEYFknTCzc8oyhKNq9XM9DtsUuJdmqNyYRZ2TMnHBZsesc4ybXlpYxYmGoXHi+jVCAqfbv8byHjIwhwHoJXq0KY2t/ZD2qT1JZtkr+K+KQCDNp9YtcWffIOtEhx9NjcigyfQYZkPwDlq4jP/vD5WAAAAAASUVORK5CYII="
+          src="data:image/png;base64,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"
         />
         {change ? (
           <div className="cont3">
             <CountryDropdown
+              rate
               collectionStatus
               style={{
                 width: "100%",
@@ -381,6 +382,7 @@ function Rates({
         ) : (
           <div className="cont1">
             <CountryDropdown
+              rate
               value={selectedCountry}
               onChange={handleCountryChange}
               newOptions={getC2?.map((item) => {
@@ -440,7 +442,7 @@ function Rates({
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="20" height="20" rx="10" fill="#D0D5DD" />
+              <rect width="20" height="20" rx="10" fill="#00a85a46" />
               <g clip-path="url(#clip0_400_9816)">
                 <path
                   d="M6.81792 5.75739C6.52502 5.4645 6.05015 5.4645 5.75726 5.75739C5.46436 6.05029 5.46436 6.52516 5.75726 6.81805L8.93923 10L5.75729 13.182C5.46439 13.4749 5.46439 13.9497 5.75729 14.2426C6.05018 14.5355 6.52505 14.5355 6.81795 14.2426L9.99989 11.0607L13.1819 14.2427C13.4748 14.5356 13.9496 14.5356 14.2425 14.2427C14.5354 13.9498 14.5354 13.4749 14.2425 13.182L11.0606 10L14.2426 6.81802C14.5355 6.52512 14.5355 6.05025 14.2426 5.75736C13.9497 5.46446 13.4748 5.46446 13.1819 5.75736L9.99989 8.93937L6.81792 5.75739Z"
@@ -466,7 +468,7 @@ function Rates({
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="20" height="20" rx="10" fill="#D0D5DD" />
+              <rect width="20" height="20" rx="10" fill="#00a85a46" />
               <rect
                 x="4"
                 y="11"
@@ -487,7 +489,7 @@ function Rates({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <rect width="20" height="20" rx="10" fill="#D0D5DD" />
+                <rect width="20" height="20" rx="10" fill="#00a85a46" />
                 <rect
                   x="4"
                   y="9"
@@ -564,6 +566,7 @@ function Rates({
         {change ? (
           <div className="cont1">
             <CountryDropdown
+              rate
               value={selectedCountry}
               onChange={handleCountryChange}
               newOptions={getC2?.map((item) => {
@@ -615,6 +618,7 @@ function Rates({
         ) : (
           <div className="cont3">
             <CountryDropdown
+              rate
               collectionStatus
               style={{
                 width: "100%",
@@ -661,6 +665,10 @@ function Rates({
 }
 
 const RateCont = styled.div`
+  .rc-input-number {
+    border: 3px solid #00a85a44 !important;
+    border-left: none !important;
+  }
   border-radius: 20px;
   padding: 2em;
   background-color: #fff;
@@ -670,6 +678,7 @@ const RateCont = styled.div`
   box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
   -webkit-box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
   -moz-box-shadow: 1px -1px 198px -56px rgba(0, 168, 90, 0.75);
+  border: 6px solid #00a85a46;
   .rc-input-number-input {
     background: #fff;
     border: none;
@@ -680,7 +689,7 @@ const RateCont = styled.div`
   .cont1,
   .cont3 {
     display: grid;
-    grid-template-columns: 2.9fr 4fr;
+    grid-template-columns: 2.7fr 4fr;
 
     width: 100%;
     .css-13cymwt-control {
@@ -746,7 +755,7 @@ const RateCont = styled.div`
   .lines {
     height: 18px;
     width: 3px;
-    background-color: #d0d5dd;
+    background-color: #00a85aa0;
   }
 
   .line2 {
