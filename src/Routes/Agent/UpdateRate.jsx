@@ -126,13 +126,12 @@ function UpdateRate() {
         toast.success(
           `Rate for ${selectedCountry?.fromCurrency?.name} to ${selectedCountry?.toCurrency?.name} was updated successfully`
         );
-        setAmount("");
+        /* setAmount("");
         setFee("");
         setFeeFixed("");
         setThresh("");
         setSelectedCountry("");
-        setType("");
-        navigates("/agent/dashboard");
+        setType(""); */
       } else {
         toast.error(data?.message);
       }

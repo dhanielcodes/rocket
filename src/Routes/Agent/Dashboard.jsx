@@ -539,7 +539,7 @@ function Dashboard() {
               <div>
                 <AmountFormatter
                   currency={c1?.toCurrency?.code}
-                  value={c1?.agentRate}
+                  value={c1?.agentRate || c1?.conversionRate}
                 />
               </div>
 
