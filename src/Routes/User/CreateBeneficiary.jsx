@@ -167,6 +167,7 @@ function CreateBeneficiary() {
         "🚀 ~ file: CreateBeneficiary.jsx:93 ~ CreateBeneficiary ~ data:",
         data
       );
+
       setCreateBene((prev) => {
         return {
           userId: UserData?.data?.user?.userId,
@@ -222,6 +223,10 @@ function CreateBeneficiary() {
   const [selectedCountry, setselectedCountry] = useState();
   const [type, setType] = useState();
 
+  const [bankName, setBankName] = useState();
+  const [bankNo, setBankNo] = useState();
+  const [bankNoName, setBankNoName] = useState();
+
   const handleSelectCountry = (e) => {
     console.log(
       "🚀 ~ file: CreateBeneficiary.jsx:105 ~ handleSelectCountry ~ e:",
@@ -263,16 +268,6 @@ function CreateBeneficiary() {
         bankId: nameenquiry?.bank_id,
       },
     },
-
-    // userId: 100,
-    // userBeneficiary: {
-    //     beneficiaryName: nameEnq?.data?.account_name,
-    //     beneficiaryPhoneNumber: nameenquiry?.phone,
-    //     beneficiaryBank: {
-    //         accountNumber: accNum,
-    //         bankId: nameenquiry?.bank_id
-    //     }
-    // }
   });
   console.log(
     "🚀 ~ file: CreateBeneficiary.jsx:165 ~ CreateBeneficiary ~ createBene:",
@@ -308,7 +303,28 @@ function CreateBeneficiary() {
       "🚀 ~ file: CreateBeneficiary.jsx:158 ~ createbeneficiary ~ createBene:",
       createBene
     );
-    mutate(createBene);
+    mutate(
+      countryDetails?.id === 161
+        ? createBene
+        : {
+            userId: UserData?.data?.user?.userId,
+            userBeneficiary: {
+              beneficiaryCountry: {
+                id: countryDetails?.id,
+              },
+              beneficiaryName: bankNoName,
+              beneficiaryPhoneNumber: "",
+              beneficiaryBank: {
+                bankName: bankName,
+                accountNumber: bankNo,
+                accountName: bankNoName,
+                bankId: 0,
+                iban: bankNo,
+                bic: bankNo,
+              },
+            },
+          }
+    );
   };
 
   return (
@@ -403,20 +419,28 @@ function CreateBeneficiary() {
                   <CustomSelect
                     defaultValue={type}
                     onChange={collectionType}
-                    options={payout?.data?.map((item) => {
-                      return {
-                        name: item?.name,
-                        label: item?.name,
-                        value: item?.name,
-                        ...item,
-                      };
-                    })}
+                    options={payout?.data
+                      ?.map((item) => {
+                        return {
+                          name: item?.name,
+                          label: item?.name,
+                          value: item?.name,
+                          ...item,
+                        };
+                      })
+                      ?.filter((item) =>
+                        countryDetails?.id === 161
+                          ? item
+                          : item?.name === "Manual Bank Transfer" &&
+                            item?.name === "Cash Pick Up"
+                      )}
                     styles={{ fontSize: "10px ! important" }}
                   />
                 </div>
               </div>
             </SectionThree>
             <SectionThree>
+              <></>
               {type?.label === "Pick Up" ? (
                 <div className="text">
                   <p>Full Name</p>
@@ -467,58 +491,96 @@ function CreateBeneficiary() {
                 </div>
               ) : (
                 <div className="text">
-                  <p>Bank Name</p>
-                  <Select
-                    options={banksSelection}
-                    placeholder="select your bank"
-                    onChange={(e) => {
-                      setBankCode(e);
-                      setAccNum("");
-                    }}
-                    styles={{
-                      option: (styles) => ({
-                        ...styles,
-                        display: "flex",
-                        alignItems: "center",
-                        color: "#000",
-                        fontSize: "14px",
-                        //   border:"0.1px solid #d8d8d8",
-                        //   backgroundColor:"#e4e4e4",
-                        //   borerRadius:"18px"
-                      }),
-                      menuList: (styles) => ({
-                        ...styles,
-                        display: "flex",
-                        backgroundColor: "#FFF",
-                        flexDirection: "column",
-                        // gap:"10px",
-                        color: "#FFF",
-                        borerRadius: "18px",
-                        alignItems: "center",
-                      }),
+                  {countryDetails?.id === 161 ? (
+                    <>
+                      <p>Bank Name</p>
+                      <Select
+                        options={banksSelection}
+                        placeholder="select your bank"
+                        onChange={(e) => {
+                          setBankCode(e);
+                          setAccNum("");
+                        }}
+                        styles={{
+                          option: (styles) => ({
+                            ...styles,
+                            display: "flex",
+                            alignItems: "center",
+                            color: "#000",
+                            fontSize: "14px",
+                            //   border:"0.1px solid #d8d8d8",
+                            //   backgroundColor:"#e4e4e4",
+                            //   borerRadius:"18px"
+                          }),
+                          menuList: (styles) => ({
+                            ...styles,
+                            display: "flex",
+                            backgroundColor: "#FFF",
+                            flexDirection: "column",
+                            // gap:"10px",
+                            color: "#FFF",
+                            borerRadius: "18px",
+                            alignItems: "center",
+                          }),
 
-                      singleValue: (styles) => ({
-                        ...styles,
-                        display: "flex",
-                        color: "#000",
-                        alignItems: "center",
-                        "> svg": {
-                          marginRight: "8px",
-                          borderRadius: "50%",
-                        },
-                      }),
-                    }}
-                  />
-                  <p>Accont Number</p>
-                  <CustomInput
-                    placeholder="Enter account number"
-                    readonly={false}
-                    onChange={(e) => {
-                      if (e.target.value?.length === 10) {
-                        setAccNum(e?.target?.value);
-                      }
-                    }}
-                  />
+                          singleValue: (styles) => ({
+                            ...styles,
+                            display: "flex",
+                            color: "#000",
+                            alignItems: "center",
+                            "> svg": {
+                              marginRight: "8px",
+                              borderRadius: "50%",
+                            },
+                          }),
+                        }}
+                      />
+                      <p>Accont Number</p>
+                      <CustomInput
+                        placeholder="Enter account number"
+                        readonly={false}
+                        onChange={(e) => {
+                          if (e.target.value?.length === 10) {
+                            setAccNum(e?.target?.value);
+                          }
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <p>Bank Name</p>
+                      <CustomInput
+                        placeholder="Enter bank name"
+                        readonly={false}
+                        onChange={(e) => {
+                          if (e.target.value?.length === 10) {
+                            setAccNum(e?.target?.value);
+                          }
+                        }}
+                      />
+                      <p>Account Number</p>
+                      <CustomInput
+                        placeholder="Enter account number"
+                        readonly={false}
+                        onChange={(e) => {
+                          if (e.target.value?.length === 10) {
+                            setAccNum(e?.target?.value);
+                          }
+                        }}
+                      />
+                      <p>Account Name</p>
+                      <CustomInput
+                        placeholder="Enter account number"
+                        readonly={false}
+                        onChange={(e) => {
+                          if (e.target.value?.length === 10) {
+                            setAccNum(e?.target?.value);
+                          }
+                        }}
+                      />
+                    </>
+                  )}
+
                   {info && (
                     <ReusableModal
                       isOpen={show}
