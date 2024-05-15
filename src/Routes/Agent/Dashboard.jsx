@@ -38,6 +38,7 @@ import Msg from "../../reuseables/Msg";
 import Profile from "../../assets/profile.png";
 import { NumberWithCommas } from "../../utils/format";
 import RateListDashboad from "../../reuseables/RateListDashboad";
+import { getUserCurrencies } from "../../services/Auth";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -200,27 +201,27 @@ function Dashboard() {
     },
   });
 
-  const [selectedCountry, setSelectedCountry] = useState();
+  const [selectedCountry, setSelectedCountry] = useState(false);
 
   const ratesds =
     newSetRates?.data || JSON.parse(localStorage.getItem("newCurrencyList"));
 
-  const c1 =
-    selectedCountry ||
-    ratesds
-      ?.filter(
-        (item) =>
-          item?.fromCurrency?.code ===
-          Userdata?.data?.user?.country?.currencyCode
-      )
-      ?.map((item) => {
-        return {
-          value: item?.name,
-          label: item?.name,
-          ...item,
-        };
-      })?.[0];
+  const other = ratesds
+    ?.filter(
+      (item) =>
+        item?.fromCurrency?.code === Userdata?.data?.user?.country?.currencyCode
+    )
+    ?.map((item) => {
+      return {
+        value: item?.name,
+        label: item?.name,
+        ...item,
+      };
+    })?.[0];
 
+  const c1 = selectedCountry || other;
+
+  console.log(c1, "dddssdsdsd");
   // Userdata?.data?.user?.userIdupdateCurrencyDetails
 
   const dataObject = {};
