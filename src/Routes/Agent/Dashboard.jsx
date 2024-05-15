@@ -189,7 +189,7 @@ function Dashboard() {
     isLoading: nameEnqLoading,
     refetch: refetchNameEnq,
   } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
+    queryKey: [Userdata?.data?.user?.userId, "dets"],
     queryFn: GetDetails,
     onSuccess: (data) => {
       return;
