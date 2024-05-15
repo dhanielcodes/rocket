@@ -312,8 +312,6 @@ function CreateBeneficiary() {
               beneficiaryCountry: {
                 id: countryDetails?.id,
               },
-              beneficiaryName: bankNoName,
-              beneficiaryPhoneNumber: "",
               beneficiaryBank: {
                 bankName: bankName,
                 accountNumber: bankNo,
@@ -568,7 +566,7 @@ function CreateBeneficiary() {
                           }
                         }}
                       />
-                      <p>Account Name</p>
+                      <p>IBAN/BIC</p>
                       <CustomInput
                         placeholder="Enter account number"
                         readonly={false}
