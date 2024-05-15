@@ -20,6 +20,7 @@ const CountryDropdown = ({
   disabled,
   collectionStatus = false,
   rate = false,
+  callback,
 }) => {
   const options = option || [];
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -59,15 +60,20 @@ const CountryDropdown = ({
     },
   });
 
+  const myArrayFiltered = newOptions?.data?.filter((el) => {
+    return callback?.some((f) => {
+      return f.id === el.id;
+    });
+  });
   return (
     <CountyCont $rate={rate}>
       <Select
         value={value}
         onChange={onChange}
         options={
-          newOptions?.data
+          myArrayFiltered
             ? collectionStatus
-              ? newOptions?.data
+              ? myArrayFiltered
                   ?.map((item) => {
                     return {
                       code: item?.currencyCode,
@@ -78,7 +84,7 @@ const CountryDropdown = ({
                     };
                   })
                   ?.filter((item) => item.isReceiving)
-              : newOptions?.data
+              : myArrayFiltered
                   ?.map((item) => {
                     return {
                       code: item?.currencyCode,

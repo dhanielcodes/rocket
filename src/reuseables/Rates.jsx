@@ -7,6 +7,8 @@ import styled from "styled-components";
 import AmountFormatter from "../reuseables/AmountFormatter";
 import { useQuery } from "@tanstack/react-query";
 import {
+  DashboardTodayRates,
+  DashboardTodayRatesAgent,
   GetDetails,
   Rates as Ratess,
   agentCustomerGetRate,
@@ -15,6 +17,7 @@ import { countryObjectsArray } from "../../config/CountryCodes";
 import InputNumber from "rc-input-number";
 import { CFormatter } from "../hooks/format";
 import { FormatCorrect, FormatCorrect2 } from "../utils/format";
+import { getUserCurrencies } from "../services/Auth";
 
 function Rates({
   amount,
@@ -74,6 +77,122 @@ function Rates({
       console.error(err);
     },
   });
+  const {
+    data: currenciess,
+    refetch,
+    isFetching: isLoading2,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: getUserCurrencies,
+    enabled: false,
+    onSuccess: (data) => {
+      if (data?.status) {
+        localStorage.setItem(
+          "userCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const { data: hdj, refetch: refetchNew } = useQuery({
+    queryKey: [Userdata?.data?.user?.role?.id, Userdata?.data?.user?.userId],
+    queryFn: DashboardTodayRates,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  const { data: hdjl, refetch: refetchNew2 } = useQuery({
+    queryKey: [
+      Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+      Userdata?.data?.user?.userId,
+    ],
+    queryFn: DashboardTodayRatesAgent,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+  const newSetRates =
+    hdj?.data?.map((item) => {
+      return {
+        ...item?.fromCurrency,
+      };
+    }) ||
+    hdjl?.data?.map((item) => {
+      return {
+        ...item?.fromCurrency,
+      };
+    });
+
+  console.log(newSetRates, "newds");
+  useEffect(() => {
+    refetch([Userdata?.data?.user?.userId]);
+    if (Userdata?.data?.user?.role?.id === 5) {
+      refetchNew2([
+        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+        Userdata?.data?.user?.userId,
+      ]);
+    } else if (Userdata?.data?.user?.agentId) {
+      refetchNew2([
+        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+        Userdata?.data?.user?.userId,
+      ]);
+    } else {
+      refetchNew([
+        Userdata?.data?.user?.role?.id,
+        Userdata?.data?.user?.userId,
+      ]);
+    }
+    //eslint-disable-next-line
+  }, []);
+
   const getC = JSON.parse(localStorage.getItem("currencyList"));
   const getC2 = data?.data?.allowMultiCurrencyTrading
     ? JSON.parse(localStorage.getItem("currencyList"))
@@ -346,6 +465,7 @@ function Rates({
               }}
               value={selectedCountry2}
               onChange={handleCountryChange2}
+              callback={newSetRates}
               newOptions={getC?.map((item) => {
                 return {
                   code: item?.currencyCode,
@@ -385,6 +505,7 @@ function Rates({
               rate
               value={selectedCountry}
               onChange={handleCountryChange}
+              callback={newSetRates}
               newOptions={getC2?.map((item) => {
                 return {
                   code: item?.currencyCode,
@@ -568,6 +689,7 @@ function Rates({
             <CountryDropdown
               rate
               value={selectedCountry}
+              callback={newSetRates}
               onChange={handleCountryChange}
               newOptions={getC2?.map((item) => {
                 return {
@@ -624,6 +746,7 @@ function Rates({
                 width: "100%",
               }}
               value={selectedCountry2}
+              callback={newSetRates}
               onChange={handleCountryChange2}
               newOptions={getC?.map((item) => {
                 return {

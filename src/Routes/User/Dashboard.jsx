@@ -18,6 +18,8 @@ import CountryFlag from "react-country-flag";
 import AmountFormatter from "../../reuseables/AmountFormatter";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
+  DashboardTodayRates,
+  DashboardTodayRatesAgent,
   GetDetails,
   Rates,
   TodayRates,
@@ -36,6 +38,7 @@ import useScreenSize from "../../hooks/useScreenSize";
 import Profile from "../../assets/profile.png";
 import { NumberWithCommas } from "../../utils/format";
 import RateListDashboad from "../../reuseables/RateListDashboad";
+import { getUserCurrencies } from "../../services/Auth";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -69,9 +72,117 @@ function Dashboard() {
       console.error(err);
     },
   });
-  const [selectedCountry, setSelectedCountry] = useState();
 
-  const ratesds = JSON.parse(localStorage.getItem("newCurrencyList"));
+  const {
+    data: currenciess,
+    refetch: refetchN,
+    isFetching: isLoading2,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: getUserCurrencies,
+    enabled: false,
+    onSuccess: (data) => {
+      if (data?.status) {
+        localStorage.setItem(
+          "userCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const { data: hdj, refetch: refetchNew } = useQuery({
+    queryKey: [Userdata?.data?.user?.role?.id, Userdata?.data?.user?.userId],
+    queryFn: DashboardTodayRates,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  const { data: hdjl, refetch: refetchNew2 } = useQuery({
+    queryKey: [
+      Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+      Userdata?.data?.user?.userId,
+    ],
+    queryFn: DashboardTodayRatesAgent,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  useEffect(() => {
+    refetchN([Userdata?.data?.user?.userId]);
+    if (Userdata?.data?.user?.role?.id === 5) {
+      refetchNew2([
+        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+        Userdata?.data?.user?.userId,
+      ]);
+    } else if (Userdata?.data?.user?.agentId) {
+      refetchNew2([
+        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+        Userdata?.data?.user?.userId,
+      ]);
+    } else {
+      refetchNew([
+        Userdata?.data?.user?.role?.id,
+        Userdata?.data?.user?.userId,
+      ]);
+    }
+    //eslint-disable-next-line
+  }, []);
+  const [selectedCountry, setSelectedCountry] = useState();
+  const newSetRates = hdj || hdjl;
+
+  console.log(newSetRates, "newds");
+  const ratesds =
+    newSetRates?.data || JSON.parse(localStorage.getItem("newCurrencyList"));
 
   const c1 =
     selectedCountry ||
