@@ -568,7 +568,7 @@ function CreateBeneficiary() {
                       />
                       <p>IBAN/BIC</p>
                       <CustomInput
-                        placeholder="Enter account number"
+                        placeholder="Enter iban/bic"
                         readonly={false}
                         onChange={(e) => {
                           if (e.target.value?.length === 10) {
