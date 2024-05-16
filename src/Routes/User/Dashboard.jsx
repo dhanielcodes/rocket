@@ -61,7 +61,7 @@ function Dashboard() {
     isLoading: nameEnqLoading,
     refetch: refetchNameEnq,
   } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
+    queryKey: [Userdata?.data?.user?.userId, 0],
     queryFn: GetDetails,
     onSuccess: (data) => {
       return;
@@ -184,21 +184,20 @@ function Dashboard() {
   const ratesds =
     newSetRates?.data || JSON.parse(localStorage.getItem("newCurrencyList"));
 
-  const c1 =
-    selectedCountry ||
-    ratesds
-      ?.filter(
-        (item) =>
-          item?.fromCurrency?.code ===
-          Userdata?.data?.user?.country?.currencyCode
-      )
-      ?.map((item) => {
-        return {
-          value: item?.name,
-          label: item?.name,
-          ...item,
-        };
-      })?.[0];
+  const other = ratesds
+    ?.filter(
+      (item) =>
+        item?.fromCurrency?.code === Userdata?.data?.user?.country?.currencyCode
+    )
+    ?.map((item) => {
+      return {
+        value: item?.name,
+        label: item?.name,
+        ...item,
+      };
+    })?.[0];
+
+  const c1 = selectedCountry || other;
 
   // Userdata?.data?.user?.userIdupdateCurrencyDetails
 

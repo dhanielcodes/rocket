@@ -66,7 +66,7 @@ function Rates({
     isLoading: nameEnqLoading,
     refetch: refetchNameEnq,
   } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
+    queryKey: [Userdata?.data?.user?.userId, 0],
     queryFn: GetDetails,
     onSuccess: (data) => {
       return;
