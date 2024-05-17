@@ -113,7 +113,15 @@ const AddWallet = () => {
             <label htmlFor="html">Currency</label>
 
             <CountryDropdown
+              rate
+              collectionStatus
+              style={{
+                width: "100%",
+              }}
+              setValue={setSelectedCountry}
+              newOptionsnew={false}
               value={selectedCountry}
+              multi={true}
               onChange={handleCountryChange}
             />
           </div>

@@ -14,7 +14,7 @@ import {
   DashboardTodayRatesAgent,
   GetDetails,
 } from "../services/Dashboard";
-const CountryDropdown = ({
+const CountryDropdown2 = ({
   value,
   onChange,
   style,
@@ -24,7 +24,6 @@ const CountryDropdown = ({
   disabled,
   collectionStatus = false,
   rate = false,
-  multi,
   newOptionsnew = false,
 }) => {
   const options = option || [];
@@ -111,7 +110,7 @@ const CountryDropdown = ({
         };
       })
       ?.filter((item) =>
-        data?.data?.allowMultiCurrencyTrading || multi
+        data?.data?.allowMultiCurrencyTrading
           ? item
           : item?.code === Userdata?.data?.user?.country?.currencyCode
       )
@@ -127,7 +126,7 @@ const CountryDropdown = ({
         };
       })
       ?.filter((item) =>
-        data?.data?.allowMultiCurrencyTrading || multi
+        data?.data?.allowMultiCurrencyTrading
           ? item
           : item?.code === Userdata?.data?.user?.country?.currencyCode
       )
@@ -336,4 +335,4 @@ const CountyCont = styled.div`
   }
 `;
 
-export default CountryDropdown;
+export default CountryDropdown2;

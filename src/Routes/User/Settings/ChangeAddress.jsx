@@ -38,8 +38,16 @@ const ChangeAddress = () => {
             <label htmlFor="html">Country</label>
 
             <CountryDropdown
+              rate
+              collectionStatus
+              style={{
+                width: "100%",
+              }}
+              setValue={setSelectedCountry}
+              newOptionsnew={false}
               value={selectedCountry}
               onChange={handleCountryChange}
+              multi={true}
             />
           </div>
         </Box>
