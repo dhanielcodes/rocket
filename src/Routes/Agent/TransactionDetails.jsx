@@ -344,11 +344,11 @@ function TransactionDetails() {
                 <p>{transactionList?.beneficiaryBankAccountNumber}</p>
               </div>
               <div className="details">
-                <h5>Amount</h5>
+                <h5>Sending Amount</h5>
                 <p>
                   <AmountFormatter
-                    value={transactionList?.receivedAmount}
-                    currency={transactionList?.beneficiaryCurrency}
+                    value={transactionList?.paymentAmount}
+                    currency={transactionList?.senderCurrency}
                   />
                 </p>
               </div>
@@ -357,7 +357,16 @@ function TransactionDetails() {
                 <p>
                   <AmountFormatter
                     value={transactionList?.transitionFee}
-                    currency={transactionList?.senderCurrency}
+                    currency={transactionList?.beneficiaryCurrency}
+                  />
+                </p>
+              </div>
+              <div className="details">
+                <h5>Received Amount</h5>
+                <p>
+                  <AmountFormatter
+                    value={transactionList?.receivedAmount}
+                    currency={transactionList?.beneficiaryCurrency}
                   />
                 </p>
               </div>
