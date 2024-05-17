@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useEffect } from "react";
 import ReactCountryFlag from "react-country-flag";
 import Select from "react-select";
 import countryList from "react-select-country-list";
@@ -9,7 +9,11 @@ import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { getCurrencies, getUserCurrencies } from "../services/Auth";
-import { GetDetails } from "../services/Dashboard";
+import {
+  DashboardTodayRates,
+  DashboardTodayRatesAgent,
+  GetDetails,
+} from "../services/Dashboard";
 const CountryDropdown = ({
   value,
   onChange,
@@ -20,7 +24,7 @@ const CountryDropdown = ({
   disabled,
   collectionStatus = false,
   rate = false,
-  callback,
+  newOptionsnew = false,
 }) => {
   const options = option || [];
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -41,16 +45,25 @@ const CountryDropdown = ({
       console.error(err);
     },
   });
-  console.log(data?.data?.allowMultiCurrencyTrading, "dkld");
 
-  const { data: newOptions } = useQuery({
-    queryKey: [],
-    queryFn: data?.data?.allowMultiCurrencyTrading
-      ? getCurrencies
-      : getUserCurrencies,
-    enabled: data ? true : false,
+  const { data: hdj, refetch: refetchNew } = useQuery({
+    queryKey: [Userdata?.data?.user?.role?.id, Userdata?.data?.user?.userId],
+    queryFn: DashboardTodayRates,
+    enabled: false,
     onSuccess: (data) => {
       //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
     },
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
@@ -60,20 +73,160 @@ const CountryDropdown = ({
     },
   });
 
-  const myArrayFiltered = newOptions?.data?.filter((el) => {
-    return callback?.some((f) => {
-      return f.id === el.id;
-    });
+  const { data: hdjl, refetch: refetchNew2 } = useQuery({
+    queryKey: [
+      Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+      Userdata?.data?.user?.userId,
+    ],
+    queryFn: DashboardTodayRatesAgent,
+    enabled: false,
+    onSuccess: (data) => {
+      //setCountries(data?.data);
+      if (data?.status) {
+        localStorage.setItem(
+          "newCurrencyList",
+          JSON.stringify(
+            data?.data?.map((item) => {
+              return {
+                ...item,
+              };
+            })
+          )
+        );
+      }
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err);
+    },
   });
+  const newSetRates =
+    hdj?.data
+      ?.map((item) => {
+        return {
+          ...item?.fromCurrency,
+        };
+      })
+      ?.filter((item) =>
+        data?.data?.allowMultiCurrencyTrading
+          ? item
+          : item?.code === Userdata?.data?.user?.country?.currencyCode
+      )
+      ?.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.code === value.code && t.name === value.name)
+      ) ||
+    hdjl?.data
+      ?.map((item) => {
+        return {
+          ...item?.fromCurrency,
+        };
+      })
+      ?.filter((item) =>
+        data?.data?.allowMultiCurrencyTrading
+          ? item
+          : item?.code === Userdata?.data?.user?.country?.currencyCode
+      )
+      ?.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.code === value.code && t.name === value.name)
+      );
+
+  console.log(newSetRates, "fdfdd");
+
+  const newSetRates2 =
+    hdj?.data
+      ?.map((item) => {
+        return {
+          ...item?.toCurrency,
+        };
+      })
+      ?.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.code === value.code && t.name === value.name)
+      ) ||
+    hdjl?.data
+      ?.map((item) => {
+        return {
+          ...item?.toCurrency,
+        };
+      })
+      ?.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.code === value.code && t.name === value.name)
+      );
+
+  console.log(newSetRates, newSetRates2, "newds");
+  useEffect(() => {
+    if (Userdata?.data?.user?.role?.id === 5) {
+      refetchNew2([
+        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+        Userdata?.data?.user?.userId,
+      ]);
+    } else if (Userdata?.data?.user?.agentId) {
+      refetchNew2([
+        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
+        Userdata?.data?.user?.userId,
+      ]);
+    } else {
+      refetchNew([
+        Userdata?.data?.user?.role?.id,
+        Userdata?.data?.user?.userId,
+      ]);
+    }
+    //eslint-disable-next-line
+  }, []);
+  console.log(data?.data?.allowMultiCurrencyTrading, "dkld");
+
+  useEffect(() => {
+    if (newOptionsnew) {
+      setValue(newSetRates2?.[0]);
+    } else {
+      setValue(newSetRates?.[0]);
+    }
+  }, [hdj || hdjl]);
+
   return (
     <CountyCont $rate={rate}>
       <Select
         value={value}
         onChange={onChange}
         options={
-          myArrayFiltered
+          newOptionsnew
+            ? newSetRates2
+            : newSetRates
             ? collectionStatus
-              ? myArrayFiltered
+              ? newOptionsnew
+                ? newSetRates2
+                    ?.map((item) => {
+                      return {
+                        code: item?.currencyCode,
+                        value: item?.name,
+                        label: item?.name,
+                        id: item?.id,
+                        ...item,
+                      };
+                    })
+                    ?.filter((item) => item.isReceiving)
+                : newSetRates
+                    ?.map((item) => {
+                      return {
+                        code: item?.currencyCode,
+                        value: item?.name,
+                        label: item?.name,
+                        id: item?.id,
+                        ...item,
+                      };
+                    })
+                    ?.filter((item) => item.isReceiving)
+              : newOptionsnew
+              ? newSetRates2
                   ?.map((item) => {
                     return {
                       code: item?.currencyCode,
@@ -83,8 +236,8 @@ const CountryDropdown = ({
                       ...item,
                     };
                   })
-                  ?.filter((item) => item.isReceiving)
-              : myArrayFiltered
+                  ?.filter((item) => item.isSending)
+              : newSetRates
                   ?.map((item) => {
                     return {
                       code: item?.currencyCode,

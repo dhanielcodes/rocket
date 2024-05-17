@@ -34,33 +34,6 @@ function Rates({
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata);
 
-  const countryFlags = [
-    { code: "GB", label: "United Kingdom" },
-
-    { code: "NG", label: "Nigeria" },
-    // Add more countries as needed
-  ];
-
-  const defaultCountry = {
-    label: "United Kingdom",
-    value: "GB", // ISO country code for the UK
-    flag: "", // URL to the UK flag image
-    id: 232,
-  };
-  const defaultCountry2 = {
-    label: "Nigeria",
-    value: "NG", // ISO country code for the UK
-    flag: "", // URL to the UK flag image
-    id: 161,
-  };
-
-  const defaultCountrys = Userdata?.data?.user?.wallet.map((d) => {
-    return {
-      label: d?.country?.name,
-      value: d?.country?.currencyCode,
-      flag: "",
-    };
-  });
   const {
     data,
     isLoading: nameEnqLoading,
@@ -77,121 +50,6 @@ function Rates({
       console.error(err);
     },
   });
-  const {
-    data: currenciess,
-    refetch,
-    isFetching: isLoading2,
-  } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
-    queryFn: getUserCurrencies,
-    enabled: false,
-    onSuccess: (data) => {
-      if (data?.status) {
-        localStorage.setItem(
-          "userCurrencyList",
-          JSON.stringify(
-            data?.data?.map((item) => {
-              return {
-                ...item,
-              };
-            })
-          )
-        );
-      }
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-  const { data: hdj, refetch: refetchNew } = useQuery({
-    queryKey: [Userdata?.data?.user?.role?.id, Userdata?.data?.user?.userId],
-    queryFn: DashboardTodayRates,
-    enabled: false,
-    onSuccess: (data) => {
-      //setCountries(data?.data);
-      if (data?.status) {
-        localStorage.setItem(
-          "newCurrencyList",
-          JSON.stringify(
-            data?.data?.map((item) => {
-              return {
-                ...item,
-              };
-            })
-          )
-        );
-      }
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
-
-  const { data: hdjl, refetch: refetchNew2 } = useQuery({
-    queryKey: [
-      Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
-      Userdata?.data?.user?.userId,
-    ],
-    queryFn: DashboardTodayRatesAgent,
-    enabled: false,
-    onSuccess: (data) => {
-      //setCountries(data?.data);
-      if (data?.status) {
-        localStorage.setItem(
-          "newCurrencyList",
-          JSON.stringify(
-            data?.data?.map((item) => {
-              return {
-                ...item,
-              };
-            })
-          )
-        );
-      }
-    },
-    // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-      console.log(err);
-    },
-  });
-  const newSetRates =
-    hdj?.data?.map((item) => {
-      return {
-        ...item?.fromCurrency,
-      };
-    }) ||
-    hdjl?.data?.map((item) => {
-      return {
-        ...item?.fromCurrency,
-      };
-    });
-
-  console.log(newSetRates, "newds");
-  useEffect(() => {
-    refetch([Userdata?.data?.user?.userId]);
-    if (Userdata?.data?.user?.role?.id === 5) {
-      refetchNew2([
-        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
-        Userdata?.data?.user?.userId,
-      ]);
-    } else if (Userdata?.data?.user?.agentId) {
-      refetchNew2([
-        Userdata?.data?.user?.agentId || Userdata?.data?.user?.userId,
-        Userdata?.data?.user?.userId,
-      ]);
-    } else {
-      refetchNew([
-        Userdata?.data?.user?.role?.id,
-        Userdata?.data?.user?.userId,
-      ]);
-    }
-    //eslint-disable-next-line
-  }, []);
 
   const getC = JSON.parse(localStorage.getItem("currencyList"));
   const getC2 = data?.data?.allowMultiCurrencyTrading
@@ -208,40 +66,7 @@ function Rates({
     "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry2:",
     selectedCountry2
   );
-  useEffect(() => {
-    setSelectedCountry(
-      getC2
-        ?.filter((item) => item?.isSending)
-        .filter(
-          (item) => item?.code === Userdata?.data?.user?.country?.currencyCode
-        )
-        ?.map((item) => {
-          return {
-            code: item?.currencyCode,
-            value: item?.name,
-            label: item?.name,
-            id: item?.id,
-            ...item,
-          };
-        })?.[0]
-    );
-    setSelectedCountry2(
-      getC
-        ?.filter((item) => item?.isReceiving)
-        .filter(
-          (item) => item?.code !== Userdata?.data?.user?.country?.currencyCode
-        )
-        ?.map((item) => {
-          return {
-            code: item?.currencyCode,
-            value: item?.name,
-            label: item?.name,
-            id: item?.id,
-            ...item,
-          };
-        })?.[0]
-    );
-  }, []);
+
   localStorage.setItem(
     "country1",
     JSON.stringify(
@@ -310,14 +135,6 @@ function Rates({
     currencyDetails
   );
   const [dashboardDetails, setDashboardDetails] = useState(null);
-  const [getrates, setRates] = useState(null);
-  const [currentCountry, setcurrentCountry] = useState(null);
-
-  // Initial data setup on component mount
-  useEffect(() => {
-    updateCurrencyDetails(defaultCountry.label);
-    updateCurrencyDetails2(defaultCountry2.label);
-  }, []);
 
   const updateCurrencyDetails = (countryLabel) => {
     const defaultDetails = Userdata?.data?.user?.wallet?.filter(
@@ -464,8 +281,8 @@ function Rates({
                 width: "100%",
               }}
               value={selectedCountry2}
+              setValue={setSelectedCountry2}
               onChange={handleCountryChange2}
-              callback={newSetRates}
               newOptions={getC?.map((item) => {
                 return {
                   code: item?.currencyCode,
@@ -503,18 +320,9 @@ function Rates({
           <div className="cont1">
             <CountryDropdown
               rate
+              setValue={setSelectedCountry}
               value={selectedCountry}
               onChange={handleCountryChange}
-              callback={newSetRates}
-              newOptions={getC2?.map((item) => {
-                return {
-                  code: item?.currencyCode,
-                  value: item?.name,
-                  label: item?.name,
-                  id: item?.id,
-                  ...item,
-                };
-              })}
             />
             <InputNumber
               className="input"
@@ -689,8 +497,9 @@ function Rates({
             <CountryDropdown
               rate
               value={selectedCountry}
-              callback={newSetRates}
+              setValue={setSelectedCountry}
               onChange={handleCountryChange}
+              newOptionsnew={true}
               newOptions={getC2?.map((item) => {
                 return {
                   code: item?.currencyCode,
@@ -746,8 +555,9 @@ function Rates({
                 width: "100%",
               }}
               value={selectedCountry2}
-              callback={newSetRates}
+              setValue={setSelectedCountry2}
               onChange={handleCountryChange2}
+              newOptionsnew={true}
               newOptions={getC?.map((item) => {
                 return {
                   code: item?.currencyCode,
