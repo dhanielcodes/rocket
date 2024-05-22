@@ -432,29 +432,31 @@ function CreateBeneficiary() {
                     showSearch
                     isClearable={true} // Allow clearing the selected option
                   /> */}
-                <div className="type">
-                  <p className="textheader">Select Collection Type</p>
-                  <CustomSelect
-                    defaultValue={type}
-                    onChange={collectionType}
-                    options={payout?.data
-                      ?.map((item) => {
-                        return {
-                          name: item?.name,
-                          label: item?.name,
-                          value: item?.name,
-                          ...item,
-                        };
-                      })
-                      ?.filter((item) =>
-                        countryDetails?.id === 161
-                          ? item
-                          : item?.name === "Manual Bank Transfer" &&
-                            item?.name === "Cash Pick Up"
-                      )}
-                    styles={{ fontSize: "10px ! important" }}
-                  />
-                </div>
+                {countryDetails?.id === 161 && (
+                  <div className="type">
+                    <p className="textheader">Select Collection Type</p>
+                    <CustomSelect
+                      defaultValue={type}
+                      onChange={collectionType}
+                      options={payout?.data
+                        ?.map((item) => {
+                          return {
+                            name: item?.name,
+                            label: item?.name,
+                            value: item?.name,
+                            ...item,
+                          };
+                        })
+                        ?.filter((item) =>
+                          countryDetails?.id === 161
+                            ? item
+                            : item?.name === "Manual Bank Transfer" &&
+                              item?.name === "Cash Pick Up"
+                        )}
+                      styles={{ fontSize: "10px ! important" }}
+                    />
+                  </div>
+                )}
               </div>
             </SectionThree>
             <SectionThree>
