@@ -373,49 +373,6 @@ function AgentCustomer() {
                           <FormattedDate dateString={d?.dateCreated} />
                         </p>
                       </div>
-                      <br />
-                      {data?.data?.allowMultiCurrencyTrading ? (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            width: "100%",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: "11px !important",
-                            }}
-                            className="cur"
-                          >
-                            Multi Currency Trading
-                          </div>
-                          &nbsp; &nbsp;
-                          <Switch
-                            loading={
-                              (d === cus && disallowusermulticurrencyLoading) ||
-                              (d === cus && allowMultiCurrencyLoading)
-                            }
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCus(d);
-                              if (d?.allowMultiCurrencyTrading) {
-                                disallowusermulticurrencyMutation(d?.userId);
-                              } else {
-                                allowMultiCurrencyMutation(d?.userId);
-                              }
-                            }}
-                            style={{
-                              width: "fit-content",
-                            }}
-                            checked={d?.allowMultiCurrencyTrading}
-                          />
-                        </div>
-                      ) : (
-                        ""
-                      )}
                     </div>
 
                     <div className="options">

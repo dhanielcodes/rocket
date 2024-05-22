@@ -254,14 +254,14 @@ function Beneficiary() {
               >
                 <Box>
                   <Avatar className="av">
-                    {`${d?.beneficiaryName?.split(" ")[0][0]} ${
-                      d?.beneficiaryName?.split(" ")[1][0]
+                    {`${d?.beneficiaryBank?.accountName?.split(" ")[0][0]} ${
+                      d?.beneficiaryBank?.accountName?.split(" ")[1][0]
                     }`}
                     12
                   </Avatar>
 
                   <div className="text">
-                    <h5>{d?.beneficiaryName}</h5>
+                    <h5>{d?.beneficiaryBank?.accountName}</h5>
                     <p>{d?.beneficiaryPhoneNumber}</p>
                     {/* <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p> */}
                     <p>

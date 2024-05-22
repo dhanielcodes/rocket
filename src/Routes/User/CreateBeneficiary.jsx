@@ -50,6 +50,7 @@ function CreateBeneficiary() {
   const [info, setInfo] = useState(null);
   const [show, setShow] = useState(false);
   const [bankcode, setBankCode] = useState();
+  const [reference, setReference] = useState();
   const UserData = JSON.parse(localStorage.getItem("userDetails"));
 
   console.log(bankcode);
@@ -224,8 +225,15 @@ function CreateBeneficiary() {
   const [type, setType] = useState();
 
   const [bankName, setBankName] = useState();
+  const [bankName2, setBankName2] = useState();
   const [bankNo, setBankNo] = useState();
+  const [bankNo2, setBankNo2] = useState();
   const [bankNoName, setBankNoName] = useState();
+  const [bankNoName2, setBankNoName2] = useState();
+  const [bankIdCode, setbankIdCode] = useState();
+  const [bankIdCode2, setbankIdCode2] = useState();
+  const [bankAddress, setBankAddress] = useState();
+  const [bankAddress2, setBankAddress2] = useState();
 
   const handleSelectCountry = (e) => {
     console.log(
@@ -312,13 +320,25 @@ function CreateBeneficiary() {
               beneficiaryCountry: {
                 id: countryDetails?.id,
               },
+
+              beneficiaryName: bankNoName,
+              beneficiaryAddress: bankAddress,
               beneficiaryBank: {
                 bankName: bankName,
+                bankAddress: bankAddress,
                 accountNumber: bankNo,
                 accountName: bankNoName,
-                bankId: 0,
-                iban: bankNo,
-                bic: bankNo,
+                reference: reference,
+                iban: bankIdCode,
+                bic: bankIdCode,
+              },
+              correspondenceBank: {
+                bankName: bankName2,
+                bankAddress: bankAddress2,
+                accountNumber: bankNo2,
+                accountName: bankNoName,
+                iban: bankIdCode2,
+                bic: bankIdCode2,
               },
             },
           }
@@ -549,31 +569,55 @@ function CreateBeneficiary() {
                       <p>Bank Name</p>
                       <CustomInput
                         placeholder="Enter bank name"
+                        type="text"
                         readonly={false}
                         onChange={(e) => {
-                          if (e.target.value?.length === 10) {
-                            setAccNum(e?.target?.value);
-                          }
+                          setBankName(e?.target?.value);
+                        }}
+                      />
+                      <p>Bank Address</p>
+                      <CustomInput
+                        placeholder="Enter bank name"
+                        type="text"
+                        readonly={false}
+                        onChange={(e) => {
+                          setBankAddress(e?.target?.value);
                         }}
                       />
                       <p>Account Number</p>
                       <CustomInput
                         placeholder="Enter account number"
                         readonly={false}
+                        type="number"
                         onChange={(e) => {
-                          if (e.target.value?.length === 10) {
-                            setAccNum(e?.target?.value);
-                          }
+                          setBankNo(e?.target?.value);
+                        }}
+                      />
+                      <p>Account Name</p>
+                      <CustomInput
+                        placeholder="Enter bank name"
+                        type="text"
+                        readonly={false}
+                        onChange={(e) => {
+                          setBankNoName(e?.target?.value);
                         }}
                       />
                       <p>IBAN/BIC</p>
                       <CustomInput
                         placeholder="Enter iban/bic"
+                        type="text"
                         readonly={false}
                         onChange={(e) => {
-                          if (e.target.value?.length === 10) {
-                            setAccNum(e?.target?.value);
-                          }
+                          setbankIdCode(e?.target?.value);
+                        }}
+                      />
+                      <p>Reference</p>
+                      <CustomInput
+                        placeholder="Enter account number"
+                        readonly={false}
+                        type="text"
+                        onChange={(e) => {
+                          setReference(e?.target?.value);
                         }}
                       />
                     </>
@@ -611,19 +655,88 @@ function CreateBeneficiary() {
                 </div>
               )}
             </SectionThree>
-            <button
-              disabled={nameEnq?.data?.account_name ? false : true}
-              onClick={createbeneficiary}
-              style={{
-                color: "white",
-              }}
-            >
-              {isLoading ? (
-                <Loader color="#fff" style={{ textAlign: "center" }} />
-              ) : (
-                "Submit"
-              )}
-            </button>
+
+            {countryDetails?.id !== 161 && (
+              <SectionThree>
+                <h3>Correspondent Bank</h3>
+                <div className="text">
+                  <p>Bank Name</p>
+                  <CustomInput
+                    placeholder="Enter bank name"
+                    type="text"
+                    readonly={false}
+                    onChange={(e) => {
+                      setBankName2(e?.target?.value);
+                    }}
+                  />
+                  <p>Bank Address</p>
+                  <CustomInput
+                    placeholder="Enter bank name"
+                    type="text"
+                    readonly={false}
+                    onChange={(e) => {
+                      setBankAddress2(e?.target?.value);
+                    }}
+                  />
+                  <p>Account Number</p>
+                  <CustomInput
+                    placeholder="Enter account number"
+                    readonly={false}
+                    type="number"
+                    onChange={(e) => {
+                      setBankNo2(e?.target?.value);
+                    }}
+                  />
+                  <p>Account Name</p>
+                  <CustomInput
+                    placeholder="Enter bank name"
+                    type="text"
+                    readonly={false}
+                    onChange={(e) => {
+                      setBankNoName2(e?.target?.value);
+                    }}
+                  />
+                  <p>IBAN/BIC</p>
+                  <CustomInput
+                    placeholder="Enter iban/bic"
+                    type="text"
+                    readonly={false}
+                    onChange={(e) => {
+                      setbankIdCode2(e?.target?.value);
+                    }}
+                  />
+                </div>
+              </SectionThree>
+            )}
+
+            {countryDetails?.id === 161 ? (
+              <button
+                disabled={nameEnq?.data?.account_name ? false : true}
+                onClick={createbeneficiary}
+                style={{
+                  color: "white",
+                }}
+              >
+                {isLoading ? (
+                  <Loader color="#fff" style={{ textAlign: "center" }} />
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            ) : (
+              <button
+                onClick={createbeneficiary}
+                style={{
+                  color: "white",
+                }}
+              >
+                {isLoading ? (
+                  <Loader color="#fff" style={{ textAlign: "center" }} />
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            )}
           </div>
         </div>
       </Content>

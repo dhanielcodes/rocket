@@ -43,6 +43,7 @@ import Iframe from "../../reuseables/PaymentLinks";
 import Modals from "../../reuseables/Modals";
 import { countryObjectsArray } from "../../../config/CountryCodes";
 import AmountFormatter from "../../reuseables/AmountFormatter";
+import FileUpload from "../../reuseables/FileUpload";
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -316,7 +317,9 @@ function SendMoney() {
 
   const country1 = getLocals("country1") || [];
   const country2 = getLocals("country2") || [];
-
+  const [image, setImage] = useState();
+  const [imageType, setImageType] = useState();
+  const [loading, setLoading] = useState(true);
   console.log("currentArr:", currentArr);
   console.log("current:", pchannel);
 
@@ -612,6 +615,8 @@ function SendMoney() {
     promoCode: "",
     redirectURL: `${window.location.origin}/user/sendmoney`,
     source: "web",
+    transactionAttachedDocumentURL: image?.secure_url,
+    transactionAttachedDocumentName: imageType || "invoice",
   };
 
   const handleSendMoney = () => {
@@ -1425,6 +1430,43 @@ function SendMoney() {
                   />
                 </div>
                 {/* </BeneficiaryCont> */}
+                <div className="longcont" style={{ padding: "2em" }}>
+                  <div className="type">
+                    <p className="textheader">Document Type</p>
+                    <CustomSelect
+                      defaultValue={{
+                        id: 1,
+                        label: "Invoice",
+                      }}
+                      onChange={(e) => {
+                        console.log(e);
+                        setImageType(e?.label);
+                      }}
+                      options={[
+                        {
+                          id: 1,
+                          label: "Invoice",
+                        },
+                        {
+                          id: 3,
+                          label: "Statement",
+                        },
+                        {
+                          id: 2,
+                          label: "Others",
+                        },
+                      ]}
+                      styles={{ fontSize: "10px ! important" }}
+                    />
+                  </div>
+                  <p className="textheader">Document</p>
+                  <FileUpload
+                    setValue={setImage}
+                    value={image}
+                    setLoading={setLoading}
+                    placeholder={`Click to upload FILE`}
+                  />
+                </div>
                 {/* <BeneficiaryCont> */}
                 <div className="longcont" style={{ padding: "2em" }}>
                   <div className="tabs">

@@ -8,21 +8,39 @@ import { styled } from "styled-components";
 import { Avatar, Typography } from "@arco-design/web-react";
 import { useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { GetDetails } from "../../services/Dashboard";
 
 function BeneficiaryDetails() {
   // const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
 
+  const {
+    data,
+    isLoading: nameEnqLoading,
+    refetch: refetchNameEnq,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId, "benedd"],
+    queryFn: GetDetails,
+    onSuccess: (data) => {
+      return;
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // Handle error logic
+      console.error(err);
+    },
+  });
   // Access the 'id' query parameter
   const id = queryParams.get("id");
   console.log(
     "🚀 ~ file: BeneficiaryDetails.jsx:19 ~ BeneficiaryDetails ~ id:",
     id
   );
-  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
-  const BeneList = Userdata?.data.user.beneficiaries?.filter(
+  const BeneList = data?.data?.beneficiaries?.filter(
     (d) => d?.id === Number(id)
   )[0];
   localStorage.setItem(
@@ -37,15 +55,15 @@ function BeneficiaryDetails() {
       <Content>
         <div className="cont">
           <Header>
-            <Avatar className="av">{`${BeneList?.beneficiaryName[0]}`}</Avatar>
-            <p>{BeneList?.beneficiaryName}</p>
+            <Avatar className="av">{`${BeneList?.beneficiaryBank?.accountName[0]}`}</Avatar>
+            <p>{BeneList?.beneficiaryBank?.accountName}</p>
           </Header>
           <Details>
             <h3 className="detailsinfo">Personal Details</h3>
             <div className="detailscont">
               <div className="details">
                 <h5>Beneficiary Name</h5>
-                <p>{BeneList?.beneficiaryName || "---"}</p>
+                <p>{BeneList?.beneficiaryBank?.accountName || "---"}</p>
               </div>
               <div className="details">
                 <h5>Mobile number</h5>

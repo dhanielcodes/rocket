@@ -271,19 +271,31 @@ function ConfirmTransactionPage() {
           <div className="detailscont">
             <div className="details">
               <h5>Beneficiary Name</h5>
-              <p>{transactionList?.beneficiaryName}</p>
+              <p>
+                {transactionList?.userBeneficiary?.beneficiaryBank?.accountName}
+              </p>
             </div>
             <div className="details">
               <h5>Beneficiary Country</h5>
-              <p>{transactionList?.beneficiaryCountry}</p>
+              <p>
+                {transactionList?.userBeneficiary?.beneficiaryCountry?.name}
+              </p>
             </div>
             <div className="details">
               <h5>Beneficiary Bank</h5>
-              <p>{transactionList?.beneficiaryBankName}</p>
+              <p>
+                {transactionList?.userBeneficiary?.beneficiaryBank?.bankName}
+              </p>
             </div>
+
             <div className="details">
               <h5>Beneficiary Account Number</h5>
-              <p>{transactionList?.beneficiaryBankAccountNumber}</p>
+              <p>
+                {
+                  transactionList?.userBeneficiary?.beneficiaryBank
+                    ?.accountNumber
+                }
+              </p>
             </div>
             <div className="details">
               <h5>Sending Amount</h5>

@@ -10,6 +10,7 @@ const CustomInput = ({
   val,
   className,
   disabled,
+  type,
 }) => {
   // Define a default style with border-radius
   const defaultStyle = {
@@ -34,6 +35,7 @@ const CustomInput = ({
       disabled={disabled}
       value={val}
       className={className}
+      type={type}
     />
   );
 };
