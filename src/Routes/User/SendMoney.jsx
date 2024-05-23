@@ -17,6 +17,7 @@ import {
   GetDetails,
   Paymentchannel,
   Payoutchannel,
+  PayoutchannelSend,
   Rates,
   TransferPurpose,
   sendMoney,
@@ -201,6 +202,9 @@ function SendMoney() {
     navigate(`/user/beneficiary/details?id=${id}`);
   };
 
+  const [selectedCountry, setSelectedCountry] = useState();
+  const [selectedCountry2, setSelectedCountry2] = useState();
+
   const [currentTab, setCurrentTab] = useState(1);
   const [paymentlink, SetPaymentLink] = useState(false);
   const [currentArr, setCurrentArr] = useState([]);
@@ -218,7 +222,7 @@ function SendMoney() {
     isLoading: paymentchannelloading,
     refetch: refetchpaymentchannel,
   } = useQuery({
-    // queryKey: ["nameEnq"],
+    queryKey: [selectedCountry?.id],
     queryFn: Paymentchannel,
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
@@ -228,15 +232,15 @@ function SendMoney() {
     },
   });
 
-  console.log(paymentchannel, "paymentchannel");
+  console.log(paymentchannel, "paymentchannelpaymentchannel");
 
   const {
     data: payout,
     isLoading: payoutloading,
     refetch: refetchpayout,
   } = useQuery({
-    // queryKey: ["nameEnq"],
-    queryFn: Payoutchannel,
+    queryKey: [selectedCountry2?.id, "0"],
+    queryFn: PayoutchannelSend,
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
       //   setMessage(err.response.data.detail || err.message);
@@ -333,71 +337,8 @@ function SendMoney() {
     );
   }
   const [notee, setNote] = useState();
-  const handleStep = () => {
-    if (current === 1) {
-      localStorage.setItem(
-        "paymentChannelId",
-        JSON.stringify({
-          id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
-          name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")
-            ?.name,
-        })
-      );
-      if (active === "My Wallet") {
-        localStorage.setItem(
-          "payoutChannelId",
-          JSON.stringify({
-            id: payoutchannels?.data.find((d) => d?.name == "Pay To Wallet")
-              ?.id,
-            name: payoutchannels?.data.find((d) => d?.name == "Pay To Wallet")
-              ?.name,
-          })
-        );
-      } else {
-        localStorage.setItem(
-          "payoutChannelId",
-          JSON.stringify({
-            id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")
-              ?.id,
-            name: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")
-              ?.name,
-          })
-        );
-      }
-    }
-    if (current === 2) {
-      if (amount !== "null") {
-        if (currentRates?.totalAmountToPay) {
-          setCurrent((prev) => {
-            localStorage.setItem("steps", prev + 1);
-            return prev + 1;
-          });
-        }
-      }
-    } else if (current === 3) {
-      setCurrent((prev) => {
-        localStorage.setItem("steps", prev + 1);
-        return prev + 1;
-      });
-    } else if (current === 4) {
-      setCurrent((prev) => {
-        localStorage.setItem("steps", prev + 1);
-        return prev + 1;
-      });
-    } else if (current === 1) {
-      if (benee) {
-        setCurrent((prev) => {
-          localStorage.setItem("steps", prev + 1);
-          return prev + 1;
-        });
-      }
-    } else {
-      setCurrent((prev) => {
-        localStorage.setItem("steps", prev + 1);
-        return prev + 1;
-      });
-    }
-  };
+
+  console.log(current, "klklk");
 
   const navigate = useNavigate();
 
@@ -430,27 +371,51 @@ function SendMoney() {
   const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
   const [isSelected, setisSelected] = useState(false);
   const [promocode, setPromoCode] = useState("");
-  const [selectedItems, setSelectedItems] = useState({
-    id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id,
-    name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
-  });
+  const [selectedItems, setSelectedItems] = useState();
   const [active, setActive] = useState();
-  const [pre1, setPre1] = useState({
-    id: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.id || 1,
-    name: paymentchannel?.data.find((d) => d?.name == "Pay With Bank")?.name,
-  });
+  const [pre1, setPre1] = useState();
+  const [pre2, setPre2] = useState();
   const [selectedItems2, setSelectedItems2] = useState(null);
   const [benee, setSelectedBene] = useState(null);
-  const [selected3, setSelected3] = useState({
-    id: payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.id,
-    name:
-      payoutchannels?.data.find((d) => d?.name == "Direct To Bank")?.name ||
-      "Direct To Bank",
-  });
+  const [selected3, setSelected3] = useState();
+  console.log(pre1, "djdjdjdj");
 
-  const payBy = pre1 || { id: 1, name: "Pay With Bank" };
+  const handleStep = () => {
+    if (current === 2) {
+      if (currentRates?.totalAmountToPay && pre1 && pre2) {
+        setCurrent((prev) => {
+          localStorage.setItem("steps", prev + 1);
+          return prev + 1;
+        });
+      }
+    } else if (current === 3) {
+      setCurrent((prev) => {
+        localStorage.setItem("steps", prev + 1);
+        return prev + 1;
+      });
+    } else if (current === 4) {
+      setCurrent((prev) => {
+        localStorage.setItem("steps", prev + 1);
+        return prev + 1;
+      });
+    } else if (current === 1) {
+      if (benee) {
+        setCurrent((prev) => {
+          localStorage.setItem("steps", prev + 1);
+          return prev + 1;
+        });
+      }
+    } else {
+      setCurrent((prev) => {
+        localStorage.setItem("steps", prev + 1);
+        return prev + 1;
+      });
+    }
+  };
 
-  const collect = selected3 || { id: 1, name: "Direct To Bank" };
+  const payBy = pre1;
+
+  const collect = selected3;
 
   const [status, setStatus] = useState(false);
 
@@ -498,7 +463,6 @@ function SendMoney() {
     );
   };
 
-  const [pre2, setPre2] = useState("Direct To Bank");
   const handleSelect = (id, name) => {
     console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id, name);
     setSelectedItems(id);
@@ -534,7 +498,6 @@ function SendMoney() {
     id: 232, // URL to the UK flag image
   };
 
-  const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
   const [open, setOpen] = useState(false);
   const [getmsg, setmsg] = useState("");
   const [bankDets, setBankDets] = useState("");
@@ -666,7 +629,7 @@ function SendMoney() {
               localStorage.removeItem("note");
               setSelected3(null);
               setSelectedItems(null);
-              setSelectedCountry(null);
+              //setSelectedCountry(null);
               setSelectedItems2(null);
               setisSelected(null);
               setShowBtn(false);
@@ -1097,6 +1060,10 @@ function SendMoney() {
                   setcurrentRates={setcurrentRates}
                   change={change}
                   setChange={setChange}
+                  selectedCountry={selectedCountry}
+                  selectedCountry2={selectedCountry2}
+                  setSelectedCountry={setSelectedCountry}
+                  setSelectedCountry2={setSelectedCountry2}
                 />
                 {paymentchannelloading ? (
                   "Loading..."
@@ -1262,7 +1229,7 @@ function SendMoney() {
                 ) : (
                   <div className="longcont">
                     <p>Collection Type</p>
-                    {payoutchannels?.data?.map((d) => {
+                    {payout?.data?.map((d) => {
                       const isSelected = collect?.name === d?.name;
                       return (
                         <div

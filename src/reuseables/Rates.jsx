@@ -30,6 +30,10 @@ function Rates({
   setMoneyData,
   currentRates,
   setcurrentRates,
+  selectedCountry,
+  setSelectedCountry,
+  selectedCountry2,
+  setSelectedCountry2,
 }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata);
@@ -56,8 +60,6 @@ function Rates({
     ? JSON.parse(localStorage.getItem("currencyList"))
     : JSON.parse(localStorage.getItem("userCurrencyList"));
 
-  const [selectedCountry, setSelectedCountry] = useState();
-  const [selectedCountry2, setSelectedCountry2] = useState();
   console.log(
     "🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry:",
     selectedCountry

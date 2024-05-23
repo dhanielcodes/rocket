@@ -112,13 +112,22 @@ export const getCompanyBanks = async (userId, bid) => {
   const { data } = await Axios.get(`${baseurl}/getsystemofflinepaymentbanks`);
   return data;
 };
-export const Paymentchannel = async () => {
-  const { data } = await Axios.get(`${baseurl}/getpaymentchannel`);
+export const Paymentchannel = async (id) => {
+  const { data } = await Axios.get(
+    `${baseurl}/getsendingcurrencypaymentchannel/${id?.queryKey[0]}`
+  );
   return data;
 };
 
 export const Payoutchannel = async () => {
   const { data } = await Axios.get(`${baseurl}/getpayoutchannel`);
+  return data;
+};
+
+export const PayoutchannelSend = async (id) => {
+  const { data } = await Axios.get(
+    `${baseurl}/getreceivingcurrencypayoutchannel/${id?.queryKey[0]}`
+  );
   return data;
 };
 
