@@ -227,9 +227,9 @@ function CreateBeneficiary() {
   const [bankName, setBankName] = useState();
   const [bankName2, setBankName2] = useState();
   const [bankNo, setBankNo] = useState();
-  const [bankNo2, setBankNo2] = useState();
+  const [bankNo2, setBankNo2] = useState("");
   const [bankNoName, setBankNoName] = useState();
-  const [bankNoName2, setBankNoName2] = useState();
+  const [bankNoName2, setBankNoName2] = useState("");
   const [bankIdCode, setbankIdCode] = useState();
   const [bankIdCode2, setbankIdCode2] = useState();
   const [bankAddress, setBankAddress] = useState();
@@ -336,7 +336,7 @@ function CreateBeneficiary() {
                 bankName: bankName2,
                 bankAddress: bankAddress2,
                 accountNumber: bankNo2,
-                accountName: bankNoName,
+                accountName: bankNoName2,
                 iban: bankIdCode2,
                 bic: bankIdCode2,
               },
@@ -419,44 +419,6 @@ function CreateBeneficiary() {
                     }),
                   }}
                 />
-                {/*    <Select
-                    name="countryId"
-                    styles={{
-                      padding: "0px !important",
-                      // You can add custom styles here if needed
-                    }}
-                    options={CountryOption}
-                    value={selectedCountry} // Pass the selected option to the value prop
-                    onChange={handleSelectCountry} // Handle option selection
-                    placeholder="Please select a Country"
-                    showSearch
-                    isClearable={true} // Allow clearing the selected option
-                  /> */}
-                {countryDetails?.id === 161 && (
-                  <div className="type">
-                    <p className="textheader">Select Collection Type</p>
-                    <CustomSelect
-                      defaultValue={type}
-                      onChange={collectionType}
-                      options={payout?.data
-                        ?.map((item) => {
-                          return {
-                            name: item?.name,
-                            label: item?.name,
-                            value: item?.name,
-                            ...item,
-                          };
-                        })
-                        ?.filter((item) =>
-                          countryDetails?.id === 161
-                            ? item
-                            : item?.name === "Manual Bank Transfer" &&
-                              item?.name === "Cash Pick Up"
-                        )}
-                      styles={{ fontSize: "10px ! important" }}
-                    />
-                  </div>
-                )}
               </div>
             </SectionThree>
             <SectionThree>

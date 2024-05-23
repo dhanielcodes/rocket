@@ -125,7 +125,7 @@ function Rates({
     const newC = getC?.find(
       (d) => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase()
     );
-    localStorage.setItem("country2", JSON.stringify(newC));
+    localStorage.setItem("country2", JSON.stringify(selectedOption));
     setSelectedCountry2(selectedOption);
     updateCurrencyDetails2(selectedOption.label);
   };
