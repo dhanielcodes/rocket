@@ -36,7 +36,7 @@ import {
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
-import CountryFlag from "react-country-flag";
+import CountryFlag, { ReactCountryFlag } from "react-country-flag";
 import { kFormatter, kFormatter2 } from "../../../reuseables/format";
 import Btn from "../../../reuseables/Btn";
 import { getLocals } from "../../../hooks/useSessionStorage";
@@ -266,6 +266,7 @@ function WalletsDetails() {
   });
 
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   const [amount, setAmount] = useState();
   const [note, setNote] = useState();
@@ -381,6 +382,122 @@ function WalletsDetails() {
             Go Back
           </Btn>
         </Centeredbox>
+      ) : open2 ? (
+        <>
+          <div
+            style={{
+              textAlign: "left",
+              padding: "0 6px",
+            }}
+          >
+            <h2>
+              <b> Withdraw to any account</b>
+            </h2>
+            <div>How much do you want to withdraw?</div>
+          </div>
+          <br />
+          <Centeredbox>
+            <Boxes radius="15px" width="100%" flexDirection="column">
+              <div
+                style={{
+                  width: "100%",
+                }}
+              >
+                <span>Amount</span>
+                <div
+                  style={{
+                    width: "100%",
+                    position: "relative",
+                    display: "flex",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "36%",
+                      padding: "10px",
+                      backgroundColor: "inherit",
+                      lineHeight: 1,
+                      border: "1px solid #D0D5DD",
+                      borderRadius: "6px 0px 0px 6px",
+                      color: "#000",
+                      fontWeight: 300,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CountryFlag
+                      countryCode={walletDetails?.currency?.code?.slice(0, 2)}
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "2000px",
+                      }}
+                      svg
+                    />{" "}
+                    &nbsp; &nbsp;
+                    {walletDetails?.currency?.code}
+                  </div>
+                  <input
+                    name="amount"
+                    type={"number"}
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                    }}
+                    onKeyDown={(evt) => {
+                      ["e", "E", "+", "-"].includes(evt.key) &&
+                        evt.preventDefault();
+                    }}
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      backgroundColor: "inherit",
+                      lineHeight: 1,
+                      border: "1px solid #D0D5DD",
+                      borderRadius: "0px 6px 6px 0px",
+                      color: "#000",
+                      fontWeight: 300,
+                    }}
+                  />
+                </div>
+              </div>
+
+              <br />
+            </Boxes>
+
+            <Btn
+              disabled={isLoading}
+              clicking={() => {
+                mutate({
+                  userId: userData?.data?.user?.userId,
+                  amountRequested: amount,
+                  userWallet: {
+                    walletId: walletDetails?.walletId,
+                  },
+                  comment: note,
+                  lastUpdatedBy: 0,
+                });
+              }}
+              styles={{
+                width: "100%",
+              }}
+            >
+              {isLoading ? "Withdrawing..." : " Proceed"}
+            </Btn>
+            <Btn
+              disabled={isLoading}
+              clicking={() => {
+                setOpen2(false);
+              }}
+              styles={{
+                width: "100%",
+                marginTop: "20px",
+                background: "#777777",
+              }}
+            >
+              Go Back
+            </Btn>
+          </Centeredbox>
+        </>
       ) : (
         <Content>
           <div
@@ -465,10 +582,19 @@ function WalletsDetails() {
                   setOpen(true);
                 }}
               >
+                Fund
+              </Button>
+              &nbsp; &nbsp;
+              <Button2
+                style={{
+                  background: "#ffffff",
+                  color: "#000 !important",
+                }}
+                onClick={() => {
+                  setOpen2(true);
+                }}
+              >
                 <svg
-                  style={{
-                    marginRight: "10px",
-                  }}
                   width="21"
                   height="20"
                   viewBox="0 0 21 20"
@@ -476,47 +602,32 @@ function WalletsDetails() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M14.6666 5.83268L6.33329 14.166M6.33329 14.166L14.6666 14.166M6.33329 14.166L6.33329 5.83268"
-                    stroke="white"
-                    stroke-width="1.66667"
+                    d="M10.2708 3.54102L10.2708 16.041"
+                    stroke="#000000"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M5.25214 8.58203L10.2721 3.54037L15.293 8.58203"
+                    stroke="#000000"
+                    stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
                 </svg>
-                Fund Wallet
-              </Button>
+
+                <div
+                  style={{
+                    color: "#000 !important",
+                  }}
+                >
+                  Withdraw
+                </div>
+              </Button2>
             </div>
           </div>
 
-          {/*   <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: "20px 0",
-          }}
-        >
-          <div
-            style={{
-              padding: "20px",
-              borderRadius: "10px",
-              background: "#121212",
-              width: "100%",
-              height: "18vh",
-              position: "relative",
-            }}
-          >
-            <img
-              style={{
-                position: "absolute",
-                right: "10px",
-                bottom: "0px",
-              }}
-              src={wallet}
-              alt=""
-            />
-          </div>
-        </div> */}
           <div className="head">
             <p>Wallet History</p>
           </div>
@@ -872,4 +983,19 @@ const Button = styled.button`
   color: white;
 `;
 
+const Button2 = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+
+  border: none;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #000000;
+`;
 export default WalletsDetails;
