@@ -20,6 +20,8 @@ import {
   GetDetails,
   Tranx,
   fundWallet,
+  getagentaddcommissionbankdetails,
+  userwithdrawalrequest,
 } from "../../../services/Dashboard";
 import { Transactions as Trnx } from "../../../../config/Test";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -46,6 +48,7 @@ import Centeredbox from "../../../reuseables/Centeredbox";
 import Boxes from "../../../reuseables/Box";
 import moment from "moment";
 import Agentlayout from "../../../reuseables/AgentLayout";
+import FormattedDate from "../../../reuseables/FormattedDate";
 
 const Droplist = (
   <Menu>
@@ -265,6 +268,40 @@ function WalletsDetails() {
     },
   });
 
+  const { mutate: mutate2, isLoading: isLoading2 } = useMutation({
+    mutationFn: userwithdrawalrequest,
+    onSuccess: (data) => {
+      console.log(data);
+      if (data?.status) {
+        toast.success(data.message);
+        setOpen2(false);
+      } else {
+        toast.error(data.message);
+      }
+    },
+    onError: (data) => {
+      setTimeout(() => {
+        //  seterr("")
+      }, 2000);
+      return;
+    },
+  });
+
+  const { data, isLoading: dataLoading } = useQuery({
+    queryKey: [userData?.data?.user?.userId, "0"],
+    queryFn: getagentaddcommissionbankdetails,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      //   setOpen(true);
+      console.log(err);
+    },
+  });
+
+  console.log(data?.data, "fddfdf");
+  const [selectedItems, setSelectedItems] = useState();
+
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
@@ -396,8 +433,21 @@ function WalletsDetails() {
             <div>How much do you want to withdraw?</div>
           </div>
           <br />
-          <Centeredbox>
-            <Boxes radius="15px" width="100%" flexDirection="column">
+          <Content>
+            <div
+              style={{
+                width: "100%",
+                padding: "20px",
+                backgroundColor: "white",
+                lineHeight: 1,
+                borderRadius: "10px ",
+                color: "#000",
+                fontWeight: 300,
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
               <div
                 style={{
                   width: "100%",
@@ -462,29 +512,134 @@ function WalletsDetails() {
               </div>
 
               <br />
-            </Boxes>
-
+            </div>
+            <BeneficiaryCont>
+              {data?.data?.map((d) => {
+                const isSelected = selectedItems?.id === d?.id;
+                return (
+                  <div
+                    key={d.id}
+                    className="box"
+                    style={{
+                      color: "#000",
+                      textDecoration: "none",
+                      border: `${
+                        isSelected
+                          ? "2px solid rgba(22, 157, 7, 1)"
+                          : "1px solid rgba(233, 237, 245, 1)"
+                      }`,
+                    }}
+                    onClick={() => {
+                      setSelectedItems(d);
+                    }}
+                  >
+                    <Box>
+                      <Avatar className="av">
+                        {`${d?.beneficiaryName?.split(" ")[0][0]} ${
+                          d?.beneficiaryName?.split(" ")[1][0]
+                        }`}
+                      </Avatar>
+                      &nbsp; &nbsp;
+                      <div className="text">
+                        <h5>{d?.beneficiaryName}</h5>
+                        <p>{d?.beneficiaryPhoneNumber}</p>
+                        {/* <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p> */}
+                        <p>
+                          createOn :{" "}
+                          <FormattedDate dateString={d?.dateCreated} />
+                        </p>
+                      </div>
+                      <div className="options">
+                        {isSelected ? (
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="0.466535"
+                              y="0.466535"
+                              width="15.0669"
+                              height="15.0669"
+                              rx="6.99803"
+                              fill="#169D07"
+                            />
+                            <path
+                              d="M11.1104 5.66797L6.83379 9.94454L4.88989 8.00065"
+                              stroke="white"
+                              strokeWidth="1.55512"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <rect
+                              x="0.466535"
+                              y="0.466535"
+                              width="15.0669"
+                              height="15.0669"
+                              rx="6.99803"
+                              stroke="#169D07"
+                              strokeWidth="0.933071"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="0.466535"
+                              y="0.466535"
+                              width="15.0669"
+                              height="15.0669"
+                              rx="6.99803"
+                              fill="white"
+                            />
+                            <rect
+                              x="0.466535"
+                              y="0.466535"
+                              width="15.0669"
+                              height="15.0669"
+                              rx="6.99803"
+                              stroke="#D0D5DD"
+                              strokeWidth="0.933071"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </Box>
+                  </div>
+                );
+              })}
+            </BeneficiaryCont>
             <Btn
-              disabled={isLoading}
+              disabled={isLoading2}
               clicking={() => {
-                mutate({
+                mutate2({
                   userId: userData?.data?.user?.userId,
-                  amountRequested: amount,
-                  userWallet: {
-                    walletId: walletDetails?.walletId,
+                  WithdrawalRequest: {
+                    amountRequested: amount,
+                    userWallet: {
+                      walletId: walletDetails?.walletId,
+                    },
+                    userBeneficiary: {
+                      id: selectedItems?.id,
+                    },
                   },
-                  comment: note,
-                  lastUpdatedBy: 0,
                 });
               }}
               styles={{
                 width: "100%",
               }}
             >
-              {isLoading ? "Withdrawing..." : " Proceed"}
+              {isLoading2 ? "Withdrawing..." : " Proceed"}
             </Btn>
             <Btn
-              disabled={isLoading}
+              disabled={isLoading2}
               clicking={() => {
                 setOpen2(false);
               }}
@@ -496,7 +651,7 @@ function WalletsDetails() {
             >
               Go Back
             </Btn>
-          </Centeredbox>
+          </Content>
         </>
       ) : (
         <Content>
@@ -787,7 +942,7 @@ function WalletsDetails() {
                           </svg>
                         )}
                       </div>
-
+                      &nbsp; &nbsp;
                       <div className="text">
                         <h5>{item?.note}</h5>
                         <p>{item?.sn}</p>
@@ -893,53 +1048,32 @@ const Header = styled.div`
 `;
 
 const BeneficiaryCont = styled.div`
-  overflow-y: scroll;
-  /* border: 1px solid red; */
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 20px;
-
-  .head {
-    width: 100%;
-    /* padding: 1em; */
-    margin: 0 auto;
-
-    p {
-      font-size: 16px;
-    }
-  }
-
   .box {
     background-color: #fff;
-    padding: 1.2em;
     border-radius: 8px;
     display: flex;
-    gap: 10px;
-    width: 100% !important;
-
-    /* border: 0.3px solid green; */
-    margin: 0 auto;
-    width: 90%;
-
-    @media screen and (max-width: 40em) {
-      width: 100%;
-    }
+    gap: 20px;
+    width: 100%;
+    padding: 0 10px;
+    margin-bottom: 20px;
 
     .text {
       display: inline-flex;
       flex-direction: column;
-      /* gap: 4px; */
+      gap: 2px;
       letter-spacing: 1;
-      font-size: 12;
-      /* flex: 1; */
-    }
-    .options {
-      text-align: end;
-      /* height: 100%; */
-      font-size: 12px;
-      align-items: center;
+      flex: 1;
+      /* padding: 1em; */
+
+      h5 {
+        font-size: 13px;
+        font-weight: 350;
+      }
+
+      p {
+        font-size: x-small;
+        font-weight: light;
+      }
     }
 
     /* .arco-icon-more-vertical{

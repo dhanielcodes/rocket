@@ -281,7 +281,29 @@ export const createBeneficiary = async (body) => {
   const { data } = await Axios.post(`${baseurl}/adduserbeneficiary`, body);
   return data;
 };
+export const createBeneficiaryAgent = async (body) => {
+  console.log("🚀 ~ file: Dashboard.jsx:32 ~ createBeneficiary ~ body:", body);
+  const { data } = await Axios.post(
+    `${baseurl}/agentaddcommissionbankdetails`,
+    body
+  );
+  return data;
+};
 
+export const userwithdrawalrequest = async (body) => {
+  console.log("🚀 ~ file: Dashboard.jsx:32 ~ createBeneficiary ~ body:", body);
+  const { data } = await Axios.post(`${baseurl}/userwithdrawalrequest`, body);
+  return data;
+};
+
+export const getagentaddcommissionbankdetails = async (id) => {
+  const { data } = await Axios.get(
+    `${baseurl}/getuserbeneficiaries?userId=${
+      id?.queryKey[0] || 68059751
+    }&beneficiaryId=${0}`
+  );
+  return data;
+};
 export const createWallet = async (body) => {
   const { data } = await Axios.post(`${baseurl}/adduserwallet`, body);
   return data;

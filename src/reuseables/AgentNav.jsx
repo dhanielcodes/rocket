@@ -200,7 +200,6 @@ function AgentNav() {
 
 const NavCont = styled.div`
   background-color: #ffffff;
-  height: 80px;
   position: fixed;
   bottom: 0;
   left: 50%;

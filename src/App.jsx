@@ -65,6 +65,7 @@ import CustomerDetails from "./Routes/Agent/CustomerDetails";
 import ManualUploadBene from "./Routes/User/ManualUploadBene";
 import OurBanks from "./Routes/User/OurBanks.jsx";
 import OurBanksAgent from "./Routes/Agent/OurBanks.jsx.jsx";
+import CreateBeneficiaryAgent from "./Routes/Agent/Settings/CreateBeneficiaryAgent.jsx";
 //
 
 function App() {
@@ -175,6 +176,10 @@ function App() {
             <Route
               path="/agent/manual-upload"
               element={<ManualUpload typee="Agent" />}
+            />
+            <Route
+              path="/agent/accounts"
+              element={<CreateBeneficiaryAgent />}
             />
             <Route
               path="/agent/upload"

@@ -4,30 +4,27 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useEffect, useState } from "react";
-import Userlayout from "../../reuseables/Userlayout";
 import { styled } from "styled-components";
-import CountryDropdown from "../../reuseables/CountryList";
-import CountryFlag from "react-country-flag";
 import { Input } from "@arco-design/web-react";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 const Option = Select.Option;
 import Select from "react-select";
-import CustomSelect from "../../reuseables/CustomSelect";
-import { InputStyle } from "../../styles/Input";
+import { InputStyle } from "../../../styles/Input";
 import {
   countries,
   cities,
   states,
   employment,
   profession,
-} from "../../services/Auth";
+} from "../../../services/Auth";
 import {
   nameEnquiry,
   createBeneficiary,
   getBanks,
   Payoutchannel,
-} from "../../services/Dashboard";
+  createBeneficiaryAgent,
+} from "../../../services/Dashboard";
 import {
   countries as testCountries,
   stateTest as testState,
@@ -36,17 +33,16 @@ import {
   profession as professionTest,
   BankTest as BankList,
   nameEnq as NameEqnquiry,
-} from "../../../config/Test";
-import CustomInput from "../../reuseables/CustomInput";
-import Loader from "../../reuseables/Loader";
-import ReusableModal from "../../reuseables/ReusableModal";
-import Msg from "../../reuseables/Msg";
+} from "../../../../config/Test";
+import CustomInput from "../../../reuseables/CustomInput";
+import Loader from "../../../reuseables/Loader";
+import ReusableModal from "../../../reuseables/ReusableModal";
+import Msg from "../../../reuseables/Msg";
 import { useNavigate } from "react-router-dom";
-import { countryObjectsArray } from "../../../config/CountryCodes";
-import CountryDropdownNormal from "../../reuseables/CountryListNormal";
+import { countryObjectsArray } from "../../../../config/CountryCodes";
 import Agentlayout from "../../../reuseables/AgentLayout";
 
-function CreateBeneficiary() {
+function CreateBeneficiaryAgent() {
   const [accNum, setAccNum] = useState(null);
   const [info, setInfo] = useState(null);
   const [show, setShow] = useState(false);
@@ -284,7 +280,7 @@ function CreateBeneficiary() {
   );
 
   const { mutate, isLoading, isError } = useMutation({
-    mutationFn: createBeneficiary,
+    mutationFn: createBeneficiaryAgent,
     onSuccess: (data) => {
       console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data);
       if (!data.status) {
@@ -351,7 +347,7 @@ function CreateBeneficiary() {
       <Content>
         <div className="cont">
           <Header>
-            <h2>Collection Details</h2>
+            <h2>Withdrawal Account</h2>
             <p>Please fill in the details below</p>
           </Header>
           <div className="sec">
@@ -921,4 +917,4 @@ const SectionThree = styled.div`
   }
 `;
 
-export default CreateBeneficiary;
+export default CreateBeneficiaryAgent;

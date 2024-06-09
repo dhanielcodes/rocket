@@ -39,6 +39,12 @@ const AgentSettings = () => {
       image: contact,
       path: "/agent/settings/wallet",
     },
+    {
+      id: 2,
+      title: "Accounts",
+      image: contact,
+      path: "/agent/accounts",
+    },
     /*   {
       id: 3,
       title: "Discounts",

@@ -2226,7 +2226,6 @@ const BeneficiaryCont = styled.div`
     gap: 20px;
     width: 90%;
     margin: 0 auto;
-    height: 80px;
 
     .text {
       display: inline-flex;
