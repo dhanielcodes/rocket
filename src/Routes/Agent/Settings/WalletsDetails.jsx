@@ -852,7 +852,8 @@ function WalletsDetails() {
                     <Box>
                       {/* <Avatar  className="av">AB</Avatar> */}
                       <div>
-                        {item?.status === "Successful" ? (
+                        {item?.status === "Successful" ||
+                        item?.status === "Approved" ? (
                           <svg
                             width="50"
                             height="50"
@@ -876,10 +877,11 @@ function WalletsDetails() {
                               stroke-linejoin="round"
                             />
                           </svg>
-                        ) : item?.status === "Pending" ? (
+                        ) : item?.status === "Pending" ||
+                          item?.status === "Processing" ? (
                           <svg
-                            width="62"
-                            height="62"
+                            width="52"
+                            height="52"
                             viewBox="0 0 52 52"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -907,39 +909,52 @@ function WalletsDetails() {
                             />
                           </svg>
                         ) : (
-                          <svg
-                            width="70"
-                            height="70"
-                            viewBox="0 0 70 70"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <circle
-                              cx="34.6484"
-                              cy="34.6482"
-                              r="24.5"
-                              transform="rotate(45 34.6484 34.6482)"
-                              fill="#FF0000"
-                            />
-                            <rect
-                              x="46.6689"
-                              y="43.1335"
-                              width="4"
-                              height="28"
-                              rx="2"
-                              transform="rotate(135 46.6689 43.1335)"
-                              fill="white"
-                            />
-                            <rect
-                              x="26.8701"
-                              y="45.9619"
-                              width="4"
-                              height="28"
-                              rx="2"
-                              transform="rotate(-135 26.8701 45.9619)"
-                              fill="white"
-                            />
-                          </svg>
+                          <>
+                            <div
+                              style={{
+                                borderRadius: "100000px",
+                                height: "50px",
+                                width: "50px",
+                              }}
+                            >
+                              <svg
+                                width="60"
+                                height="60"
+                                viewBox="0 0 60 60"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                style={{
+                                  transform: "translate(-12%,-12%)",
+                                }}
+                              >
+                                <circle
+                                  cx="34.6484"
+                                  cy="34.6482"
+                                  r="24.5"
+                                  transform="rotate(45 34.6484 34.6482)"
+                                  fill="#FF0000"
+                                />
+                                <rect
+                                  x="46.6689"
+                                  y="43.1335"
+                                  width="4"
+                                  height="28"
+                                  rx="2"
+                                  transform="rotate(135 46.6689 43.1335)"
+                                  fill="white"
+                                />
+                                <rect
+                                  x="26.8701"
+                                  y="45.9619"
+                                  width="4"
+                                  height="28"
+                                  rx="2"
+                                  transform="rotate(-135 26.8701 45.9619)"
+                                  fill="white"
+                                />
+                              </svg>
+                            </div>
+                          </>
                         )}
                       </div>
                       &nbsp; &nbsp;
@@ -1066,7 +1081,7 @@ const BeneficiaryCont = styled.div`
       /* padding: 1em; */
 
       h5 {
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 350;
       }
 
