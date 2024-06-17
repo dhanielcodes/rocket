@@ -176,10 +176,14 @@ function CreateBeneficiary() {
             beneficiaryCountry: {
               id: countryDetails?.id,
             },
+            currency: {
+              code: selectedCurrency?.code,
+            },
             beneficiaryName: data?.data?.account_name,
             beneficiaryPhoneNumber: "",
             beneficiaryBank: {
               accountNumber: data?.data?.account_number,
+              postalCode,
               bankId: bankcode?.id,
             },
           },
@@ -220,7 +224,7 @@ function CreateBeneficiary() {
     agentId: 0,
   });
 
-  //   const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
+  const [selectedCurrency, setSelectedCurrency] = useState();
   const [selectedCountry, setselectedCountry] = useState();
   const [type, setType] = useState();
 
@@ -234,6 +238,7 @@ function CreateBeneficiary() {
   const [bankIdCode2, setbankIdCode2] = useState();
   const [bankAddress, setBankAddress] = useState();
   const [bankAddress2, setBankAddress2] = useState();
+  const [postalCode, setPostalCode] = useState();
 
   const handleSelectCountry = (e) => {
     console.log(
@@ -259,7 +264,6 @@ function CreateBeneficiary() {
   };
 
   const collectionType = (e) => {
-    //   reset setCreateBene state to the useable one
     setType(e);
   };
   const navigate = useNavigate();
@@ -269,11 +273,15 @@ function CreateBeneficiary() {
       beneficiaryCountry: {
         id: countryDetails?.id,
       },
+      currency: {
+        code: selectedCurrency?.code,
+      },
       beneficiaryName: nameEnq?.data?.account_name,
       beneficiaryPhoneNumber: nameenquiry?.phone,
       beneficiaryBank: {
         accountNumber: accNum,
         bankId: nameenquiry?.bank_id,
+        postalCode,
       },
     },
   });
@@ -320,12 +328,15 @@ function CreateBeneficiary() {
               beneficiaryCountry: {
                 id: countryDetails?.id,
               },
-
+              currency: {
+                code: selectedCurrency?.code,
+              },
               beneficiaryName: bankNoName,
               beneficiaryAddress: bankAddress,
               beneficiaryBank: {
                 bankName: bankName,
                 bankAddress: bankAddress,
+                postalCode,
                 accountNumber: bankNo,
                 accountName: bankNoName,
                 reference: reference,
@@ -417,6 +428,16 @@ function CreateBeneficiary() {
                         borderRadius: "50%",
                       },
                     }),
+                  }}
+                />
+                <p className="">Select currency</p>
+
+                <CountryDropdown
+                  rate
+                  setValue={setSelectedCurrency}
+                  value={selectedCurrency}
+                  onChange={(e) => {
+                    setSelectedCurrency(e);
                   }}
                 />
               </div>
@@ -517,10 +538,20 @@ function CreateBeneficiary() {
                           }),
                         }}
                       />
-                      <p>Accont Number</p>
+                      <p>Postal Code</p>
+                      <CustomInput
+                        placeholder="Enter postal code"
+                        type="number"
+                        readonly={false}
+                        onChange={(e) => {
+                          setPostalCode(e?.target?.value);
+                        }}
+                      />
+                      <p>Account Number</p>
                       <CustomInput
                         placeholder="Enter account number"
                         readonly={false}
+                        type="number"
                         onChange={(e) => {
                           if (e.target.value?.length === 10) {
                             setAccNum(e?.target?.value);
@@ -546,6 +577,15 @@ function CreateBeneficiary() {
                         readonly={false}
                         onChange={(e) => {
                           setBankAddress(e?.target?.value);
+                        }}
+                      />
+                      <p>Postal Code</p>
+                      <CustomInput
+                        placeholder="Enter postal code"
+                        type="number"
+                        readonly={false}
+                        onChange={(e) => {
+                          setPostalCode(e?.target?.value);
                         }}
                       />
                       <p>Account Number</p>
@@ -731,6 +771,9 @@ const Content = styled.div`
       display: flex;
       flex-direction: column;
       gap: 20px;
+    }
+    .css-13cymwt-control {
+      border-width: 1px !important;
     }
 
     button {

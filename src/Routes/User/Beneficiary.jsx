@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import FormattedDate from "../../reuseables/FormattedDate";
 import { GetDetails } from "../../services/Dashboard";
+import ReactCountryFlag from "react-country-flag";
 
 const Droplist = ({ id, onNavigate }) => (
   //   <Menu.Item key='1' onClick={() => onNavigate(id)}>
@@ -197,7 +198,7 @@ function Beneficiary() {
     setSearchKeyword(keyword);
 
     // Filter the beneficiary list based on the keyword
-    const filteredList = BeneList.filter((bene) => {
+    const filteredList = newDetails?.data?.beneficiaries.filter((bene) => {
       const lowerKeyword = keyword.toLowerCase();
 
       // Check if any field in the beneficiary object contains the keyword
@@ -208,6 +209,8 @@ function Beneficiary() {
 
     setFilteredBeneList(filteredList);
   };
+
+  const listt = filteredBeneList || newDetails?.data?.beneficiaries;
 
   return (
     <Userlayout current="Beneficiary">
@@ -238,7 +241,7 @@ function Beneficiary() {
           </svg>
         </Header>
         <BeneficiaryCont>
-          {newDetails?.data?.beneficiaries?.map((d) => {
+          {listt?.map((d) => {
             return (
               <Link
                 key={d.id}
@@ -257,8 +260,16 @@ function Beneficiary() {
                     {`${d?.beneficiaryBank?.accountName?.split(" ")[0][0]} ${
                       d?.beneficiaryBank?.accountName?.split(" ")[1][0]
                     }`}
-                    12
                   </Avatar>
+                  {/*    <ReactCountryFlag
+              countryCode={d?.code?.slice(0, 2)}
+              title={d.code}
+              style={{
+                marginRight: "1px",
+                borderRadius: "10000000px",
+              }}
+              svg
+            /> */}
 
                   <div className="text">
                     <h5>{d?.beneficiaryBank?.accountName}</h5>
