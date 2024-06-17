@@ -1488,7 +1488,7 @@ function SendMoney() {
                       setPurpose(e);
                     }}
                   />
-                  <p>Transaction note</p>
+                  <p>Payee Bank Reference</p>
                   <TextArea
                     name="address"
                     className="textarea"
