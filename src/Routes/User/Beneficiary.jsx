@@ -14,7 +14,11 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import FormattedDate from "../../reuseables/FormattedDate";
-import { GetDetails } from "../../services/Dashboard";
+import {
+  GetDetails,
+  beneficiaries,
+  beneficiaries2,
+} from "../../services/Dashboard";
 import ReactCountryFlag from "react-country-flag";
 
 const Droplist = ({ id, onNavigate }) => (
@@ -167,8 +171,8 @@ function Beneficiary() {
     isLoading: newDetailsloading,
     refetch: refetchnewDetails,
   } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
-    queryFn: GetDetails,
+    queryKey: [Userdata?.data?.user?.userId, 0],
+    queryFn: beneficiaries2,
     // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
       // navigate("/")
@@ -179,7 +183,7 @@ function Beneficiary() {
   });
   console.log(
     "🚀 ~ file: Beneficiary.jsx:108 ~ Beneficiary ~ newDetails:",
-    newDetails?.data?.beneficiaries
+    newDetails?.data
   );
 
   // localStorage.setItem("userDetails",newDetails)
@@ -191,14 +195,14 @@ function Beneficiary() {
   // };
 
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
+  const [filteredBeneList, setFilteredBeneList] = useState();
 
   const handleSearch = (event) => {
     const keyword = event;
     setSearchKeyword(keyword);
 
     // Filter the beneficiary list based on the keyword
-    const filteredList = newDetails?.data?.beneficiaries.filter((bene) => {
+    const filteredList = newDetails?.data.filter((bene) => {
       const lowerKeyword = keyword.toLowerCase();
 
       // Check if any field in the beneficiary object contains the keyword
@@ -210,7 +214,7 @@ function Beneficiary() {
     setFilteredBeneList(filteredList);
   };
 
-  const listt = filteredBeneList || newDetails?.data?.beneficiaries;
+  const listt = filteredBeneList || newDetails?.data;
 
   return (
     <Userlayout current="Beneficiary">

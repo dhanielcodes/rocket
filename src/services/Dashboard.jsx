@@ -16,6 +16,15 @@ export const beneficiaries = async (userId, bid) => {
   return data;
 };
 
+export const beneficiaries2 = async (id) => {
+  const { data } = await Axios.get(
+    `${baseurl}/getuserbeneficiaries?userId=${
+      id?.queryKey[0] || 68059751
+    }&beneficiaryId=${id?.queryKey[1] || 0}`
+  );
+  return data;
+};
+
 export const getAgentRates = async (bid) => {
   const { data } = await Axios.get(
     `${baseurl}/agentgetrate?agentId=${
