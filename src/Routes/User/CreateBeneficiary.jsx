@@ -538,15 +538,7 @@ function CreateBeneficiary() {
                           }),
                         }}
                       />
-                      <p>Postal Code</p>
-                      <CustomInput
-                        placeholder="Enter postal code"
-                        type="number"
-                        readonly={false}
-                        onChange={(e) => {
-                          setPostalCode(e?.target?.value);
-                        }}
-                      />
+
                       <p>Account Number</p>
                       <CustomInput
                         placeholder="Enter account number"
