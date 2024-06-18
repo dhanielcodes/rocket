@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React from "react";
+import React, { useState } from "react";
 import Userlayout from "../../reuseables/Userlayout";
 import { styled } from "styled-components";
 import { Avatar, Typography } from "@arco-design/web-react";
@@ -11,6 +11,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetDetails, deleteuserbeneficiary } from "../../services/Dashboard";
 import toast from "react-hot-toast";
+import ReusableModal from "../../reuseables/ReusableModal";
+import Msg from "../../reuseables/Msg";
+import Btn from "../../reuseables/Btn";
 
 function BeneficiaryDetails() {
   // const { id } = useParams();
@@ -68,6 +71,7 @@ function BeneficiaryDetails() {
   );
 
   console.log(BeneList);
+  const [modal, setModal] = useState(false);
 
   return (
     <Userlayout current="Beneficiary Details" useBack={true}>
@@ -143,12 +147,45 @@ function BeneficiaryDetails() {
               <button
                 className="delete"
                 onClick={() => {
-                  mutate(id);
+                  setModal(true);
                 }}
               >
                 {isLoading ? "deleting beneficiary..." : "Delete"}
               </button>
             </div>
+            {modal && (
+              <ReusableModal
+                width="400px"
+                isOpen={modal}
+                onClose={() => setModal(false)}
+              >
+                <div>
+                  <h2>Are you sure you want to delete this beneficiary?</h2>
+                  <br />
+                  <br />
+                  <div className="actions">
+                    <div className="actionbtn">
+                      <button
+                        style={{
+                          border: "1px solid #dadada",
+                        }}
+                        onClick={() => setModal(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="delete"
+                        onClick={() => {
+                          mutate(id);
+                        }}
+                      >
+                        {isLoading ? "deleting beneficiary..." : "Delete"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </ReusableModal>
+            )}
           </Details>
         </div>
       </Content>
@@ -219,8 +256,9 @@ const Details = styled.div`
     border: 0px solid rgba(90, 99, 118, 1);
     border-radius: 4px;
     cursor: pointer;
-    background: #d60000;
+    background: #d60000 !important;
     width: 100%;
+    color: white !important;
 
     @media screen and (max-width: 40em) {
       margin-bottom: 30px;
@@ -235,6 +273,7 @@ const Details = styled.div`
     /* height: 100%; */
 
     .send {
+      color: white !important;
     }
 
     button {
