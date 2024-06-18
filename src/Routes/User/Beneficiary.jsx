@@ -195,7 +195,7 @@ function Beneficiary() {
   // };
 
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [filteredBeneList, setFilteredBeneList] = useState();
+  const [filteredBeneList, setFilteredBeneList] = useState([]);
 
   const handleSearch = (event) => {
     const keyword = event;
@@ -214,7 +214,11 @@ function Beneficiary() {
     setFilteredBeneList(filteredList);
   };
 
-  const listt = filteredBeneList || newDetails?.data;
+  const listt = filteredBeneList?.length
+    ? filteredBeneList
+    : newDetails?.data?.length
+    ? newDetails?.data
+    : [];
 
   return (
     <Userlayout current="Beneficiary">
@@ -260,20 +264,25 @@ function Beneficiary() {
                 }}
               >
                 <Box>
-                  <Avatar className="av">
-                    {`${d?.beneficiaryBank?.accountName?.split(" ")[0][0]} ${
-                      d?.beneficiaryBank?.accountName?.split(" ")[1][0]
-                    }`}
-                  </Avatar>
-                  {/*    <ReactCountryFlag
-              countryCode={d?.code?.slice(0, 2)}
-              title={d.code}
-              style={{
-                marginRight: "1px",
-                borderRadius: "10000000px",
-              }}
-              svg
-            /> */}
+                  {d?.currency?.code ? (
+                    <ReactCountryFlag
+                      countryCode={d?.currency?.code?.slice(0, 2)}
+                      title={d?.currency?.code}
+                      style={{
+                        marginRight: "1px",
+                        borderRadius: "10000000px",
+                        width: "40px",
+                        height: "40px",
+                      }}
+                      svg
+                    />
+                  ) : (
+                    <Avatar className="av">
+                      {`${d?.beneficiaryBank?.accountName?.split(" ")[0][0]} ${
+                        d?.beneficiaryBank?.accountName?.split(" ")[1][0]
+                      }`}
+                    </Avatar>
+                  )}
 
                   <div className="text">
                     <h5>{d?.beneficiaryBank?.accountName}</h5>
