@@ -617,11 +617,11 @@ const Details = styled.div`
       h5 {
         color: rgba(102, 112, 133, 1);
         font-weight: 400;
-        font-size: 16px;
+        font-size: 13px;
       }
       p {
         font-weight: 450;
-        font-size: 14px;
+        font-size: 13px;
       }
     }
   }

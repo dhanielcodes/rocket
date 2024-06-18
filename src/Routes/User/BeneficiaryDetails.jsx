@@ -8,8 +8,9 @@ import { styled } from "styled-components";
 import { Avatar, Typography } from "@arco-design/web-react";
 import { useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { GetDetails } from "../../services/Dashboard";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetDetails, deleteuserbeneficiary } from "../../services/Dashboard";
+import toast from "react-hot-toast";
 
 function BeneficiaryDetails() {
   // const { id } = useParams();
@@ -17,7 +18,25 @@ function BeneficiaryDetails() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
+  const { mutate, isLoading, isError } = useMutation({
+    mutationFn: deleteuserbeneficiary,
+    onSuccess: (data) => {
+      console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data);
+      if (data.status) {
+        toast.success(data?.message);
+        navigate(`/user/beneficiary`);
 
+        // toast.error(data?.message)
+      } else {
+        toast.error(data?.message);
+      }
+
+      // localStorage.setItem("userDetails",JSON.stringify(UserTestData))
+    },
+    onError: (data) => {
+      return;
+    },
+  });
   const {
     data,
     isLoading: nameEnqLoading,
@@ -119,6 +138,16 @@ function BeneficiaryDetails() {
                   Send Money
                 </button>
               </div>
+              <br />
+
+              <button
+                className="delete"
+                onClick={() => {
+                  mutate(id);
+                }}
+              >
+                {isLoading ? "deleting beneficiary..." : "Delete"}
+              </button>
             </div>
           </Details>
         </div>
@@ -185,7 +214,18 @@ const Details = styled.div`
       /* padding: 7px 20px; */
     }
   }
+  .delete {
+    padding: 15px 35px;
+    border: 0px solid rgba(90, 99, 118, 1);
+    border-radius: 4px;
+    cursor: pointer;
+    background: #d60000;
+    width: 100%;
 
+    @media screen and (max-width: 40em) {
+      margin-bottom: 30px;
+    }
+  }
   .actionbtn {
     display: flex;
     justify-content: center;
@@ -195,17 +235,14 @@ const Details = styled.div`
     /* height: 100%; */
 
     .send {
-      &:hover {
-        background: rgba(241, 149, 74, 1);
-        border: none;
-      }
     }
 
     button {
       padding: 15px 35px;
-      border: 0.1px solid rgba(90, 99, 118, 1);
+      border: 0px solid rgba(90, 99, 118, 1);
       border-radius: 4px;
       cursor: pointer;
+      width: 100%;
 
       @media screen and (max-width: 40em) {
         margin-bottom: 30px;
@@ -244,11 +281,11 @@ const Details = styled.div`
       h5 {
         color: rgba(102, 112, 133, 1);
         font-weight: 400;
-        font-size: 16px;
+        font-size: 13px;
       }
       p {
         font-weight: 450;
-        font-size: 14px;
+        font-size: 13px;
       }
     }
   }
