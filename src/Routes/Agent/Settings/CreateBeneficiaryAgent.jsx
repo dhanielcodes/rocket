@@ -326,16 +326,18 @@ function CreateBeneficiaryAgent() {
                 accountNumber: bankNo,
                 accountName: bankNoName,
                 reference: reference,
-                iban: bankIdCode,
+                iban: bankNo,
                 bic: bankIdCode,
+                swiftCode: bankIdCode,
               },
               correspondenceBank: {
                 bankName: bankName2,
                 bankAddress: bankAddress2,
                 accountNumber: bankNo2,
                 accountName: bankNoName2,
-                iban: bankIdCode2,
+                iban: bankNo2,
                 bic: bankIdCode2,
+                swiftCode: bankIdCode2,
               },
             },
           }
@@ -545,7 +547,7 @@ function CreateBeneficiaryAgent() {
                           setBankAddress(e?.target?.value);
                         }}
                       />
-                      <p>Account Number</p>
+                      <p>IBAN/Account Number</p>
                       <CustomInput
                         placeholder="Enter account number"
                         readonly={false}
@@ -563,7 +565,7 @@ function CreateBeneficiaryAgent() {
                           setBankNoName(e?.target?.value);
                         }}
                       />
-                      <p>IBAN/BIC</p>
+                      <p>BIC/Swiftcode</p>
                       <CustomInput
                         placeholder="Enter iban/bic"
                         type="text"
@@ -639,7 +641,7 @@ function CreateBeneficiaryAgent() {
                       setBankAddress2(e?.target?.value);
                     }}
                   />
-                  <p>Account Number</p>
+                  <p>IBAN/Account Number</p>
                   <CustomInput
                     placeholder="Enter account number"
                     readonly={false}
@@ -657,7 +659,7 @@ function CreateBeneficiaryAgent() {
                       setBankNoName2(e?.target?.value);
                     }}
                   />
-                  <p>IBAN/BIC</p>
+                  <p>BIC/Swiftcode</p>
                   <CustomInput
                     placeholder="Enter iban/bic"
                     type="text"
