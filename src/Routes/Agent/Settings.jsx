@@ -196,7 +196,7 @@ const AgentSettings = () => {
               <img src={copy} alt="" />
             </p>
             <p
-              className="copyreg"
+              className="copyreg2"
               style={{
                 cursor: "pointer",
               }}
@@ -205,14 +205,17 @@ const AgentSettings = () => {
                 toast.success("Agent Code Copied!");
               }}
             >
-              <span
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "600",
-                }}
-              >
-              Copy your code
-              </span>
+              <div>
+                Your Code:{" "}
+                <span
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  {Userdata?.data?.user?.userId}
+                </span>
+              </div>
               <img src={copy} alt="" />
             </p>
           </div>
@@ -327,6 +330,19 @@ const InnerBox = styled.div`
       display: flex;
       align-items: center;
       gap: 5px;
+      span {
+        color: #00a85a;
+      }
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 150%;
+    }
+    .copyreg2 {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 4px;
       span {
         color: #00a85a;
       }
