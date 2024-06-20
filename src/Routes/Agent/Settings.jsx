@@ -195,6 +195,26 @@ const AgentSettings = () => {
               </span>
               <img src={copy} alt="" />
             </p>
+            <p
+              className="copyreg"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(Userdata?.data?.user?.userId);
+                toast.success("Agent Code Copied!");
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "600",
+                }}
+              >
+              Copy your code
+              </span>
+              <img src={copy} alt="" />
+            </p>
           </div>
           <p className="title">Profile Settings</p>
           <Box alignItems="flex-start" flexDirection="column">

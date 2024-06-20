@@ -66,6 +66,8 @@ function Register() {
     countryId: "",
     cityId: "",
     employmentStatusId: "",
+    accountType: "",
+
     profession: "",
     companyName: "",
     onboardingSource: "Web",
@@ -350,6 +352,8 @@ function Register() {
           address: newAddress?.description,
           postcode: user?.postcode,
           employmentStatusId: user?.employmentStatusId,
+          accountType: user?.accountType,
+
           profession: {
             id: profId?.id,
             name: profId?.name,
@@ -425,13 +429,7 @@ function Register() {
     }
   };
   const handleStepTwo = () => {
-    if (
-      user?.firstName &&
-      user?.surName &&
-      user?.countryId &&
-      user?.cityId &&
-      user?.phone
-    ) {
+    if (user?.firstName && user?.countryId && user?.cityId && user?.phone) {
       setstep1(false);
       setstep2(false);
       setstep3(true);
@@ -452,7 +450,7 @@ function Register() {
         toast.error("Fill all fields required");
       }
     } else {
-      if (user?.email && user?.password) {
+      if (user?.email && user?.password && user?.accountType) {
         if (user?.password === confirm) {
           setstep1(false);
           setstep2(true);
@@ -538,6 +536,32 @@ function Register() {
                 </div>
 
                 <div className="inputform">
+                  <div>
+                    <span className="span">Account Type</span>
+
+                    <Select
+                      name="countryId"
+                      styles={{
+                        padding: "0px !important",
+                        // You can add custom styles here if needed
+                      }}
+                      options={[
+                        { label: "individual", value: 1 },
+                        { label: "Business", value: 2 },
+                      ]}
+                      // value={use} // Pass the selected option to the value prop
+                      onChange={(e) => {
+                        console.log(e, "ddddsdsf");
+                        setUser({
+                          ...user,
+                          accountType: e,
+                        });
+                      }} // Handle option selection
+                      placeholder="Please select a account type"
+                      showSearch
+                      isClearable={true} // Allow clearing the selected option
+                    />
+                  </div>
                   {agentName ? (
                     ""
                   ) : (
@@ -675,28 +699,46 @@ function Register() {
               </div>
 
               <div className="inputform ">
-                <div>
-                  <span className="span">First Name</span>
-                  <Input
-                    name="firstName"
-                    onChange={handleChange}
-                    className="input"
-                    style={{ borderRadius: "8px;" }}
-                    placeholder="Enter your Frist name"
-                  />
-                </div>
-                <div>
-                  <span className="span">Last Name</span>
-                  <InputStyle>
-                    <Input
-                      name="surName"
-                      onChange={handleChange}
-                      className="input"
-                      style={{ borderRadius: "8px;" }}
-                      placeholder="Enter your Last Name"
-                    />
-                  </InputStyle>
-                </div>
+                {user?.accountType === 2 ? (
+                  <>
+                    {" "}
+                    <div>
+                      <span className="span">Business Name</span>
+                      <Input
+                        name="firstName"
+                        onChange={handleChange}
+                        className="input"
+                        style={{ borderRadius: "8px;" }}
+                        placeholder="Enter your Business name"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <span className="span">First Name</span>
+                      <Input
+                        name="firstName"
+                        onChange={handleChange}
+                        className="input"
+                        style={{ borderRadius: "8px;" }}
+                        placeholder="Enter your First name"
+                      />
+                    </div>
+                    <div>
+                      <span className="span">Last Name</span>
+                      <InputStyle>
+                        <Input
+                          name="surName"
+                          onChange={handleChange}
+                          className="input"
+                          style={{ borderRadius: "8px;" }}
+                          placeholder="Enter your Last Name"
+                        />
+                      </InputStyle>
+                    </div>
+                  </>
+                )}
 
                 <div>
                   <span className="span">Country</span>
