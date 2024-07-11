@@ -10,7 +10,7 @@ import { Badge, Space } from "@arco-design/web-react";
 import { useNavigate } from "react-router-dom";
 import { notifs } from "../services/Dashboard";
 
-function Header({ current, useBack }) {
+function Header({ current, useBack, showNotif = true }) {
   const navigate = useNavigate();
 
   const UserData = JSON.parse(localStorage.getItem("userDetails"));
@@ -69,21 +69,23 @@ function Header({ current, useBack }) {
           )}
         </div>
         {current && <h4 className="headercurrent">{current}</h4>}
-        <div className="notifi">
-          <Badge count={transactionsList?.length || 0} offset={[1, -1]}>
-            <IconNotification
-              onClick={() => {
-                navigate("/user/notifications");
-              }}
-              style={{
-                color: "#00A85A",
-                fill: "#00A85A",
-                fontSize: 28,
-                verticalAlign: -3,
-              }}
-            />
-          </Badge>
-        </div>
+        {showNotif && (
+          <div className="notifi">
+            <Badge count={transactionsList?.length || 0} offset={[1, -1]}>
+              <IconNotification
+                onClick={() => {
+                  navigate("/user/notifications");
+                }}
+                style={{
+                  color: "#00A85A",
+                  fill: "#00A85A",
+                  fontSize: 28,
+                  verticalAlign: -3,
+                }}
+              />
+            </Badge>
+          </div>
+        )}
       </div>
     </HeaderCont>
   );

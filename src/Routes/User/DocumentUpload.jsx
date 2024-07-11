@@ -47,6 +47,8 @@ import Agentlayout from "../../reuseables/AgentLayout";
 import toast from "react-hot-toast";
 
 function DocumentUploadAgent({ typee }) {
+  const UserData = JSON.parse(localStorage.getItem("userDetails"));
+
   const { mutate, isLoading } = useMutation({
     mutationFn: generateJourneyToken,
     onSuccess: (data) => {
@@ -126,6 +128,11 @@ function DocumentUploadAgent({ typee }) {
                       Password: "0RlWo7BZ4dx7KzSy",
                       area: "area",
                     });
+
+                    localStorage.setItem(
+                      "userIdM",
+                      UserData?.data?.user?.userId
+                    );
                   }}
                   disabled={!type}
                 >

@@ -8,14 +8,14 @@ import Header from "./Header";
 import Nav from "./Nav";
 import { useNavigate } from "react-router-dom";
 
-function OneLayout({ children, current, useBack }) {
+function OneLayout({ children, current, useBack, showNotif = true }) {
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   const navigate = useNavigate();
 
   return (
     <Layout>
       <div className="main">
-        <Header current={current} useBack={useBack} />
+        <Header current={current} useBack={useBack} showNotif={showNotif} />
         <div className="cont">
           <div className="space"></div>
 

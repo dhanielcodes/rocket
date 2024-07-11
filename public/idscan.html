@@ -254,10 +254,7 @@
         additionalData: [
           {
             Name: "Customer_ID",
-            Value: `${
-              JSON.parse(localStorage?.getItem("userDetails"))?.data?.user
-                ?.userId
-            }`,
+            Value: localStorage.getItem("userIdM"),
           },
         ],
         smartCapture: {

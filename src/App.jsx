@@ -66,6 +66,7 @@ import ManualUploadBene from "./Routes/User/ManualUploadBene";
 import OurBanks from "./Routes/User/OurBanks.jsx";
 import OurBanksAgent from "./Routes/Agent/OurBanks.jsx.jsx";
 import CreateBeneficiaryAgent from "./Routes/Agent/Settings/CreateBeneficiaryAgent.jsx";
+import UploadIdMobile from "./Routes/User/UploadIdMobile.jsx";
 //
 
 function App() {
@@ -186,6 +187,7 @@ function App() {
               element={<DocumentUpload typee="Agent" />}
             />
             <Route path="/upload" element={<UploadId />} />
+            <Route path="/upload-mobile" element={<UploadIdMobile />} />
             <Route
               path="/idscan"
               render={() => {
