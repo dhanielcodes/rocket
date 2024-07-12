@@ -102,43 +102,45 @@ function DocumentUploadAgent({ typee }) {
                   />
                 </div>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                <button
-                  disabled={!type}
-                  onClick={() => {
-                    navigate(
-                      typee === "Agent"
-                        ? "/agent/manual-upload"
-                        : "/user/manual-upload"
-                    );
+              {type && (
+                <div
+                  style={{
+                    display: "flex",
                   }}
                 >
-                  Manual Upload
-                </button>
-                &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                <button
-                  onClick={() => {
-                    mutate({
-                      grant_type: "password",
-                      UserName: "TRpoc_admin",
-                      Password: "0RlWo7BZ4dx7KzSy",
-                      area: "area",
-                    });
+                  <button
+                    disabled={!type}
+                    onClick={() => {
+                      navigate(
+                        typee === "Agent"
+                          ? "/agent/manual-upload"
+                          : "/user/manual-upload"
+                      );
+                    }}
+                  >
+                    Manual Upload
+                  </button>
+                  &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button
+                    onClick={() => {
+                      mutate({
+                        grant_type: "password",
+                        UserName: "TRpoc_admin",
+                        Password: "0RlWo7BZ4dx7KzSy",
+                        area: "area",
+                      });
 
-                    localStorage.setItem(
-                      "userIdM",
-                      UserData?.data?.user?.userId
-                    );
-                  }}
-                  disabled={!type}
-                >
-                  {isLoading ? "Generating Token..." : "Scan Document"}
-                </button>
-              </div>
+                      localStorage.setItem(
+                        "userIdM",
+                        UserData?.data?.user?.userId
+                      );
+                    }}
+                    disabled={!type}
+                  >
+                    {isLoading ? "Generating Token..." : "Scan Document"}
+                  </button>
+                </div>
+              )}
             </SectionThree>
           </div>
         </div>

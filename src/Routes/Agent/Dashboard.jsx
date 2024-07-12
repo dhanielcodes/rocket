@@ -425,6 +425,7 @@ function Dashboard() {
               <div className="dashboardamount">
                 <p>Total Earnings </p>
                 <h3>
+                  ₦
                   {NumberWithCommas(
                     data?.data?.agentAgentCommissionEarned || 0
                   )}
@@ -469,7 +470,7 @@ function Dashboard() {
               <div className="dashboardamount">
                 <p>Pending Balance</p>
                 <h3>
-                  {NumberWithCommas(data?.data?.pendingCommissionEarning || 0)}
+                  ₦{NumberWithCommas(data?.data?.pendingCommissionEarning || 0)}
                 </h3>
               </div>
             </div>
