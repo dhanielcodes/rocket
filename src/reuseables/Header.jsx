@@ -74,7 +74,7 @@ function Header({ current, useBack, showNotif = true }) {
             <Badge count={transactionsList?.length || 0} offset={[1, -1]}>
               <IconNotification
                 onClick={() => {
-                  navigate("/user/notifications");
+                  navigate("/agent/notifications");
                 }}
                 style={{
                   color: "#00A85A",

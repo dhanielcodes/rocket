@@ -67,6 +67,7 @@ import OurBanks from "./Routes/User/OurBanks.jsx";
 import OurBanksAgent from "./Routes/Agent/OurBanks.jsx.jsx";
 import CreateBeneficiaryAgent from "./Routes/Agent/Settings/CreateBeneficiaryAgent.jsx";
 import UploadIdMobile from "./Routes/User/UploadIdMobile.jsx";
+import NotificationsAgent from "./Routes/User/NotificationsAgent.jsx";
 //
 
 function App() {
@@ -99,6 +100,10 @@ function App() {
             />
             <Route path="/user/transactions/" element={<History />} />
             <Route path="/user/notifications/" element={<Notifications />} />
+            <Route
+              path="/agent/notifications/"
+              element={<NotificationsAgent />}
+            />
             <Route
               path="/user/transactions/details"
               element={<TransactionDetails />}
