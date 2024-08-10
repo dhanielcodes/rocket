@@ -10,7 +10,7 @@ import { Badge, Space } from "@arco-design/web-react";
 import { useNavigate } from "react-router-dom";
 import { notifs } from "../services/Dashboard";
 
-function Header({ current, useBack, showNotif = true }) {
+function Header({ current, useBack, showNotif = true, user = "user" }) {
   const navigate = useNavigate();
 
   const UserData = JSON.parse(localStorage.getItem("userDetails"));
@@ -74,7 +74,7 @@ function Header({ current, useBack, showNotif = true }) {
             <Badge count={transactionsList?.length || 0} offset={[1, -1]}>
               <IconNotification
                 onClick={() => {
-                  navigate("/agent/notifications");
+                  navigate("/" + user + "/notifications");
                 }}
                 style={{
                   color: "#00A85A",

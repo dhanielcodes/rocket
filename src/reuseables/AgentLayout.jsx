@@ -25,7 +25,7 @@ function Agentlayout({ children, current, useBack }) {
 
   return (
     <Layout>
-      <Header current={current} useBack={useBack} />
+      <Header current={current} useBack={useBack} user="agent" />
       <br />
       <div className="cont">{children}</div>
       <div
