@@ -841,6 +841,7 @@ function WalletsDetails() {
           <BeneficiaryCont>
             <div className="head">
               <p>Today</p>
+              <br />
             </div>
             {nameEnq?.data?.walletTransactions
               ?.filter((d) => d?.currency === walletDetails?.currency?.code)
@@ -1065,13 +1066,14 @@ const Header = styled.div`
 `;
 
 const BeneficiaryCont = styled.div`
+  padding: 0 20px;
   .box {
     background-color: #fff;
     border-radius: 8px;
     display: flex;
     gap: 20px;
     width: 100%;
-    padding: 0 10px;
+    padding: 0 20px;
     margin-bottom: 20px;
 
     .text {
