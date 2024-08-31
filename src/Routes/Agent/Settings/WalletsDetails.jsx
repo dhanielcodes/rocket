@@ -535,9 +535,11 @@ function WalletsDetails() {
                   >
                     <Box>
                       <Avatar className="av">
-                        {`${d?.beneficiaryName?.split(" ")[0][0]} ${
-                          d?.beneficiaryName?.split(" ")[1][0]
-                        }`}
+                        {d?.beneficiaryName
+                          ? `${d?.beneficiaryName?.split(" ")[0]?.[0] || ""} ${
+                              d?.beneficiaryName?.split(" ")[1]?.[0] || ""
+                            }`
+                          : "00"}
                       </Avatar>
                       &nbsp; &nbsp;
                       <div className="text">
