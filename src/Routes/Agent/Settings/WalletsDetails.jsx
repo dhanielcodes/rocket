@@ -794,7 +794,7 @@ function WalletsDetails() {
             <InputSearch
               allowClear
               placeholder="Search History"
-              style={{ width: "80%", padding: "0 10px" }}
+              style={{ width: "80%" }}
               className="input"
               //onChange={handleSearch}
             />
