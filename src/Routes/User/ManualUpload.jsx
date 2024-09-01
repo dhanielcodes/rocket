@@ -84,10 +84,10 @@ function ManualUpload({ typee }) {
   };
 
   const [image, setImage] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [image2, setImage2] = useState();
-  const [loading2, setLoading2] = useState(true);
+  const [loading2, setLoading2] = useState(false);
   const Lay = typee === "Agent" ? Agentlayout : Userlayout;
 
   return (
@@ -107,18 +107,29 @@ function ManualUpload({ typee }) {
                   .getItem("docType")
                   ?.toUpperCase()} FILE`}
                 setLoading={setLoading}
+                loading={loading}
               />
               <br></br>
               <p className="textheader">PASSPORT POTOGRAPH</p>
-              <FileUpload
-                setValue={setImage2}
-                value={image2}
-                placeholder="Click to upload PASSPORT POTOGRAPH"
-                setLoading={setLoading2}
-              />
+              <div
+                style={{
+                  opacity: image?.secure_url ? 1 : 0.5,
+                  pointerEvents: image?.secure_url ? "all" : "none",
+                }}
+              >
+                <FileUpload
+                  setValue={setImage2}
+                  value={image2}
+                  placeholder="Click to upload PASSPORT POTOGRAPH"
+                  setLoading={setLoading2}
+                  loading={loading2}
+                />
+              </div>
               &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
               <button
-                disabled={isLoading || !image2 || !image}
+                disabled={
+                  isLoading || !image2?.secure_url || !image?.secure_url
+                }
                 onClick={() => {
                   mutate({
                     userId: UserData?.data?.user?.userId,
