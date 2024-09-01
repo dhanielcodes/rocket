@@ -27,6 +27,7 @@ import toast from "react-hot-toast";
 import Autocomplete from "react-google-autocomplete";
 import { LocationInput } from "../reuseables/LocationInput";
 import AppInput from "../reuseables/AppInput";
+import Auth from "../images/auth.png";
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -476,7 +477,9 @@ function Register() {
   return (
     <LoginCotainer>
       <div className="flex">
-        <div className="side1"></div>
+        <div className="side1">
+          <img src={Auth} alt="" />
+        </div>
         <div className="side2 fade-In">
           {step1 && (
             <Center>
@@ -1072,6 +1075,8 @@ const LoginCotainer = styled.div`
 
     .side1 {
       width: 50%;
+      display: grid;
+      place-items: center;
       height: 100%;
       background: var(--Primary-Colour, #00a85a);
     }

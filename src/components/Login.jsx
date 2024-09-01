@@ -32,6 +32,7 @@ import { BASE_URL } from "../../config/config";
 import Kyc from "../reuseables/Kyc";
 import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
+import Auth from "../images/auth.png";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import {
@@ -327,7 +328,9 @@ function Login() {
   return (
     <LoginCotainer>
       <div className="flex">
-        <div className="side1"></div>
+        <div className="side1">
+          <img src={Auth} alt="" />
+        </div>
         <div className="side2">
           <Center>
             <img src={Logo} />
@@ -562,6 +565,8 @@ const LoginCotainer = styled.div`
     .side1 {
       width: 50%;
       height: 100%;
+      display: grid;
+      place-items: center;
       background: var(--Primary-Colour, #00a85a);
     }
     .side2 {

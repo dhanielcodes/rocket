@@ -34,6 +34,7 @@ import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
+import Auth from "../images/auth.png";
 
 const baseurl = BASE_URL;
 
@@ -82,7 +83,9 @@ function ResetPassword() {
   return (
     <LoginCotainer>
       <div className="flex">
-        <div className="side1"></div>
+        <div className="side1">
+          <img src={Auth} alt="" />
+        </div>
         <div className="side2">
           <Center>
             <img src={Logo} />
@@ -249,6 +252,8 @@ const LoginCotainer = styled.div`
 
     .side1 {
       width: 50%;
+      display: grid;
+      place-items: center;
       height: 100%;
       background: var(--Primary-Colour, #00a85a);
     }
