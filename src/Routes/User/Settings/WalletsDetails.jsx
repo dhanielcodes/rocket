@@ -5,7 +5,11 @@
 import React, { useEffect, useState } from "react";
 import Userlayout from "../../../reuseables/Userlayout";
 import { styled } from "styled-components";
-import { Input, Space } from "@arco-design/web-react";
+import {
+  Input,
+  Space,
+  Pagination as Paginationn,
+} from "@arco-design/web-react";
 import { Avatar, Typography } from "@arco-design/web-react";
 import { Dropdown, Menu, Divider } from "@arco-design/web-react";
 import {
@@ -263,7 +267,14 @@ function WalletsDetails() {
 
   const [amount, setAmount] = useState();
   const [note, setNote] = useState();
+  const [sli, setSli] = useState(0);
+  const [sli2, setSli2] = useState(5);
+  const [previousNumber, setPreviousNumber] = useState(null);
+  const [currentNumber, setCurrentNumber] = useState(1);
 
+  useEffect(() => {
+    setPreviousNumber(currentNumber);
+  }, [currentNumber]);
   return (
     <Userlayout current="Wallets" useBack={open ? false : true}>
       {open ? (
@@ -694,7 +705,35 @@ function WalletsDetails() {
                     </Box>
                   </div>
                 </>
-              ))}
+              ))
+              ?.slice(sli, sli2)}
+            <Paginationn
+              pageSize={5}
+              onChange={(pa, pe) => {
+                console.log(pa, pe, "onchange");
+                if (previousNumber !== null) {
+                  if (pa > previousNumber) {
+                    //  setStatus("The number is going higher.");
+                    setSli((current) => current + 5);
+                    setSli2((current) => current + 5);
+                  } else if (pa < previousNumber) {
+                    // setStatus("The number is going lower.");
+                    setSli((current) => current - 5);
+                    setSli2((current) => current - 5);
+                  } else {
+                    return;
+                    //setStatus("The number is unchanged.");
+                  }
+                }
+
+                setCurrentNumber(pa);
+              }}
+              current={currentNumber}
+              simple
+              showJumper={false}
+              total={nameEnq?.data?.walletTransactions?.length}
+              showTotal
+            />
           </BeneficiaryCont>
         </Content>
       )}
