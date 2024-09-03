@@ -629,28 +629,30 @@ function WalletsDetails() {
                 );
               })}
             </BeneficiaryCont>
-            <Btn
-              disabled={isLoading2}
-              clicking={() => {
-                mutate2({
-                  userId: userData?.data?.user?.userId,
-                  WithdrawalRequest: {
-                    amountRequested: amount,
-                    userWallet: {
-                      walletId: walletDetails?.walletId,
+            {amount && selectedItems?.id && (
+              <Btn
+                disabled={isLoading2}
+                clicking={() => {
+                  mutate2({
+                    userId: userData?.data?.user?.userId,
+                    WithdrawalRequest: {
+                      amountRequested: amount,
+                      userWallet: {
+                        walletId: walletDetails?.walletId,
+                      },
+                      userBeneficiary: {
+                        id: selectedItems?.id,
+                      },
                     },
-                    userBeneficiary: {
-                      id: selectedItems?.id,
-                    },
-                  },
-                });
-              }}
-              styles={{
-                width: "100%",
-              }}
-            >
-              {isLoading2 ? "Withdrawing..." : " Proceed"}
-            </Btn>
+                  });
+                }}
+                styles={{
+                  width: "100%",
+                }}
+              >
+                {isLoading2 ? "Withdrawing..." : " Proceed"}
+              </Btn>
+            )}
             <Btn
               disabled={isLoading2}
               clicking={() => {
