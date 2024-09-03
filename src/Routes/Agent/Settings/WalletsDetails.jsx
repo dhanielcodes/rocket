@@ -657,6 +657,8 @@ function WalletsDetails() {
               disabled={isLoading2}
               clicking={() => {
                 setOpen2(false);
+                setAmount();
+                setSelectedItems();
               }}
               styles={{
                 width: "100%",
