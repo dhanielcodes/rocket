@@ -296,7 +296,7 @@ const Center = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 60%;
+    width: 90%;
 
     color: #000;
 

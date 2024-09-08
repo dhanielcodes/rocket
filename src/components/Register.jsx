@@ -1118,7 +1118,7 @@ const Center = styled.div`
   width: 100%;
   gap: 10px;
   overflow-x: hidden;
-  padding: 40px;
+  padding: 18px;
 
   .span {
     font-weight: 500;
