@@ -239,17 +239,6 @@ const LoginCotainer = styled.div`
     overflow: hidden;
     height: 100%;
 
-    @media screen and (max-width: 40em) {
-      .side1 {
-        display: none;
-      }
-      .side2 {
-        background: #fcfcfc;
-        width: 100%;
-        flex: 1;
-      }
-    }
-
     .side1 {
       width: 50%;
       display: grid;
@@ -261,6 +250,17 @@ const LoginCotainer = styled.div`
       background: #fcfcfc;
       width: 50%;
       overflow-y: scroll;
+    }
+
+    @media screen and (max-width: 40em) {
+      .side1 {
+        display: none;
+      }
+      .side2 {
+        background: #fcfcfc;
+        width: 100%;
+        flex: 1;
+      }
     }
   }
 `;
