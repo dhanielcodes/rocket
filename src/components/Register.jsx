@@ -917,6 +917,8 @@ function Register() {
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
+                          paddingTop: "16px",
+                          paddingBottom: "14px",
                         }}
                       >
                         {address?.description}
@@ -929,7 +931,7 @@ function Register() {
                           }}
                           style={{
                             position: "absolute",
-                            top: "20%",
+                            top: "22%",
                             fontSize: "17px",
                             right: "10px",
                             cursor: "pointer",
