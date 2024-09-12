@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TiEye } from "react-icons/ti";
 import { styled } from "styled-components";
 
-function AppInput({
+function AppInputPassword({
   placeholder,
   value,
   onChange,
   width,
   type,
   name,
-  padding,
+  padding = "14px",
   disabled,
   defaultValue,
-  cut,
-  removeCutBorder,
   className,
 }) {
   const [ntype, setType] = useState("password");
@@ -37,15 +35,13 @@ function AppInput({
           style={{
             width: width,
             padding: padding,
-            borderRadius: cut ? "0px 8px 8px 0px" : "8px",
-            borderTop: "1px solid #b3b3b3",
-            borderLeft: removeCutBorder ? "none" : "1px solid #b3b3b3",
-            borderRight: "1px solid #b3b3b3",
-            borderBottom: "1px solid #b3b3b3",
+            borderRadius: "8px",
+            border: "1px solid #d0d5dd",
           }}
           type={type === "password" ? ntype : type}
           placeholder={placeholder}
           value={value}
+          className={className}
           onChange={onChange}
           onWheel={numberInputOnWheelPreventChange}
           name={name}
@@ -82,7 +78,7 @@ function AppInput({
   );
 }
 
-export default AppInput;
+export default AppInputPassword;
 const Content = styled.div`
   position: relative;
   width: 100%;
@@ -92,9 +88,9 @@ const Content = styled.div`
   }
 
   .top input {
-    padding: 12px;
     width: 100%;
     font-size: 14px;
+    padding: 14px;
     color: #000000;
     font-weight: 500;
     background-color: white;

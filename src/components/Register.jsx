@@ -28,6 +28,7 @@ import Autocomplete from "react-google-autocomplete";
 import { LocationInput } from "../reuseables/LocationInput";
 import AppInput from "../reuseables/AppInput";
 import Auth from "../images/auth.png";
+import AppInputPassword from "../reuseables/AppInputPassword";
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -483,166 +484,164 @@ function Register() {
         <div className="side2 fade-In">
           {step1 && (
             <Center>
-              <div>
-                <div className="signup">
-                  <div className="signupcontent">
-                    <div className="navigation">
-                      <Link
-                        href="/"
-                        style={{
-                          color: "var(--primary-color)",
-                          display: "flex",
-                          gap: "5px",
-                        }}
-                      >
-                        <img src={Left} />
-                        <p>Back</p>
-                      </Link>
-                    </div>
-                    <div className="signuptext">
-                      <span className="span">Already have an account?</span>
-                      <Link href="/" style={{ color: "var(--primary-color)" }}>
-                        Sign in
-                      </Link>
-                    </div>
+              <div className="signup">
+                <div className="signupcontent">
+                  <div className="navigation">
+                    <Link
+                      href="/"
+                      style={{
+                        color: "var(--primary-color)",
+                        display: "flex",
+                        gap: "5px",
+                      }}
+                    >
+                      <img src={Left} />
+                      <p>Back</p>
+                    </Link>
                   </div>
-                  <br />
-                  <div className="timeline">
-                    <Timeline
-                      direction="horizontal"
+                  <div className="signuptext">
+                    <span className="span">Already have an account?</span>
+                    <Link href="/" style={{ color: "var(--primary-color)" }}>
+                      Sign in
+                    </Link>
+                  </div>
+                </div>
+                <br />
+                <div className="timeline">
+                  <Timeline
+                    direction="horizontal"
+                    dotColor="var(--primary-color)"
+                    reverse={reverse}
+                  >
+                    <TimelineItem
+                      className="lines"
                       dotColor="var(--primary-color)"
-                      reverse={reverse}
-                    >
-                      <TimelineItem
-                        className="lines"
-                        dotColor="var(--primary-color)"
-                      ></TimelineItem>
-                      <TimelineItem
-                        className="lines"
-                        dotColor="var(--primary-color)"
-                      ></TimelineItem>
-                      <TimelineItem
-                        className="lines"
-                        dotColor="var(--primary-color)"
-                      ></TimelineItem>
-                    </Timeline>
-                  </div>
+                    ></TimelineItem>
+                    <TimelineItem
+                      className="lines"
+                      dotColor="var(--primary-color)"
+                    ></TimelineItem>
+                    <TimelineItem
+                      className="lines"
+                      dotColor="var(--primary-color)"
+                    ></TimelineItem>
+                  </Timeline>
                 </div>
-                <div className="signupheadtext">
-                  <p>Step 1 of 3</p>
-                  {agentName ? (
-                    <h1>Set Your Password {agentName}</h1>
-                  ) : (
-                    <h1>What’s your email address?</h1>
-                  )}
-                  <p> </p>
+              </div>
+              <div className="signupheadtext">
+                <p>Step 1 of 3</p>
+                {agentName ? (
+                  <h1>Set Your Password {agentName}</h1>
+                ) : (
+                  <h1>What’s your email address?</h1>
+                )}
+                <p> </p>
+              </div>
+
+              <div className="inputform">
+                <div>
+                  <span className="span">Account Type</span>
+
+                  <Select
+                    name="countryId"
+                    styles={{
+                      padding: "0px !important",
+                      // You can add custom styles here if needed
+                    }}
+                    options={[
+                      { label: "individual", value: 1 },
+                      { label: "Business", value: 2 },
+                    ]}
+                    // value={use} // Pass the selected option to the value prop
+                    onChange={(e) => {
+                      console.log(e, "ddddsdsf");
+                      setUser({
+                        ...user,
+                        accountType: e,
+                      });
+                    }} // Handle option selection
+                    placeholder="Please select a account type"
+                    showSearch
+                    isClearable={true} // Allow clearing the selected option
+                  />
+                </div>
+                {agentName ? (
+                  ""
+                ) : (
+                  <div>
+                    <span className="span">Email</span>
+                    <InputStyle>
+                      <Input
+                        name="email"
+                        onChange={handleChange}
+                        className="input"
+                        style={{ borderRadius: "8px;", width: "100%" }}
+                        placeholder="Enter your Email"
+                      />
+                    </InputStyle>
+                  </div>
+                )}
+
+                <div>
+                  <span className="span">Password</span>
+                  <AppInputPassword
+                    placeholder="Enter your password"
+                    type="password"
+                    onChange={(e) => {
+                      setUser({
+                        ...user,
+                        password: e.target.value,
+                      });
+                    }}
+                    name="password"
+                    padding="12px"
+                  />
                 </div>
 
-                <div className="inputform">
-                  <div>
-                    <span className="span">Account Type</span>
+                <div>
+                  <span className="span">Confirm Password</span>
 
-                    <Select
-                      name="countryId"
-                      styles={{
-                        padding: "0px !important",
-                        // You can add custom styles here if needed
-                      }}
-                      options={[
-                        { label: "individual", value: 1 },
-                        { label: "Business", value: 2 },
-                      ]}
-                      // value={use} // Pass the selected option to the value prop
-                      onChange={(e) => {
-                        console.log(e, "ddddsdsf");
-                        setUser({
-                          ...user,
-                          accountType: e,
-                        });
-                      }} // Handle option selection
-                      placeholder="Please select a account type"
-                      showSearch
-                      isClearable={true} // Allow clearing the selected option
-                    />
-                  </div>
-                  {agentName ? (
-                    ""
-                  ) : (
-                    <div>
-                      <span className="span">Email</span>
-                      <InputStyle>
-                        <Input
-                          name="email"
-                          onChange={handleChange}
-                          className="input"
-                          style={{ borderRadius: "8px;", width: "100%" }}
-                          placeholder="Enter your Email"
-                        />
-                      </InputStyle>
-                    </div>
-                  )}
+                  <AppInputPassword
+                    placeholder="Enter your password"
+                    type="password"
+                    className="input"
+                    onChange={(e) => {
+                      setConfirm(e.target.value);
+                    }}
+                    name="password"
+                    padding="12px"
+                  />
 
-                  <div>
-                    <span className="span">Password</span>
-                    <AppInput
-                      placeholder="Enter your password"
-                      type="password"
-                      onChange={(e) => {
-                        setUser({
-                          ...user,
-                          password: e.target.value,
-                        });
-                      }}
-                      name="password"
-                      padding="12px"
-                    />
-                  </div>
+                  <br />
+                  <span className="smalltext">
+                    Password must contain at least one uppercase letter, one
+                    special character, one number and must be 8 characters long.
+                  </span>
+                </div>
 
-                  <div>
-                    <span className="span">Confirm Password</span>
-
-                    <AppInput
-                      placeholder="Enter your password"
-                      type="password"
-                      onChange={(e) => {
-                        setConfirm(e.target.value);
-                      }}
-                      name="password"
-                      padding="12px"
-                    />
-
-                    <br />
-                    <span className="smalltext">
-                      Password must contain at least one uppercase letter, one
-                      special character, one number and must be 8 characters
-                      long.
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="span">Referral Code</span>
-                    <Input
-                      className="inputpass"
-                      style={{}}
-                      placeholder="Enter referral code"
-                    />
-                  </div>
-                  <div>
-                    <Btn
-                      clicking={handleStepOne}
-                      disabled={false}
-                      o
-                      styles={{
-                        width: "100%",
-                        background: "var(--primary-color)",
-                        color: "#fff",
-                        borderRadius: "8px",
-                        padding: "0.8em",
-                      }}
-                    >
-                      Continue
-                    </Btn>
-                  </div>
+                <div>
+                  <span className="span">Referral Code</span>
+                  <Input
+                    className="inputpass"
+                    style={{}}
+                    placeholder="Enter referral code"
+                  />
+                </div>
+                <div>
+                  <Btn
+                    clicking={handleStepOne}
+                    disabled={false}
+                    o
+                    styles={{
+                      width: "100%",
+                      background: "var(--primary-color)",
+                      color: "#fff",
+                      borderRadius: "8px",
+                      padding: "0.8em",
+                    }}
+                  >
+                    Continue
+                  </Btn>
                 </div>
               </div>
             </Center>
@@ -1037,6 +1036,18 @@ const LoginCotainer = styled.div`
   height: 100vh;
 
   .input {
+    /* width: 100%;
+   
+    padding: 10px;
+ 
+    background-color: inherit;
+    line-height: 1;
+    border: 1px solid #d0d5dd;
+    
+    color: #000;
+    font-weight: 300;
+    border: none;
+    border-bottom: 1px solid #d0d5dd; */
     padding: 0.7em;
     border-radius: 8px;
     outline: none;
