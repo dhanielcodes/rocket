@@ -16,8 +16,9 @@ import { useNavigate } from "react-router-dom";
 import Agentlayout from "../../reuseables/AgentLayout";
 import toast from "react-hot-toast";
 import { updateProfilePicture } from "../../services/Auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Profile from "../../assets/profile.png";
+import { GetDetails } from "../../services/Dashboard";
 
 const AgentSettings = () => {
   const settingsMap = [
@@ -121,7 +122,8 @@ const AgentSettings = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data?.status) {
-        toast.success(data?.message + " " + "re login to see changes");
+        toast.success(data?.message);
+        refetch();
       } else {
         toast.error(data?.message);
       }
@@ -133,6 +135,21 @@ const AgentSettings = () => {
   });
   const navigate = useNavigate();
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
+
+  const { data, refetch } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId, "00800"],
+    queryFn: GetDetails,
+    onSuccess: () => {
+      return;
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // Handle error logic
+      console.error(err);
+    },
+  });
+
+  const profileImage = data?.data?.profileImageURL;
   return (
     <Agentlayout>
       <Container>
@@ -148,9 +165,7 @@ const AgentSettings = () => {
             >
               <img
                 src={
-                  Userdata?.data?.user?.profileImageURL?.includes("cloudinary")
-                    ? Userdata?.data?.user?.profileImageURL
-                    : Profile
+                  profileImage?.includes("cloudinary") ? profileImage : Profile
                 }
                 alt=""
               />
@@ -161,7 +176,9 @@ const AgentSettings = () => {
                 onChange={(e) => {
                   const formData = new FormData();
                   formData.append("file", e?.target?.files[0]);
-                  mutate(formData);
+                  if (e?.target?.files[0]) {
+                    mutate(formData);
+                  }
                 }}
               />
             </div>

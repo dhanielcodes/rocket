@@ -300,7 +300,8 @@ function Dashboard() {
   }, []);
 
   const [wallet, selectedWallet] = useState();
-  console.log(wallet);
+  console.log(data?.data, "datadatadata");
+  const profileImage = data?.data?.profileImageURL;
   const wallets = Userdata?.data?.user?.wallet;
 
   return (
@@ -318,11 +319,7 @@ function Dashboard() {
         <div className="sel1">
           <div className="container">
             <img
-              src={
-                Userdata?.data?.user?.profileImageURL
-                  ? Userdata?.data?.user?.profileImageURL
-                  : Profile
-              }
+              src={profileImage ? profileImage : Profile}
               height="50px"
               className="avatar"
             />

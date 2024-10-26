@@ -326,6 +326,8 @@ function Dashboard() {
   const [wallet, selectedWallet] = useState();
   const wallets = Userdata?.data?.user?.wallet;
 
+  const profileImage = data?.data?.profileImageURL;
+
   return (
     <Userlayout>
       <ReusableModal
@@ -358,11 +360,7 @@ function Dashboard() {
           <div className="container">
             <img
               className="avatar"
-              src={
-                Userdata?.data?.user?.profileImageURL
-                  ? Userdata?.data?.user?.profileImageURL
-                  : Profile
-              }
+              src={profileImage ? profileImage : Profile}
             />
             <FlexCol className="currencyselect">
               {/* <Select></Select> */}

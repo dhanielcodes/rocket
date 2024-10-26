@@ -84,7 +84,14 @@ function ResetPassword() {
     <LoginCotainer>
       <div className="flex">
         <div className="side1">
-          <img src={Auth} alt="" />
+          <img
+            style={{
+              width: "500px",
+              height: "500px",
+            }}
+            src={Auth}
+            alt=""
+          />
         </div>
         <div className="side2">
           <Center>
