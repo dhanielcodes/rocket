@@ -379,6 +379,35 @@ function SendMoney() {
   const [benee, setSelectedBene] = useState(null);
   const [selected3, setSelected3] = useState();
   console.log(pre1, "djdjdjdj");
+  useEffect(() => {
+    if (payout?.data?.length === 1) {
+      setSelected3(payout?.data[0]);
+      setPre2(payout?.data[0]);
+      localStorage.setItem(
+        "payoutChannelId",
+        JSON.stringify({ id: payout?.data[0]?.id, name: payout?.data[0]?.name })
+      );
+      setSelectedItems2(id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [payout?.data?.length]);
+
+  useEffect(() => {
+    if (paymentchannel?.data?.filter((item) => item.status)?.length === 1) {
+      setPre1(paymentchannel?.data?.filter((item) => item.status)[0]);
+      setSelectedItems(
+        paymentchannel?.data?.filter((item) => item.status)[0]?.id
+      );
+      localStorage.setItem(
+        "paymentChannelId",
+        JSON.stringify({
+          id: paymentchannel?.data?.filter((item) => item.status)[0]?.id,
+          name: paymentchannel?.data?.filter((item) => item.status)[0]?.name,
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentchannel?.data?.filter((item) => item.status)?.length]);
 
   const handleStep = () => {
     if (current === 2) {
