@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { getAgentRates } from "../services/Dashboard";
+import CurrencyFlagImage from "react-currency-flags";
 const CountryListAgent = ({
   value,
   onChange,
@@ -73,12 +74,22 @@ const CountryListAgent = ({
             className="dropdown"
             style={{ fontSize: "16px", display: "flex", alignItems: "center" }}
           >
-            <div>
-              <CountryFlag
-                className="flag"
-                countryCode={country.fromCurrency?.code?.slice(0, 2)}
-                svg
-              />{" "}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <CurrencyFlagImage
+                currency={country.fromCurrency?.code}
+                style={{
+                  borderRadius: "999px",
+                  border: "1px solid #919191",
+                  width: "27px",
+                  height: "27px",
+                }}
+                size="sm"
+              />
               &nbsp;
               <span className="countryName">{country.fromCurrency?.name}</span>
             </div>
@@ -87,12 +98,22 @@ const CountryListAgent = ({
               to
             </span>{" "}
             &nbsp;&nbsp;
-            <div>
-              <CountryFlag
-                className="flag"
-                countryCode={country.toCurrency?.code?.slice(0, 2)}
-                svg
-              />{" "}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <CurrencyFlagImage
+                currency={country.toCurrency?.code}
+                style={{
+                  borderRadius: "999px",
+                  border: "1px solid #919191",
+                  width: "27px",
+                  height: "27px",
+                }}
+                size="sm"
+              />
               &nbsp;
               <span className="countryName">{country.toCurrency?.name}</span>
             </div>

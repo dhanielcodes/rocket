@@ -59,6 +59,7 @@ import CustomTable from "../../reuseables/CustomTable";
 import AppModal from "../../components/AppModal";
 import AppInput from "../../reuseables/AppInput";
 import AppSelect from "../../reuseables/AppSelect";
+import CurrencyFlagImage from "react-currency-flags";
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -284,6 +285,8 @@ function UpdateRateCustomer() {
   });
   const [modal, setModal] = useState(false);
 
+  console.log(countrySelected, "countrySelected");
+
   const [params] = useSearchParams();
   return (
     <Agentlayout current="Update Rate" useBack={true}>
@@ -443,16 +446,15 @@ function UpdateRateCustomer() {
               {selectedCountry && (
                 <div className="rates">
                   <div className="pri">
-                    <CountryFlag
-                      countryCode={countrySelected?.fromCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
+                    <CurrencyFlagImage
+                      currency={countrySelected?.fromCurrency?.code}
                       style={{
-                        width: "40px",
-                        height: "40px",
+                        borderRadius: "999px",
+                        border: "1px solid #919191",
+                        width: "43px",
+                        height: "43px",
                       }}
-                      svg
+                      size="sm"
                     />
                     <AmountFormatter
                       currency={countrySelected?.fromCurrency?.code}
@@ -462,17 +464,21 @@ function UpdateRateCustomer() {
                   </div>
                   <div style={{ color: "#000" }}>=</div>
                   <div className="sec">
-                    <CountryFlag
-                      countryCode={countrySelected?.toCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
-                      svg
+                    <CurrencyFlagImage
+                      currency={countrySelected?.toCurrency?.code}
+                      style={{
+                        borderRadius: "999px",
+                        border: "1px solid #919191",
+                        width: "43px",
+                        height: "43px",
+                      }}
+                      size="sm"
                     />
                     <AmountFormatter
                       currency={countrySelected?.toCurrency?.code}
                       value={
                         countrySelected?.conversionRate ||
+                        countrySelected?.agentRate ||
                         rates?.data[0]?.conversionRate ||
                         countrySelected?.rateUpdateValue ||
                         rates?.data[0]?.rateUpdateValue ||
@@ -542,18 +548,17 @@ function UpdateRateCustomer() {
                             borderRadius: "10px 0px 0px 10px",
                           }}
                         >
-                          <ReactCountryFlag
-                            countryCode={selectedCountry?.toCurrency?.code?.slice(
-                              0,
-                              2
-                            )}
-                            title={selectedCountry?.toCurrency.code}
+                          <CurrencyFlagImage
+                            currency={selectedCountry?.toCurrency?.code}
                             style={{
-                              marginRight: "6px",
-                              borderRadius: "10000000px",
+                              borderRadius: "999px",
+                              border: "1px solid #919191",
+                              width: "16px",
+                              height: "16px",
+                              marginRight: "4px",
                             }}
-                            svg
-                          />{" "}
+                            size="sm"
+                          />
                           {selectedCountry?.toCurrency.code}
                         </span>
                       </div>
@@ -687,16 +692,15 @@ function UpdateRateCustomer() {
 
                 <div className="rates">
                   <div className="pri">
-                    <CountryFlag
-                      countryCode={selectedCountry?.fromCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
+                    <CurrencyFlagImage
+                      currency={selectedCountry?.fromCurrency?.code}
                       style={{
-                        width: "40px",
-                        height: "40px",
+                        borderRadius: "999px",
+                        border: "1px solid #919191",
+                        width: "43px",
+                        height: "43px",
                       }}
-                      svg
+                      size="sm"
                     />
                     <AmountFormatter
                       currency={selectedCountry?.fromCurrency?.code}
@@ -706,12 +710,15 @@ function UpdateRateCustomer() {
                   </div>
                   <div style={{ color: "#000" }}>=</div>
                   <div className="sec">
-                    <CountryFlag
-                      countryCode={selectedCountry?.toCurrency?.code?.slice(
-                        0,
-                        2
-                      )}
-                      svg
+                    <CurrencyFlagImage
+                      currency={selectedCountry?.toCurrency?.code}
+                      style={{
+                        borderRadius: "999px",
+                        border: "1px solid #919191",
+                        width: "43px",
+                        height: "43px",
+                      }}
+                      size="sm"
                     />
                     <AmountFormatter
                       currency={selectedCountry?.toCurrency?.code}

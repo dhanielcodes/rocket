@@ -60,6 +60,7 @@ import AppInput from "../../reuseables/AppInput";
 import AppSelect from "../../reuseables/AppSelect";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { FormatCorrect } from "../../utils/format";
+import CurrencyFlagImage from "react-currency-flags";
 
 const { Text } = Typography;
 const TextArea = Input.TextArea;
@@ -448,16 +449,15 @@ function UpdateRate() {
             {selectedCountry && (
               <div className="rates">
                 <div className="pri">
-                  <CountryFlag
-                    countryCode={countrySelected?.fromCurrency?.code?.slice(
-                      0,
-                      2
-                    )}
+                  <CurrencyFlagImage
+                    currency={countrySelected?.fromCurrency?.code}
                     style={{
-                      width: "40px",
-                      height: "40px",
+                      borderRadius: "999px",
+                      border: "1px solid #919191",
+                      width: "43px",
+                      height: "43px",
                     }}
-                    svg
+                    size="sm"
                   />
                   <AmountFormatter
                     currency={countrySelected?.fromCurrency?.code}
@@ -467,9 +467,15 @@ function UpdateRate() {
                 </div>
                 <div style={{ color: "#000" }}>=</div>
                 <div className="sec">
-                  <CountryFlag
-                    countryCode={countrySelected?.toCurrency?.code?.slice(0, 2)}
-                    svg
+                  <CurrencyFlagImage
+                    currency={countrySelected?.toCurrency?.code}
+                    style={{
+                      borderRadius: "999px",
+                      border: "1px solid #919191",
+                      width: "43px",
+                      height: "43px",
+                    }}
+                    size="sm"
                   />
                   <AmountFormatter
                     currency={countrySelected?.toCurrency?.code}
@@ -547,18 +553,17 @@ function UpdateRate() {
                           borderRadius: "10px 0px 0px 10px",
                         }}
                       >
-                        <ReactCountryFlag
-                          countryCode={selectedCountry?.toCurrency?.code?.slice(
-                            0,
-                            2
-                          )}
-                          title={selectedCountry?.toCurrency.code}
+                        <CurrencyFlagImage
+                          currency={countrySelected?.toCurrency?.code}
                           style={{
+                            borderRadius: "999px",
+                            border: "1px solid #919191",
+                            width: "16px",
+                            height: "16px",
                             marginRight: "6px",
-                            borderRadius: "10000000px",
                           }}
-                          svg
-                        />{" "}
+                          size="sm"
+                        />
                         {selectedCountry?.toCurrency.code}
                       </span>
                     </div>
@@ -702,18 +707,17 @@ function UpdateRate() {
                           borderRadius: "10px 0px 0px 10px",
                         }}
                       >
-                        <ReactCountryFlag
-                          countryCode={selectedCountry?.fromCurrency?.code?.slice(
-                            0,
-                            2
-                          )}
-                          title={selectedCountry?.fromCurrency.code}
+                        <CurrencyFlagImage
+                          currency={countrySelected?.fromCurrency?.code}
                           style={{
+                            borderRadius: "999px",
+                            border: "1px solid #919191",
+                            width: "16px",
+                            height: "16px",
                             marginRight: "6px",
-                            borderRadius: "10000000px",
                           }}
-                          svg
-                        />{" "}
+                          size="sm"
+                        />
                         {selectedCountry?.fromCurrency.code}
                       </span>
                     </div>
@@ -790,16 +794,15 @@ function UpdateRate() {
 
               <div className="rates">
                 <div className="pri">
-                  <CountryFlag
-                    countryCode={selectedCountry?.fromCurrency?.code?.slice(
-                      0,
-                      2
-                    )}
+                  <CurrencyFlagImage
+                    currency={selectedCountry?.fromCurrency?.code}
                     style={{
-                      width: "40px",
-                      height: "40px",
+                      borderRadius: "999px",
+                      border: "1px solid #919191",
+                      width: "43px",
+                      height: "43px",
                     }}
-                    svg
+                    size="sm"
                   />
                   <AmountFormatter
                     currency={selectedCountry?.fromCurrency?.code}
@@ -809,9 +812,15 @@ function UpdateRate() {
                 </div>
                 <div style={{ color: "#000" }}>=</div>
                 <div className="sec">
-                  <CountryFlag
-                    countryCode={selectedCountry?.toCurrency?.code?.slice(0, 2)}
-                    svg
+                  <CurrencyFlagImage
+                    currency={selectedCountry?.toCurrency?.code}
+                    style={{
+                      borderRadius: "999px",
+                      border: "1px solid #919191",
+                      width: "43px",
+                      height: "43px",
+                    }}
+                    size="sm"
                   />
                   <AmountFormatter
                     currency={selectedCountry?.toCurrency?.code}

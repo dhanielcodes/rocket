@@ -24,6 +24,7 @@ import Msg from "../../reuseables/Msg";
 import CustomTable from "../../reuseables/CustomTable";
 import ReactCountryFlag from "react-country-flag";
 import Agentlayout from "../../reuseables/AgentLayout";
+import CurrencyFlagImage from "react-currency-flags";
 
 function OurBanksAgent() {
   const { data, isLoading, isFetching } = useQuery({
@@ -75,13 +76,15 @@ function OurBanksAgent() {
             alignItems: "center",
           }}
         >
-          <ReactCountryFlag
+          <CurrencyFlagImage
+            currency={item?.currency?.code}
             style={{
-              borderRadius: "10000000px",
-              marginRight: "10px",
+              borderRadius: "999px",
+              border: "1px solid #919191",
+              width: "16px",
+              height: "16px",
             }}
-            countryCode={item?.currency?.code?.slice(0, 2)}
-            svg
+            size="sm"
           />
           <div>{item?.currency["name"]}</div>
         </div>

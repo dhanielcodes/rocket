@@ -53,6 +53,7 @@ import Boxes from "../../../reuseables/Box";
 import moment from "moment";
 import Agentlayout from "../../../reuseables/AgentLayout";
 import FormattedDate from "../../../reuseables/FormattedDate";
+import CurrencyFlagImage from "react-currency-flags";
 
 const Droplist = (
   <Menu>
@@ -696,14 +697,15 @@ function WalletsDetails() {
                     alignItems: "center",
                   }}
                 >
-                  <CountryFlag
-                    countryCode={walletDetails?.currency?.code?.slice(0, 2)}
+                  <CurrencyFlagImage
+                    currency={walletDetails?.currency?.code}
                     style={{
-                      width: "30px",
-                      height: "30px",
-                      borderRadius: "2000px",
+                      borderRadius: "999px",
+                      border: "1px solid #919191",
+                      width: "35px",
+                      height: "35px",
                     }}
-                    svg
+                    size="sm"
                   />
                   <div
                     style={{

@@ -14,6 +14,7 @@ import {
   DashboardTodayRatesAgent,
   GetDetails,
 } from "../services/Dashboard";
+import CurrencyFlagImage from "react-currency-flags";
 const CountryDropdown = ({
   value,
   onChange,
@@ -261,15 +262,17 @@ const CountryDropdown = ({
               console.log(country?.code, country.currency);
             }}
           >
-            <ReactCountryFlag
-              countryCode={country?.code?.slice(0, 2)}
-              title={country.code}
+            <CurrencyFlagImage
+              currency={country?.code}
               style={{
+                borderRadius: "999px",
+                border: "1px solid #919191",
                 marginRight: "1px",
-                borderRadius: "10000000px",
+                width: "16px",
+                height: "16px",
               }}
-              svg
-            />{" "}
+              size="sm"
+            />
             &nbsp;
             {country.code}
           </span>

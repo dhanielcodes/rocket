@@ -9,6 +9,7 @@ import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { getCurrencies } from "../services/Auth";
+import CurrencyFlagImage from "react-currency-flags";
 const WalletList = ({
   value,
   defaultValue,
@@ -59,15 +60,17 @@ const WalletList = ({
               console.log(country?.code, country.currency);
             }}
           >
-            <ReactCountryFlag
-              countryCode={country?.code?.slice(0, 2)}
-              title={country.code}
+            <CurrencyFlagImage
+              currency={country?.code}
               style={{
-                marginRight: "10px",
-                borderRadius: "10000000px",
+                borderRadius: "999px",
+                border: "1px solid #919191",
+                marginRight: "1px",
+                width: "16px",
+                height: "16px",
               }}
-              svg
-            />{" "}
+              size="sm"
+            />
             &nbsp;
             {country.label}
           </span>

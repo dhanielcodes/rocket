@@ -20,6 +20,7 @@ import {
   beneficiaries2,
 } from "../../services/Dashboard";
 import ReactCountryFlag from "react-country-flag";
+import CurrencyFlagImage from "react-currency-flags";
 
 const Droplist = ({ id, onNavigate }) => (
   //   <Menu.Item key='1' onClick={() => onNavigate(id)}>
@@ -265,16 +266,16 @@ function Beneficiary() {
               >
                 <Box>
                   {d?.currency?.code ? (
-                    <ReactCountryFlag
-                      countryCode={d?.currency?.code?.slice(0, 2)}
-                      title={d?.currency?.code}
+                    <CurrencyFlagImage
+                      currency={d?.currency?.code}
                       style={{
+                        borderRadius: "999px",
+                        border: "1px solid #919191",
                         marginRight: "1px",
-                        borderRadius: "10000000px",
-                        width: "40px",
-                        height: "40px",
+                        width: "43px",
+                        height: "43px",
                       }}
-                      svg
+                      size="sm"
                     />
                   ) : (
                     <Avatar className="av">

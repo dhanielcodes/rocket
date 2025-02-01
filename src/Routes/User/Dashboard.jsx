@@ -39,6 +39,7 @@ import Profile from "../../assets/profile.png";
 import { NumberWithCommas } from "../../utils/format";
 import RateListDashboad from "../../reuseables/RateListDashboad";
 import { getUserCurrencies } from "../../services/Auth";
+import CurrencyFlagImage from "react-currency-flags";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -437,13 +438,14 @@ function Dashboard() {
               {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
               <div className="rates">
                 <div className="pri">
-                  <CountryFlag
-                    countryCode={c1?.fromCurrency?.code?.slice(0, 2)}
+                  <CurrencyFlagImage
+                    currency={c1?.fromCurrency?.code}
                     style={{
-                      width: "40px",
-                      height: "40px",
+                      width: "45px",
+                      height: "45px",
+                      borderRadius: "999px",
                     }}
-                    svg
+                    size="sm"
                   />
                   {/* <p>920.000 USD</p> */}
                   {/* <AmountFormatter currency={countryFlags[0].code} value={1}/> */}
@@ -455,9 +457,15 @@ function Dashboard() {
                 </div>
                 <div style={{ color: "#000" }}>=</div>
                 <div className="sec">
-                  <CountryFlag
-                    countryCode={c1?.toCurrency?.code?.slice(0, 2)}
-                    svg
+                  <CurrencyFlagImage
+                    currency={c1?.toCurrency?.code}
+                    style={{
+                      width: "45px",
+                      height: "45px",
+                      borderRadius: "999px",
+                      border: "1px solid #919191",
+                    }}
+                    size="sm"
                   />
 
                   <div>

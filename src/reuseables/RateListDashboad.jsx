@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import { getAgentRates } from "../services/Dashboard";
+import CurrencyFlagImage from "react-currency-flags";
 const RateListDashboad = ({
   value,
   onChange,
@@ -79,12 +80,23 @@ const RateListDashboad = ({
             className="dropdown"
             style={{ fontSize: "16px", display: "flex", alignItems: "center" }}
           >
-            <div>
-              <CountryFlag
-                className="flag"
-                countryCode={country.fromCurrency?.code?.slice(0, 2)}
-                svg
-              />{" "}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <CurrencyFlagImage
+                currency={country.fromCurrency?.code}
+                style={{
+                  borderRadius: "999px",
+                  border: "1px solid #919191",
+                  marginRight: "1px",
+                  width: "16px",
+                  height: "16px",
+                }}
+                size="sm"
+              />
               &nbsp;
               <span className="countryName">{country.fromCurrency?.code}</span>
             </div>
@@ -93,12 +105,23 @@ const RateListDashboad = ({
               to
             </span>{" "}
             &nbsp;&nbsp;
-            <div>
-              <CountryFlag
-                className="flag"
-                countryCode={country.toCurrency?.code?.slice(0, 2)}
-                svg
-              />{" "}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <CurrencyFlagImage
+                currency={country.toCurrency?.code}
+                style={{
+                  borderRadius: "999px",
+                  border: "1px solid #919191",
+                  marginRight: "1px",
+                  width: "16px",
+                  height: "16px",
+                }}
+                size="sm"
+              />
               &nbsp;
               <span className="countryName">{country.toCurrency?.code}</span>
             </div>
@@ -158,6 +181,7 @@ const CountyCont = styled.div`
     /* border: 1px solid rgba(5, 142, 78, 1); */
   }
   .countryName {
+    //transform: translateY(-10%);
     /* font-weight: bold !important ; */
   }
   .dropdown:focus {

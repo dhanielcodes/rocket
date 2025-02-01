@@ -43,6 +43,7 @@ import "swiper/css/scrollbar";
 import CountryFlag from "react-country-flag";
 import { kFormatter, kFormatter2 } from "../../../reuseables/format";
 import moment from "moment";
+import CurrencyFlagImage from "react-currency-flags";
 
 const Droplist = (
   <Menu>
@@ -316,14 +317,15 @@ function Wallets() {
                       alignItems: "center",
                     }}
                   >
-                    <CountryFlag
-                      countryCode={item?.currency?.code?.slice(0, 2)}
+                    <CurrencyFlagImage
+                      currency={item?.currency?.code}
                       style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "2000px",
+                        borderRadius: "999px",
+                        border: "1px solid #919191",
+                        width: "35px",
+                        height: "35px",
                       }}
-                      svg
+                      size="sm"
                     />
                     <div
                       style={{
