@@ -28,7 +28,8 @@ input {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-weight: 350;
+  font-weight: 550;
+  font-family: 'General Sans', sans-serif;
 }
 
 .arco-select > .arco-select-view {

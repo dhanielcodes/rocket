@@ -32,7 +32,7 @@ import { BASE_URL } from "../../config/config";
 import Kyc from "../reuseables/Kyc";
 import visible from "../assets/view.png";
 import hide from "../assets/hide.png";
-import Auth from "../images/auth.png";
+import Auth from "../images/auth2.png";
 import { countries } from "../services/Auth";
 import { countryObjectsArray } from "../../config/CountryCodes";
 import {
@@ -329,21 +329,32 @@ function Login() {
     <LoginCotainer>
       <div className="flex">
         <div className="side1">
-          <img
-            style={{
-              width: "500px",
-              height: "500px",
-            }}
-            src={Auth}
-            alt=""
-          />
+          <div>
+            <img
+              style={{
+                width: "400px",
+                height: "300px",
+              }}
+              src={Logo}
+              alt=""
+            />
+            <br />
+            <br />
+            <br />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "24px", color: "white" }}>
+                Create your transfer Rocket Account <br /> and enjoy sending
+                money now!
+              </div>
+            </div>
+          </div>
         </div>
         <div className="side2">
           <Center>
             <img src={Logo} />
             <div className="logintext">
               <h1>Log in to your account</h1>
-              <p>Welcome back! </p>
+              <p>Welcome back! Please enter your details.</p>
             </div>
             <div className="inputform">
               {modal && (
@@ -445,12 +456,8 @@ function Login() {
                     type={type ? "text" : "password"}
                     className="emailinput"
                   />
-                  <div className="visibility">
-                    <img
-                      src={type ? visible : hide}
-                      height="20px"
-                      onClick={togglePass}
-                    />
+                  <div onClick={togglePass} className="visibility">
+                    <img src={type ? visible : hide} height="20px" />
                   </div>
                 </div>
               </div>
@@ -601,6 +608,7 @@ const Center = styled.div`
 
   .logintext {
     display: flex;
+    text-align: center;
 
     flex-direction: column;
     h1 {
