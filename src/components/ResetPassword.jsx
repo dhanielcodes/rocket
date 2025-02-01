@@ -84,14 +84,25 @@ function ResetPassword() {
     <LoginCotainer>
       <div className="flex">
         <div className="side1">
-          <img
-            style={{
-              width: "500px",
-              height: "500px",
-            }}
-            src={Auth}
-            alt=""
-          />
+          <div>
+            <img
+              style={{
+                width: "400px",
+                height: "300px",
+              }}
+              src={Logo}
+              alt=""
+            />
+            <br />
+            <br />
+            <br />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "24px", color: "white" }}>
+                Create your transfer Rocket Account <br /> and enjoy sending
+                money now!
+              </div>
+            </div>
+          </div>
         </div>
         <div className="side2">
           <Center>
